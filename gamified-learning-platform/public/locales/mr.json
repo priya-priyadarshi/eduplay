@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "गेमिफाइड लर्निंग मध्ये आपले स्वागत आहे",
+        "login": "लॉगिन करा",
+        "signup": "साइन अप करा",
+        "logout": "लॉगआउट",
+        "profile": "प्रोफाइल",
+        "home": "मुख्यपृष्ठ",
+        "play": "खेळा",
+        "leaderboard": "अग्रणी फलक",
+        "settings": "सेटिंग्ज"
+    },
+    "game": {
+        "match_title": "जोड्या जुळवा",
+        "memory_title": "मेमरी गेम",
+        "score": "स्कोअर",
+        "time": "वेळ",
+        "hints": "संकेत",
+        "perfect": "परिपूर्ण स्कोअर!",
+        "next_level": "पुढचा स्तर",
+        "game_complete": "गेम पूर्ण!",
+        "xp_earned": "XP मिळाले",
+        "matches": "जुळण्या",
+        "terms": "संज्ञा",
+        "definitions": "व्याख्या"
+    },
+    "progress": {
+        "streak": "दिवसाची स्ट्रीक",
+        "xp": "XP पॉइंट्स",
+        "level": "स्तर",
+        "badges": "मिळालेले बॅज",
+        "leaderboard": "अग्रणी फलक",
+        "total_points": "एकूण पॉइंट्स",
+        "completed_topics": "पूर्ण केलेले टॉपिक",
+        "recent_activity": "अलीकडील क्रियाकलाप",
+        "your_rank": "तुमचा क्रमांक"
+    },
+    "subjects": {
+        "select_degree": "तुमची पदवी निवडा",
+        "select_year": "वर्ष निवडा",
+        "select_semester": "सेमिस्टर निवडा",
+        "select_branch": "शाखा निवडा",
+        "select_subject": "विषय निवडा",
+        "select_topic": "खेळण्यासाठी टॉपिक निवडा"
+    },
+    "badges": {
+        "first_victory": "पहिला विजय",
+        "first_victory_desc": "तुमचा पहिला टॉपिक पूर्ण करा",
+        "seven_day_warrior": "7 दिवसांचा योद्धा",
+        "seven_day_warrior_desc": "7 दिवस स्ट्रीक राखा",
+        "perfect_player": "परिपूर्ण खेळाडू",
+        "perfect_player_desc": "3 परिपूर्ण स्कोअर मिळवा",
+        "speed_demon": "स्पीड डेमन",
+        "speed_demon_desc": "30 सेकंदात गेम पूर्ण करा"
+    },
+    "messages": {
+        "login_success": "लॉगिन यशस्वी! पुन्हा स्वागत आहे!",
+        "signup_success": "खाते यशस्वीरित्या तयार झाले! स्वागत आहे!",
+        "logout_success": "यशस्वीरित्या लॉगआउट केले",
+        "game_submit_success": "गेम पूर्ण! तुम्ही {xp} XP मिळवले!",
+        "already_completed": "टॉपिक आधीच पूर्ण झाला आहे",
+        "topic_locked": "प्रथम मागील स्तर पूर्ण करा"
+    }
+}

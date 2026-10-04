@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "گییمیفائیڈ لرننگ پلیٹ فارم میں خوش آمدید",
+        "login": "لاگ ان کریں",
+        "signup": "سائن اپ کریں",
+        "logout": "لاگ آؤٹ",
+        "profile": "پروفائل",
+        "home": "ہوم",
+        "play": "کھیلیں",
+        "leaderboard": "لیڈر بورڈ",
+        "settings": "ترتیبات"
+    },
+    "game": {
+        "match_title": "جوڑے ملائیں",
+        "memory_title": "میموری گیم",
+        "score": "سکور",
+        "time": "وقت",
+        "hints": "اشارے",
+        "perfect": "کامل سکور!",
+        "next_level": "اگلا درجہ",
+        "game_complete": "گیم مکمل!",
+        "xp_earned": "XP حاصل کیا",
+        "matches": "میچز",
+        "terms": "شرائط",
+        "definitions": "تعریفیں"
+    },
+    "progress": {
+        "streak": "دنوں کا تسلسل",
+        "xp": "XP پوائنٹس",
+        "level": "درجہ",
+        "badges": "حاصل کردہ بیجز",
+        "leaderboard": "لیڈر بورڈ",
+        "total_points": "کل پوائنٹس",
+        "completed_topics": "مکمل شدہ مضامین",
+        "recent_activity": "حالیہ سرگرمیاں",
+        "your_rank": "آپ کا رینک"
+    },
+    "subjects": {
+        "select_degree": "اپنی ڈگری منتخب کریں",
+        "select_year": "سال منتخب کریں",
+        "select_semester": "سیمسٹر منتخب کریں",
+        "select_branch": "شعبہ منتخب کریں",
+        "select_subject": "مضمون منتخب کریں",
+        "select_topic": "کھیلنے کے لیے موضوع منتخب کریں"
+    },
+    "badges": {
+        "first_victory": "پہلی فتح",
+        "first_victory_desc": "اپنا پہلا موضوع مکمل کریں",
+        "seven_day_warrior": "7 روزہ جنگجو",
+        "seven_day_warrior_desc": "7 دن کا تسلسل برقرار رکھیں",
+        "perfect_player": "کامل کھلاڑی",
+        "perfect_player_desc": "3 کامل سکور حاصل کریں",
+        "speed_demon": "تیز رفتار شیطان",
+        "speed_demon_desc": "30 سیکنڈ میں گیم مکمل کریں"
+    },
+    "messages": {
+        "login_success": "لاگ ان کامیاب! واپس خوش آمدید!",
+        "signup_success": "اکاؤنٹ کامیابی سے بن گیا! خوش آمدید!",
+        "logout_success": "کامیابی سے لاگ آؤٹ کیا",
+        "game_submit_success": "گیم مکمل! آپ نے {xp} XP حاصل کیا!",
+        "already_completed": "موضوع پہلے ہی مکمل ہو چکا ہے",
+        "topic_locked": "پہلے پچھلا درجہ مکمل کریں"
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "ਗੇਮੀਫਾਈਡ ਲਰਨਿੰਗ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ",
+        "login": "ਲਾਗਿਨ ਕਰੋ",
+        "signup": "ਸਾਈਨ ਅਪ ਕਰੋ",
+        "logout": "ਲਾਗਆਉਟ",
+        "profile": "ਪ੍ਰੋਫਾਈਲ",
+        "home": "ਹੋਮ",
+        "play": "ਖੇਡੋ",
+        "leaderboard": "ਲੀਡਰਬੋਰਡ",
+        "settings": "ਸੈਟਿੰਗਜ਼"
+    },
+    "game": {
+        "match_title": "ਜੋੜੀਆਂ ਮਿਲਾਓ",
+        "memory_title": "ਮੈਮੋਰੀ ਗੇਮ",
+        "score": "ਸਕੋਰ",
+        "time": "ਸਮਾਂ",
+        "hints": "ਸੰਕੇਤ",
+        "perfect": "ਪਰਫੈਕਟ ਸਕੋਰ!",
+        "next_level": "ਅਗਲਾ ਪੱਧਰ",
+        "game_complete": "ਗੇਮ ਪੂਰੀ!",
+        "xp_earned": "XP ਪ੍ਰਾਪਤ",
+        "matches": "ਮੈਚ",
+        "terms": "ਸ਼ਬਦ",
+        "definitions": "ਪਰਿਭਾਸ਼ਾਵਾਂ"
+    },
+    "progress": {
+        "streak": "ਦਿਨਾਂ ਦੀ ਲੜੀ",
+        "xp": "XP ਪੁਆਇੰਟ",
+        "level": "ਪੱਧਰ",
+        "badges": "ਪ੍ਰਾਪਤ ਬੈਜ",
+        "leaderboard": "ਲੀਡਰਬੋਰਡ",
+        "total_points": "ਕੁੱਲ ਪੁਆਇੰਟ",
+        "completed_topics": "ਪੂਰੇ ਕੀਤੇ ਟੌਪਿਕ",
+        "recent_activity": "ਹਾਲੀਆ ਗਤੀਵਿਧੀ",
+        "your_rank": "ਤੁਹਾਡਾ ਰੈਂਕ"
+    },
+    "subjects": {
+        "select_degree": "ਆਪਣੀ ਡਿਗਰੀ ਚੁਣੋ",
+        "select_year": "ਸਾਲ ਚੁਣੋ",
+        "select_semester": "ਸਮੈਸਟਰ ਚੁਣੋ",
+        "select_branch": "ਬ੍ਰਾਂਚ ਚੁਣੋ",
+        "select_subject": "ਵਿਸ਼ਾ ਚੁਣੋ",
+        "select_topic": "ਖੇਡਣ ਲਈ ਟੌਪਿਕ ਚੁਣੋ"
+    },
+    "badges": {
+        "first_victory": "ਪਹਿਲੀ ਜਿੱਤ",
+        "first_victory_desc": "ਆਪਣਾ ਪਹਿਲਾ ਟੌਪਿਕ ਪੂਰਾ ਕਰੋ",
+        "seven_day_warrior": "7 ਦਿਨਾਂ ਦਾ ਯੋਧਾ",
+        "seven_day_warrior_desc": "7 ਦਿਨਾਂ ਦੀ ਲੜੀ ਬਣਾਈ ਰੱਖੋ",
+        "perfect_player": "ਪਰਫੈਕਟ ਖਿਡਾਰੀ",
+        "perfect_player_desc": "3 ਪਰਫੈਕਟ ਸਕੋਰ ਪ੍ਰਾਪਤ ਕਰੋ",
+        "speed_demon": "ਸਪੀਡ ਡੈਮਨ",
+        "speed_demon_desc": "30 ਸਕਿੰਟਾਂ ਵਿੱਚ ਗੇਮ ਪੂਰੀ ਕਰੋ"
+    },
+    "messages": {
+        "login_success": "ਲਾਗਿਨ ਸਫਲ! ਵਾਪਸ ਸੁਆਗਤ ਹੈ!",
+        "signup_success": "ਖਾਤਾ ਸਫਲਤਾਪੂਰਵਕ ਬਣਾਇਆ ਗਿਆ! ਸੁਆਗਤ ਹੈ!",
+        "logout_success": "ਸਫਲਤਾਪੂਰਵਕ ਲਾਗਆਉਟ ਕੀਤਾ",
+        "game_submit_success": "ਗੇਮ ਪੂਰੀ! ਤੁਸੀਂ {xp} XP ਪ੍ਰਾਪਤ ਕੀਤਾ!",
+        "already_completed": "ਟੌਪਿਕ ਪਹਿਲਾਂ ਹੀ ਪੂਰਾ ਹੋ ਚੁੱਕਾ ਹੈ",
+        "topic_locked": "ਪਹਿਲਾਂ ਪਿਛਲਾ ਪੱਧਰ ਪੂਰਾ ਕਰੋ"
+    }
+}

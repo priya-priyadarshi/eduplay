@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Challenge | EduPlay - Students Only</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 1rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .game-header { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .game-header h1 { color: #667eea; margin-bottom: 0.5rem; font-size: 1.8rem; }
+        .game-header p { color: #666; font-size: 0.9rem; }
+        .profile-card { background: linear-gradient(135deg, #FFD700, #FFA500); padding: 1rem; border-radius: 15px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .profile-info { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .profile-avatar { font-size: 2rem; }
+        .profile-details h3 { font-size: 1rem; color: #333; }
+        .profile-details p { font-size: 0.8rem; color: #666; }
+        .profile-points { background: white; padding: 0.5rem 1rem; border-radius: 50px; }
+        .profile-points span { font-weight: bold; color: #FF9800; }
+        .game-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; padding: 1rem; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .stat-card .value { font-size: 1.8rem; font-weight: bold; color: #667eea; }
+        .stat-card .label { font-size: 0.7rem; color: #666; }
+        .puzzle-board { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .selector-section { margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 15px; }
+        .selector-title { font-weight: bold; color: #333; margin-bottom: 0.8rem; font-size: 0.9rem; }
+        .selector-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .selector-btn { padding: 0.5rem 1rem; border: none; border-radius: 50px; cursor: pointer; font-weight: 500; transition: all 0.3s; background: #e9ecef; color: #333; font-size: 0.8rem; }
+        .selector-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .selector-btn:hover { transform: scale(1.05); }
+        .current-info { background: linear-gradient(135deg, #e3f2fd, #bbdef5); padding: 0.8rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; }
+        .current-info span { font-weight: bold; color: #667eea; }
+        .level-container { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 0.8rem 1.5rem; border-radius: 50px; margin-bottom: 1.5rem; color: white; flex-wrap: wrap; gap: 0.5rem; }
+        .level-badge { background: linear-gradient(135deg, #FFD700, #FFA500); padding: 0.3rem 1rem; border-radius: 50px; font-weight: bold; color: #333; }
+        .next-level-btn { background: linear-gradient(135deg, #4CAF50, #45a049); border: none; padding: 0.5rem 1.2rem; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .next-level-btn:hover { transform: scale(1.05); }
+        .next-level-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .progress-level { width: 200px; height: 8px; background: #333; border-radius: 4px; overflow: hidden; }
+        .progress-level-fill { height: 100%; background: linear-gradient(135deg, #FFD700, #FFA500); width: 0%; transition: width 0.5s; }
+        .puzzle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin: 1.5rem 0; }
+        .puzzle-cell { aspect-ratio: 1; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; border: 3px solid transparent; font-weight: bold; color: #667eea; }
+        .puzzle-cell.locked { background: #e9ecef; cursor: not-allowed; opacity: 0.5; }
+        .puzzle-cell.unlocked { background: linear-gradient(135deg, #a8e6cf, #d4edda); border-color: #4CAF50; cursor: pointer; }
+        .puzzle-cell.completed { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; cursor: default; }
+        .puzzle-cell.completed .cell-number { display: none; }
+        .puzzle-cell.completed::after { content: "✓"; font-size: 2rem; }
+        .puzzle-cell .cell-number { font-size: 1.2rem; font-weight: bold; }
+        .puzzle-cell .cell-status { font-size: 0.6rem; margin-top: 0.2rem; }
+        .puzzle-cell.unlocked:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .question-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-card { background: white; border-radius: 20px; padding: 1.5rem; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-card h3 { color: #667eea; margin-bottom: 1rem; }
+        .question-text { font-size: 1rem; margin: 1rem 0; padding: 1rem; background: #f0f0f0; border-radius: 10px; line-height: 1.4; }
+        .options { display: flex; flex-direction: column; gap: 0.7rem; margin: 1rem 0; }
+        .option { padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.3s; background: white; font-size: 0.9rem; }
+        .option:hover { border-color: #667eea; background: #f0f0ff; }
+        .hint { font-size: 0.8rem; margin-top: 1rem; padding: 0.5rem; background: #fff3cd; border-radius: 8px; color: #856404; }
+        .feedback { margin-top: 1rem; padding: 0.8rem; border-radius: 10px; text-align: center; font-weight: bold; font-size: 0.9rem; }
+        .feedback.correct { background: #d4edda; color: #155724; }
+        .feedback.wrong { background: #f8d7da; color: #721c24; }
+        .next-btn { width: 100%; padding: 0.8rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 1rem; }
+        .action-buttons { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+        .back-btn, .reset-btn { padding: 0.7rem 1.5rem; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; text-align: center; font-size: 0.9rem; }
+        .back-btn { background: #6c757d; color: white; }
+        .reset-btn { background: #ff4757; color: white; }
+        @media (max-width: 768px) {
+            .puzzle-grid { gap: 0.5rem; }
+            .selector-btn { font-size: 0.7rem; padding: 0.3rem 0.7rem; }
+            .profile-card { flex-direction: column; text-align: center; }
+            .stat-card .value { font-size: 1.3rem; }
+            .level-container { flex-direction: column; text-align: center; }
+        }
+        @keyframes pointsPopup { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ff4757; } 100% { transform: scale(1); } }
+        .points-animation { animation: pointsPopup 0.5s ease; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🧩 Student's Puzzle Challenge</h1>
+            <p>🎓 Only for Students | Select Degree → Branch → Semester → Subject → Complete puzzles & earn points!</p>
+        </div>
+
+        <div class="profile-card" id="profileCard">
+            <div class="profile-info"><div class="profile-avatar" id="userAvatar">👤</div><div class="profile-details"><h3 id="userName">Student</h3><p id="userEmail">Student Account</p></div></div>
+            <div class="profile-points">⭐ Total Points: <span id="totalPoints">0</span> | 🎯 Level: <span id="userLevel">1</span></div>
+        </div>
+
+        <div class="level-container">
+            <div>🎮 Game Level: <span class="level-badge" id="currentLevel">1</span></div>
+            <div class="progress-level"><div class="progress-level-fill" id="levelProgressFill"></div></div>
+            <div>📚 Questions: <span id="completedQuestions">0</span>/<span id="totalQuestions">10</span></div>
+            <button class="next-level-btn" id="nextLevelBtn" onclick="goToNextLevel()" disabled>🔓 Next Level (Locked)</button>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-card"><div class="value" id="unlockedCount">0</div><div class="label">Cells Unlocked</div></div>
+            <div class="stat-card"><div class="value" id="totalCells">9</div><div class="label">Total Cells</div></div>
+            <div class="stat-card"><div class="value" id="gamePoints">0</div><div class="label">🎮 Game Points</div></div>
+            <div class="stat-card"><div class="value" id="streakCount">0</div><div class="label">🔥 Streak</div></div>
+            <div class="stat-card"><div class="value" id="sessionEarned">0</div><div class="label">🏆 Earned This Session</div></div>
+        </div>
+
+        <div class="puzzle-board">
+            <div class="selector-section"><div class="selector-title">🎓 Step 1: Select Degree</div><div class="selector-buttons" id="degreeButtons"></div></div>
+            <div class="selector-section" id="branchSection" style="display:none;"><div class="selector-title">🔧 Step 2: Select Branch</div><div class="selector-buttons" id="branchButtons"></div></div>
+            <div class="selector-section" id="semesterSection" style="display:none;"><div class="selector-title">📚 Step 3: Select Semester</div><div class="selector-buttons" id="semesterButtons"></div></div>
+            <div class="selector-section" id="subjectSection" style="display:none;"><div class="selector-title">📖 Step 4: Select Subject</div><div class="selector-buttons" id="subjectButtons"></div></div>
+            <div class="current-info" id="currentInfo">📍 Please complete all steps above to start playing!</div>
+            <div class="puzzle-grid" id="puzzleGrid"></div>
+            <div class="action-buttons"><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a><button class="reset-btn" onclick="resetGame()">🔄 Reset Current Puzzle</button></div>
+        </div>
+    </div>
+
+    <div id="questionModal" class="question-modal"><div class="modal-card"><h3>🧩 Unlock Cell <span id="cellNumber"></span></h3><div class="question-text" id="questionText"></div><div class="options" id="optionsContainer"></div><div class="hint" id="hintText"></div><div id="feedback"></div><button class="next-btn" onclick="submitAnswer()">Submit Answer →</button></div></div>
+
+    <script>
+        // ========== STUDENT ONLY ACCESS CHECK ==========
+        function checkStudentAccess() {
+            let currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                currentUser = JSON.parse(currentUser);
+                if (currentUser.role !== 'student') {
+                    alert('🔒 Access Denied!\n\nPuzzle Game is only for Students.\n\nTeachers and Directors cannot play puzzle games.');
+                    window.location.href = '/';
+                    return false;
+                }
+                // Update profile with student info
+                document.getElementById('userName').textContent = currentUser.name || 'Student';
+                document.getElementById('userEmail').textContent = currentUser.email || 'student@eduplay.com';
+                return true;
+            } else {
+                alert('⚠️ Please login as Student to play Puzzle Game!');
+                window.location.href = '/';
+                return false;
+            }
+        }
+        checkStudentAccess();
+        // ========== END STUDENT ACCESS CHECK ==========
+
+        // ==================== DEGREES DATABASE ====================
+        const degreesData = {
+            "B.Tech": { branches: ["CSE", "IT", "ME", "CE", "ECE", "EE"], semesters: 8 },
+            "MBA": { branches: ["Marketing", "Finance", "HR"], semesters: 4 },
+            "BCA": { branches: ["BCA"], semesters: 6 },
+            "B.Com": { branches: ["B.Com"], semesters: 6 },
+            "BBA": { branches: ["BBA"], semesters: 6 },
+            "B.Pharm": { branches: ["B.Pharm"], semesters: 8 },
+            "LLB": { branches: ["LLB"], semesters: 6 },
+            "MCA": { branches: ["MCA"], semesters: 4 },
+            "B.Sc": { branches: ["Computer Science", "Physics", "Chemistry", "Mathematics"], semesters: 6 },
+            "B.A": { branches: ["English", "History", "Political Science", "Economics"], semesters: 6 }
+        };
+
+        // ==================== ALL SUBJECTS FOR ALL DEGREES ====================
+        const allSubjects = {
+            "CSE": { 1: ["Programming Fundamentals", "Data Structures", "Digital Logic", "Discrete Maths"], 2: ["OOP", "DBMS", "Computer Org", "Probability"], 3: ["OS", "Computer Networks", "Software Engg", "DAA"], 4: ["Web Tech", "AI", "Theory of Computation", "Microprocessors"], 5: ["ML", "Cloud Computing", "Cyber Security", "Compiler Design"], 6: ["Deep Learning", "Blockchain", "IoT", "Big Data"], 7: ["Mobile Dev", "DevOps", "Quantum Computing", "NLP"], 8: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "IT": { 1: ["Programming Fundamentals", "Data Structures", "Digital Logic", "Discrete Maths"], 2: ["OOP", "DBMS", "Computer Org", "Statistics"], 3: ["OS", "Computer Networks", "Software Engg", "Info Theory"], 4: ["Web Tech", "AI", "Info Security", "Cloud Computing"], 5: ["ML", "Cyber Security", "IoT", "Big Data"], 6: ["Deep Learning", "Blockchain", "DevOps", "Mobile Computing"], 7: ["Data Science", "Quantum Computing", "NLP", "Computer Vision"], 8: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "ME": { 1: ["Engg Mechanics", "Engg Maths", "Engg Physics", "Engg Chemistry"], 2: ["Thermodynamics", "Fluid Mechanics", "Material Science", "Manufacturing"], 3: ["Machine Design", "Strength of Materials", "Kinematics", "Dynamics"], 4: ["Heat Transfer", "Refrigeration", "CAD/CAM", "Mechatronics"], 5: ["Auto Engg", "Power Plant", "Industrial Engg", "Robotics"], 6: ["FEA", "CFD", "Renewable Energy", "Supply Chain"], 7: ["Adv Manufacturing", "Composite Materials", "Vibration", "Project Management"], 8: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "CE": { 1: ["Engg Mechanics", "Engg Maths", "Engg Physics", "Engg Chemistry"], 2: ["Strength of Materials", "Fluid Mechanics", "Surveying", "Building Materials"], 3: ["Structural Analysis", "Geotechnical Engg", "Transportation", "Concrete Tech"], 4: ["Design of Structures", "Hydrology", "Environmental Engg", "Construction Mgmt"], 5: ["Foundation Engg", "Water Resources", "Highway Engg", "Project Planning"], 6: ["Earthquake Engg", "Prestressed Concrete", "Remote Sensing", "Smart Cities"], 7: ["Bridge Engg", "Tunnel Engg", "Construction Safety", "Green Building"], 8: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "ECE": { 1: ["Electronic Devices", "Network Theory", "Engg Maths", "Signals"], 2: ["Digital Electronics", "Analog Circuits", "EM Fields", "Microprocessors"], 3: ["Communication Systems", "DSP", "Control Systems", "VLSI"], 4: ["Embedded Systems", "Wireless Comm", "Antenna", "Optical Comm"], 5: ["IoT", "Robotics", "Medical Electronics", "Satellite Comm"], 6: ["Radar Systems", "Microwave Engg", "Deep Learning", "Computer Vision"], 7: ["Nano Electronics", "Bio Medical", "Avionics", "Network Security"], 8: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "EE": { 1: ["Basic Electrical", "Network Theory", "Engg Maths", "EM Fields"], 2: ["Electrical Machines", "Power Systems", "Analog Electronics", "Digital Electronics"], 3: ["Control Systems", "Power Electronics", "Measurement", "Microprocessors"], 4: ["Renewable Energy", "High Voltage", "Switchgear", "Electric Drives"], 5: ["Smart Grid", "Electric Vehicles", "Power Quality", "Energy Mgmt"], 6: ["IoT for Power", "AI", "ML", "Optimization"], 7: ["FACTS", "HVDC", "Distributed Generation", "Power Plant"], 8: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "Marketing": { 1: ["Marketing Mgmt", "Consumer Behavior", "Business Comm", "Org Behavior"], 2: ["Brand Mgmt", "Sales Mgmt", "Market Research", "Digital Marketing"], 3: ["Retail Mgmt", "Advertising", "Product Mgmt", "Services Marketing"], 4: ["International Marketing", "Rural Marketing", "Social Media", "Marketing Analytics"] },
+            "Finance": { 1: ["Financial Mgmt", "Accounting", "Business Economics", "Quant Methods"], 2: ["Investment Mgmt", "Risk Mgmt", "Financial Markets", "Corporate Finance"], 3: ["Derivatives", "Portfolio Mgmt", "International Finance", "Financial Modeling"], 4: ["Banking Mgmt", "Insurance", "Taxation", "Financial Analytics"] },
+            "HR": { 1: ["HR Mgmt", "Org Behavior", "Business Comm", "Labor Laws"], 2: ["Recruitment", "Performance Mgmt", "Training", "Compensation"], 3: ["Industrial Relations", "Talent Mgmt", "Change Mgmt", "HR Analytics"], 4: ["Strategic HRM", "International HRM", "Leadership", "Org Development"] },
+            "BCA": { 1: ["Programming in C", "Digital Electronics", "Mathematics", "Communication Skills"], 2: ["Data Structures", "DBMS", "Computer Org", "Operating Systems"], 3: ["OOP", "Computer Networks", "Software Engg", "Web Technologies"], 4: ["Java", "Python", "AI", "Cloud Computing"], 5: ["ML", "Cyber Security", "Mobile Dev", "Big Data"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "B.Com": { 1: ["Financial Accounting", "Business Maths", "Business Economics", "Business Comm"], 2: ["Corporate Accounting", "Business Law", "Cost Accounting", "Principles of Mgmt"], 3: ["Management Accounting", "Auditing", "Income Tax", "Financial Mgmt"], 4: ["GST", "Banking", "E-Commerce", "Investment Mgmt"], 5: ["International Business", "Marketing Mgmt", "HR Mgmt", "Business Analytics"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "BBA": { 1: ["Principles of Mgmt", "Business Comm", "Business Economics", "Financial Accounting"], 2: ["Marketing Mgmt", "Org Behavior", "Business Law", "Quantitative Methods"], 3: ["HR Mgmt", "Financial Mgmt", "Operations Mgmt", "Research Methodology"], 4: ["Consumer Behavior", "Sales Mgmt", "Digital Marketing", "Supply Chain"], 5: ["International Business", "Business Analytics", "Project Mgmt", "Strategic Mgmt"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "B.Pharm": { 1: ["Pharmaceutics", "Pharmaceutical Chemistry", "Pharmacognosy", "Human Anatomy"], 2: ["Pharmacology", "Pharmaceutical Engg", "Microbiology", "Biochemistry"], 3: ["Medicinal Chemistry", "Pharmaceutical Analysis", "Pathology", "Toxicology"], 4: ["Clinical Pharmacy", "Biopharmaceutics", "Pharmacokinetics", "Drug Delivery"], 5: ["Hospital Pharmacy", "Pharmacy Practice", "Quality Assurance", "Regulatory Affairs"], 6: ["Pharmaceutical Marketing", "Pharma Management", "IPR", "Clinical Research"], 7: ["Advanced Pharmacology", "Bioinformatics", "Pharma Analytics", "Drug Design"], 8: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "LLB": { 1: ["Constitutional Law", "Law of Contracts", "Criminal Law", "Law of Torts"], 2: ["Family Law", "Property Law", "Civil Procedure Code", "Criminal Procedure Code"], 3: ["Law of Evidence", "Company Law", "Taxation Law", "Labour Law"], 4: ["Administrative Law", "Environmental Law", "Human Rights", "Cyber Law"], 5: ["International Law", "Intellectual Property", "Corporate Law", "Banking Law"], 6: ["Major Project", "Moot Court", "Internship", "Ethics"] },
+            "MCA": { 1: ["Programming in C", "Data Structures", "Mathematics", "Digital Logic"], 2: ["OOP", "DBMS", "Computer Org", "Operating Systems"], 3: ["Computer Networks", "Software Engg", "Web Technologies", "Java"], 4: ["Python", "AI", "Cloud Computing", "Cyber Security"], 5: ["ML", "Big Data", "IoT", "Mobile Dev"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "Computer Science": { 1: ["Programming in C", "Mathematics", "Digital Logic", "Physics"], 2: ["Data Structures", "DBMS", "Computer Org", "Statistics"], 3: ["OS", "Computer Networks", "Software Engg", "Web Tech"], 4: ["Java", "Python", "AI", "Cloud Computing"], 5: ["ML", "Cyber Security", "IoT", "Big Data"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "Physics": { 1: ["Mechanics", "Electrodynamics", "Maths", "Thermal Physics"], 2: ["Quantum Mechanics", "Optics", "Statistical Physics", "Electronics"], 3: ["Solid State Physics", "Nuclear Physics", "Astrophysics", "Computational Physics"], 4: ["Material Science", "Photonics", "Plasma Physics", "Biophysics"], 5: ["Advanced QM", "Particle Physics", "Condensed Matter", "Cryogenics"], 6: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "Chemistry": { 1: ["Organic Chemistry", "Inorganic Chemistry", "Physical Chemistry", "Analytical Chemistry"], 2: ["Quantum Chemistry", "Spectroscopy", "Polymer Chemistry", "Green Chemistry"], 3: ["Biochemistry", "Medicinal Chemistry", "Environmental Chemistry", "Industrial Chemistry"], 4: ["Nanochemistry", "Computational Chemistry", "Surface Chemistry", "Electrochemistry"], 5: ["Supramolecular", "Organometallics", "Catalysis", "Chemical Biology"], 6: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "Mathematics": { 1: ["Calculus", "Algebra", "Geometry", "Trigonometry"], 2: ["Real Analysis", "Complex Analysis", "Differential Equations", "Number Theory"], 3: ["Linear Algebra", "Abstract Algebra", "Topology", "Probability"], 4: ["Statistics", "Numerical Methods", "Operations Research", "Graph Theory"], 5: ["Fourier Analysis", "Functional Analysis", "Partial Differential Eq", "Mathematical Modeling"], 6: ["Major Project", "Research", "Entrepreneurship", "Ethics"] },
+            "English": { 1: ["British Literature", "American Literature", "Poetry", "Drama"], 2: ["Indian Literature", "Linguistics", "Phonetics", "Grammar"], 3: ["World Literature", "Postcolonial Lit", "Literary Theory", "Creative Writing"], 4: ["Shakespeare", "Modern Poetry", "Fiction", "Criticism"], 5: ["Translation Studies", "Comparative Lit", "Media Studies", "Journalism"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "History": { 1: ["Ancient History", "Medieval History", "World History", "Indian Culture"], 2: ["Modern History", "European History", "Historiography", "Archaeology"], 3: ["Colonial India", "Freedom Struggle", "Social History", "Economic History"], 4: ["Contemporary World", "Cold War", "Diplomatic History", "Gender History"], 5: ["Regional History", "Environmental History", "Public History", "Heritage Mgmt"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "Political Science": { 1: ["Political Theory", "Indian Constitution", "Comparative Politics", "Public Admin"], 2: ["International Relations", "Political Ideologies", "Governance", "Local Govt"], 3: ["Foreign Policy", "Diplomacy", "Human Rights", "Political Economy"], 4: ["Public Policy", "Security Studies", "Political Sociology", "Feminist Politics"], 5: ["Globalization", "International Law", "Conflict Resolution", "Development Studies"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] },
+            "Economics": { 1: ["Microeconomics", "Macroeconomics", "Indian Economy", "Statistics"], 2: ["Development Economics", "International Trade", "Public Finance", "Monetary Economics"], 3: ["Labor Economics", "Agricultural Economics", "Industrial Economics", "Environmental Economics"], 4: ["Econometrics", "Game Theory", "Behavioral Economics", "Financial Economics"], 5: ["Health Economics", "Urban Economics", "Energy Economics", "Political Economy"], 6: ["Major Project", "Internship", "Entrepreneurship", "Ethics"] }
+        };
+
+        // ==================== QUESTION BANK ====================
+        const questionBank = {
+            "Programming": [
+                { q: "What is a variable?", options: ["Data container", "Loop", "Function", "Array"], correct: 0, hint: "Stores values" },
+                { q: "What is 5 % 2?", options: ["1", "2.5", "2", "0"], correct: 0, hint: "Remainder" }
+            ],
+            "Data Structures": [
+                { q: "What is a Stack?", options: ["LIFO", "FIFO", "Random", "Tree"], correct: 0, hint: "Last In First Out" }
+            ],
+            "DBMS": [
+                { q: "What is SQL?", options: ["Structured Query Language", "Simple Query", "System Query", "Standard Query"], correct: 0, hint: "Database queries" }
+            ],
+            "OS": [
+                { q: "What is a Process?", options: ["Program in execution", "Thread", "File", "Memory"], correct: 0, hint: "Running program" }
+            ],
+            "Networks": [
+                { q: "What is IP Address?", options: ["Device identifier", "Protocol", "Port", "Domain"], correct: 0, hint: "Internet Protocol" }
+            ]
+        };
+
+        function getQuestionsForSubject(subject) {
+            for(let key in questionBank) {
+                if(subject.toLowerCase().includes(key.toLowerCase())) {
+                    return [...questionBank[key]];
+                }
+            }
+            return [{ q: `What is the main concept of ${subject}?`, options: [`Core of ${subject}`, `Topic A`, `Topic B`, `Topic C`], correct: 0, hint: `Study ${subject} basics` }];
+        }
+
+        function getLevel2Questions(subject) {
+            let base = getQuestionsForSubject(subject);
+            let level2 = [];
+            for(let i=0; i<20; i++) {
+                let q = {...base[i % base.length]};
+                q.q = q.q + " (Advanced)";
+                level2.push(q);
+            }
+            return level2;
+        }
+
+        function getLevel3Questions(subject) {
+            let base = getQuestionsForSubject(subject);
+            let level3 = [];
+            for(let i=0; i<30; i++) {
+                let q = {...base[i % base.length]};
+                q.q = `Expert: ${q.q}`;
+                level3.push(q);
+            }
+            return level3;
+        }
+
+        // Game Variables
+        let currentDegree = null, currentBranch = null, currentSemester = null, currentSubject = null;
+        let puzzleCells = [], currentCell = null, currentQuestion = null;
+        let gameScore = 0, currentStreak = 0, maxStreak = 0, selectedOption = null;
+        let questionsForSubject = [], sessionEarned = 0, answeredQuestions = [];
+        let currentUser = null, currentGameLevel = 1, levelCompleted = false;
+        let totalQuestionsInLevel = 10, questionsAnsweredInLevel = 0;
+
+        function shuffleOptions(q) {
+            let opts = [...q.options];
+            let correctText = opts[q.correct];
+            for(let i=opts.length-1; i>0; i--) { let j = Math.floor(Math.random()*(i+1)); [opts[i], opts[j]] = [opts[j], opts[i]]; }
+            return { q: q.q, options: opts, correct: opts.indexOf(correctText), hint: q.hint };
+        }
+
+        function getUniqueQuestion() {
+            if(!questionsForSubject.length) return null;
+            let available = questionsForSubject.filter(q => !answeredQuestions.some(aq => aq.q === q.q));
+            if(available.length === 0) {
+                if(questionsAnsweredInLevel >= totalQuestionsInLevel) {
+                    levelCompleted = true;
+                    document.getElementById('nextLevelBtn').disabled = false;
+                    document.getElementById('nextLevelBtn').innerHTML = '🎯 Go to Next Level →';
+                    return { q: `🎉 LEVEL ${currentGameLevel} COMPLETE! Click Next Level!`, options: ["Continue", "Great!", "Awesome!", "Perfect!"], correct: 0, hint: "Level completed!" };
+                }
+                return { q: `Complete ${totalQuestionsInLevel} questions to advance!`, options: ["Keep Going!", "Almost There!", "Great!", "Continue!"], correct: 0, hint: `${questionsAnsweredInLevel}/${totalQuestionsInLevel} done` };
+            }
+            return shuffleOptions({...available[Math.floor(Math.random()*available.length)]});
+        }
+
+        function loadQuestionsForLevel() {
+            if(currentGameLevel === 1) { questionsForSubject = getQuestionsForSubject(currentSubject); totalQuestionsInLevel = Math.min(questionsForSubject.length, 10); }
+            else if(currentGameLevel === 2) { questionsForSubject = getLevel2Questions(currentSubject); totalQuestionsInLevel = 20; }
+            else { questionsForSubject = getLevel3Questions(currentSubject); totalQuestionsInLevel = 30; }
+        }
+
+        function goToNextLevel() {
+            if(!levelCompleted) { showNotification(`Complete ${totalQuestionsInLevel} questions first!`, 'error'); return; }
+            if(currentGameLevel < 3) {
+                currentGameLevel++; levelCompleted = false; answeredQuestions = []; questionsAnsweredInLevel = 0;
+                loadQuestionsForLevel(); initPuzzle(); updateLevelDisplay();
+                showNotification(`✨ Welcome to LEVEL ${currentGameLevel}! ✨`, 'success');
+                document.getElementById('nextLevelBtn').disabled = true;
+                document.getElementById('nextLevelBtn').innerHTML = '🔓 Next Level (Locked)';
+            } else { showNotification('🎉 You completed all levels! 🎉', 'success'); alert('🏆 MASTER! You completed all 3 levels! 🏆'); }
+        }
+
+        function updateLevelDisplay() {
+            document.getElementById('currentLevel').textContent = currentGameLevel;
+            document.getElementById('totalQuestions').textContent = totalQuestionsInLevel;
+            document.getElementById('completedQuestions').textContent = questionsAnsweredInLevel;
+            document.getElementById('levelProgressFill').style.width = (questionsAnsweredInLevel/totalQuestionsInLevel)*100 + '%';
+        }
+
+        function loadUserProfile() {
+            let saved = localStorage.getItem('currentUser');
+            if(saved) { 
+                currentUser = JSON.parse(saved); 
+                document.getElementById('userName').textContent = currentUser.name || 'Student';
+                document.getElementById('userEmail').textContent = currentUser.email || '';
+                document.getElementById('totalPoints').textContent = currentUser.points || 0;
+                document.getElementById('userLevel').textContent = currentUser.level || 1;
+            }
+        }
+
+        function savePointsToProfile(points) {
+            sessionEarned += points; document.getElementById('sessionEarned').textContent = sessionEarned;
+            document.getElementById('totalPoints').classList.add('points-animation'); setTimeout(() => document.getElementById('totalPoints').classList.remove('points-animation'), 500);
+            if(currentUser) {
+                currentUser.points = (currentUser.points||0) + points; currentUser.gamesPlayed = (currentUser.gamesPlayed||0) + 1; currentUser.level = Math.floor(currentUser.points/500) + 1;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                let users = localStorage.getItem('registeredUsers');
+                if(users) { users = JSON.parse(users); let idx = users.findIndex(u => u.email === currentUser.email); if(idx !== -1) { users[idx].points = currentUser.points; users[idx].gamesPlayed = currentUser.gamesPlayed; users[idx].level = currentUser.level; localStorage.setItem('registeredUsers', JSON.stringify(users)); } }
+                document.getElementById('totalPoints').textContent = currentUser.points; document.getElementById('userLevel').textContent = currentUser.level;
+            }
+            showNotification(`✨ +${points} Points!`, 'success');
+        }
+
+        function showNotification(msg, type) { let div = document.createElement('div'); div.innerHTML = `<div style="position:fixed; bottom:20px; right:20px; background:${type==='success'?'#4CAF50':'#ff4757'}; color:white; padding:10px 20px; border-radius:10px; z-index:2000; animation:slideIn 0.3s;">${msg}</div>`; document.body.appendChild(div); setTimeout(() => div.remove(), 2000); }
+
+        function initDegrees() { document.getElementById('degreeButtons').innerHTML = Object.keys(degreesData).map(d => `<button class="selector-btn" onclick="selectDegree('${d}')">🎓 ${d}</button>`).join(''); }
+
+        function selectDegree(degree) {
+            currentDegree = degree; currentBranch = null; currentSemester = null; currentSubject = null; currentGameLevel = 1; levelCompleted = false;
+            document.querySelectorAll('#degreeButtons .selector-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+            let branches = degreesData[degree].branches;
+            document.getElementById('branchButtons').innerHTML = branches.map(b => `<button class="selector-btn" onclick="selectBranch('${b}')">🔧 ${b}</button>`).join('');
+            document.getElementById('branchSection').style.display = 'block'; document.getElementById('semesterSection').style.display = 'none'; document.getElementById('subjectSection').style.display = 'none';
+            document.getElementById('currentInfo').innerHTML = `📌 Selected: <span>${degree}</span> → Please select branch`;
+        }
+
+        function selectBranch(branch) {
+            currentBranch = branch; currentSemester = null; currentSubject = null; currentGameLevel = 1; levelCompleted = false;
+            document.querySelectorAll('#branchButtons .selector-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+            let totalSemesters = degreesData[currentDegree].semesters;
+            let semesterHtml = ''; for(let i=1; i<=totalSemesters; i++) semesterHtml += `<button class="selector-btn" onclick="selectSemester(${i})">📚 Semester ${i}</button>`;
+            document.getElementById('semesterButtons').innerHTML = semesterHtml;
+            document.getElementById('semesterSection').style.display = 'block'; document.getElementById('subjectSection').style.display = 'none';
+            document.getElementById('currentInfo').innerHTML = `📌 ${currentDegree} → <span>${branch}</span> → Please select semester`;
+        }
+
+        function selectSemester(semester) {
+            currentSemester = semester; currentSubject = null; currentGameLevel = 1; levelCompleted = false;
+            document.querySelectorAll('#semesterButtons .selector-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+            let subjects = [];
+            if(allSubjects[currentBranch] && allSubjects[currentBranch][semester]) subjects = allSubjects[currentBranch][semester];
+            else subjects = [`Semester ${semester} - Subject 1`, `Semester ${semester} - Subject 2`, `Semester ${semester} - Subject 3`];
+            document.getElementById('subjectButtons').innerHTML = subjects.map(s => `<button class="selector-btn" onclick="selectSubject('${s}')">📖 ${s}</button>`).join('');
+            document.getElementById('subjectSection').style.display = 'block';
+            document.getElementById('currentInfo').innerHTML = `📌 ${currentDegree} → ${currentBranch} → <span>Semester ${semester}</span> → Please select subject`;
+        }
+
+        function selectSubject(subject) {
+            currentSubject = subject; currentGameLevel = 1; levelCompleted = false; questionsAnsweredInLevel = 0;
+            document.querySelectorAll('#subjectButtons .selector-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+            document.getElementById('currentInfo').innerHTML = `🎯 Currently Playing: <span style="color:#4CAF50;">${currentSubject}</span> | ${currentDegree} → ${currentBranch} → Semester ${currentSemester}`;
+            loadQuestionsForLevel(); answeredQuestions = []; updateLevelDisplay(); initPuzzle();
+        }
+
+        function initPuzzle() {
+            puzzleCells = []; for(let i=0; i<9; i++) puzzleCells.push({ id:i, number:i+1, unlocked:i===0, completed:false });
+            gameScore = 0; currentStreak = 0; maxStreak = 0; sessionEarned = 0;
+            document.getElementById('gamePoints').textContent = gameScore; document.getElementById('streakCount').textContent = currentStreak; document.getElementById('sessionEarned').textContent = sessionEarned; document.getElementById('unlockedCount').textContent = 0;
+            renderPuzzle();
+        }
+
+        function renderPuzzle() {
+            let grid = document.getElementById('puzzleGrid'); if(!grid) return;
+            grid.innerHTML = '';
+            puzzleCells.forEach(cell => {
+                let div = document.createElement('div'); div.className = 'puzzle-cell';
+                if(cell.completed) { div.classList.add('completed'); div.innerHTML = ''; }
+                else if(cell.unlocked) { div.classList.add('unlocked'); div.innerHTML = `<div class="cell-number">${cell.number}</div><div class="cell-status">Click →</div>`; div.onclick = () => openQuestionModal(cell.id); }
+                else { div.classList.add('locked'); div.innerHTML = `<div class="cell-number">🔒</div><div class="cell-status">Locked</div>`; }
+                grid.appendChild(div);
+            });
+            document.getElementById('unlockedCount').textContent = puzzleCells.filter(c => c.completed).length;
+        }
+
+        function openQuestionModal(cellId) {
+            if(!currentSubject) { showNotification('Please select a subject first!', 'error'); return; }
+            currentCell = puzzleCells[cellId]; if(currentCell.completed) { showNotification('This cell is already completed!', 'error'); return; }
+            document.getElementById('cellNumber').textContent = currentCell.number;
+            currentQuestion = getUniqueQuestion();
+            if(!currentQuestion) { document.getElementById('questionText').innerHTML = "No more questions available!"; document.getElementById('hintText').innerHTML = "💡 Great job!"; document.getElementById('optionsContainer').innerHTML = ''; return; }
+            document.getElementById('questionText').innerHTML = currentQuestion.q; document.getElementById('hintText').innerHTML = `💡 Hint: ${currentQuestion.hint}`;
+            let container = document.getElementById('optionsContainer'); container.innerHTML = ''; selectedOption = null;
+            currentQuestion.options.forEach((opt, idx) => {
+                let letter = String.fromCharCode(65+idx); let div = document.createElement('div'); div.className = 'option'; div.innerHTML = `<strong>${letter}.</strong> ${opt}`;
+                div.onclick = () => { selectedOption = idx; document.querySelectorAll('.option').forEach(o => { o.style.borderColor = '#e0e0e0'; o.style.background = 'white'; }); div.style.borderColor = '#4CAF50'; div.style.background = '#e8f5e9'; };
+                container.appendChild(div);
+            });
+            document.getElementById('feedback').innerHTML = ''; document.getElementById('questionModal').style.display = 'flex';
+        }
+
+        function submitAnswer() {
+            if(selectedOption === undefined) { document.getElementById('feedback').innerHTML = '<div class="feedback wrong">⚠️ Please select an answer!</div>'; return; }
+            let isCorrect = (selectedOption === currentQuestion.correct);
+            if(isCorrect) {
+                let points = 10 + (currentStreak*2); gameScore += points; currentStreak++; maxStreak = Math.max(maxStreak, currentStreak);
+                answeredQuestions.push({...currentQuestion}); questionsAnsweredInLevel++; updateLevelDisplay();
+                document.getElementById('gamePoints').textContent = gameScore; document.getElementById('streakCount').textContent = currentStreak;
+                document.getElementById('feedback').innerHTML = `<div class="feedback correct">✅ Correct! +${points} points! (Streak: ${currentStreak} 🔥)</div>`;
+                savePointsToProfile(points); currentCell.completed = true;
+                let next = currentCell.id+1; if(next < puzzleCells.length && !puzzleCells[next].unlocked) puzzleCells[next].unlocked = true;
+                renderPuzzle();
+                setTimeout(() => {
+                    document.getElementById('questionModal').style.display = 'none'; selectedOption = null;
+                    if(puzzleCells.every(c => c.completed)) {
+                        if(questionsAnsweredInLevel >= totalQuestionsInLevel) { levelCompleted = true; document.getElementById('nextLevelBtn').disabled = false; document.getElementById('nextLevelBtn').innerHTML = '🎯 Go to Next Level →'; }
+                        let bonus = 50; savePointsToProfile(bonus);
+                        setTimeout(() => alert(`🎉 COMPLETE! +${bonus} Bonus!\nScore: ${gameScore}\nProgress: ${questionsAnsweredInLevel}/${totalQuestionsInLevel}\nMax Streak: ${maxStreak}`), 500);
+                    }
+                }, 1500);
+            } else {
+                currentStreak = 0; document.getElementById('streakCount').textContent = currentStreak;
+                let correctLetter = String.fromCharCode(65+currentQuestion.correct);
+                document.getElementById('feedback').innerHTML = `<div class="feedback wrong">❌ Wrong! Correct: ${correctLetter}. ${currentQuestion.options[currentQuestion.correct]}<br>Try again!</div>`;
+                selectedOption = null;
+            }
+        }
+
+        function resetGame() {
+            if(confirm('Reset current puzzle? All progress lost!')) {
+                if(currentSubject) { answeredQuestions = []; questionsAnsweredInLevel = 0; currentGameLevel = 1; levelCompleted = false; loadQuestionsForLevel(); initPuzzle(); updateLevelDisplay(); document.getElementById('nextLevelBtn').disabled = true; document.getElementById('nextLevelBtn').innerHTML = '🔓 Next Level (Locked)'; showNotification('Game reset! Start fresh from Level 1!', 'success'); }
+                else { showNotification('Please select a subject first!', 'error'); }
+            }
+        }
+
+        loadUserProfile();
+        initDegrees();
+    </script>
+</body>
+</html>

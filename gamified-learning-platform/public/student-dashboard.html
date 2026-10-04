@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Gamified Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+        }
+
+        /* Puzzle Game Button Style */
+        .puzzle-nav-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white !important;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+
+        .puzzle-nav-btn:hover {
+            transform: scale(1.05);
+            color: white !important;
+        }
+
+        /* Rapid Fire Button Style */
+        .rapid-nav-btn {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white !important;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+
+        .rapid-nav-btn:hover {
+            transform: scale(1.05);
+            color: white !important;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-card .label {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .progress-section h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 25px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Section Common */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h2 .private-badge {
+            background: #f0f0f0;
+            color: #666;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-weight: normal;
+        }
+
+        /* Leaderboard */
+        .leaderboard-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+
+        .leaderboard-item:hover {
+            background: #f8f9fa;
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            color: #667eea;
+            width: 60px;
+        }
+
+        .leaderboard-rank.gold {
+            color: #FFD700;
+        }
+
+        .leaderboard-rank.silver {
+            color: #C0C0C0;
+        }
+
+        .leaderboard-rank.bronze {
+            color: #CD7F32;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .leaderboard-points {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .current-user {
+            background: #e8eaff;
+            border-left: 3px solid #667eea;
+        }
+
+        .user-rank-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 15px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Marks Cards */
+        .marks-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .marks-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s;
+        }
+
+        .marks-card:hover {
+            transform: translateX(5px);
+        }
+
+        .marks-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .marks-card .marks-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .marks-card .score {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+
+        /* Puzzle Callout Card */
+        .puzzle-callout {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .puzzle-callout:hover {
+            transform: translateY(-5px);
+        }
+
+        .puzzle-callout .emoji {
+            font-size: 3rem;
+        }
+
+        .puzzle-callout .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .puzzle-callout .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+        }
+
+        /* Rapid Fire Callout Card */
+        .rapid-callout {
+            background: linear-gradient(135deg, #FF6B6B, #FF4757);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .rapid-callout:hover {
+            transform: translateY(-5px);
+        }
+
+        .rapid-callout .emoji {
+            font-size: 3rem;
+        }
+
+        .rapid-callout .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .rapid-callout .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .marks-details {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span>🎮</span>
+                <span>Gamified Learning</span>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#" onclick="goToPlay()">Play</a>
+                <a href="#" class="active" onclick="refreshDashboard()">📊 My Dashboard</a>
+                <a href="#" onclick="viewProfile()">Profile</a>
+                <a href="/puzzle-game.html" class="puzzle-nav-btn">🧩 Puzzle Game</a>
+                <a href="/rapid-fire.html" class="rapid-nav-btn">⚡ Rapid Fire</a>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value" id="totalPoints">0</div>
+                <div class="label">⭐ My Points</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="myLevel">1</div>
+                <div class="label">🎯 My Level</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="myStreak">0</div>
+                <div class="label">🔥 Day Streak</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="completion">0%</div>
+                <div class="label">📊 Completion</div>
+            </div>
+        </div>
+
+        <!-- Puzzle Game Callout Card -->
+        <div class="puzzle-callout" onclick="location.href='/puzzle-game.html'">
+            <div class="emoji">🧩</div>
+            <div class="title">Play Puzzle Challenge!</div>
+            <div class="subtitle">Solve puzzles, answer questions & earn bonus points ✨</div>
+        </div>
+
+        <!-- Rapid Fire Challenge Callout Card -->
+        <div class="rapid-callout" onclick="location.href='/rapid-fire.html'">
+            <div class="emoji">⚡</div>
+            <div class="title">Rapid Fire Challenge!</div>
+            <div class="subtitle">60 seconds | Fast questions | Beat the clock! 🔥</div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <h2>📈 Your Learning Progress</h2>
+            <div class="progress-bar-container">
+                <div id="progressBarFill" class="progress-bar-fill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0 out of 0 topics completed</div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div class="section">
+            <h2>🏆 College Leaderboard</h2>
+            <div id="leaderboardList" class="leaderboard-list">
+                <div class="empty-state">Loading leaderboard...</div>
+            </div>
+            <div id="userRankCard" class="user-rank-card"></div>
+        </div>
+
+        <!-- Marks Section (Private) -->
+        <div class="section">
+            <h2>📝 My Marks <span class="private-badge">🔒 Private - Only You Can See</span></h2>
+            <div id="marksList" class="marks-list">
+                <div class="empty-state">Loading your marks...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token');
+        let user = null;
+
+        // Check authentication
+        async function checkAuth() {
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+            try {
+                const res = await fetch('/api/auth/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    user = data.user;
+                    if (user.role !== 'student') {
+                        alert('Student access only! Redirecting to home...');
+                        window.location.href = '/';
+                    }
+                } else {
+                    window.location.href = '/';
+                }
+            } catch (err) {
+                window.location.href = '/';
+            }
+        }
+
+        // Load student progress
+        async function loadStudentProgress() {
+            try {
+                const res = await fetch('/api/student/progress', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('totalPoints').textContent = data.stats.total_points;
+                    document.getElementById('myLevel').textContent = data.stats.level;
+                    document.getElementById('myStreak').textContent = data.stats.current_streak;
+                    document.getElementById('completion').textContent = `${data.stats.completion_percentage}%`;
+                    
+                    // Update progress bar
+                    const percentage = parseFloat(data.stats.completion_percentage);
+                    document.getElementById('progressBarFill').style.width = `${percentage}%`;
+                    document.getElementById('progressBarFill').textContent = percentage > 10 ? `${percentage}%` : '';
+                    document.getElementById('progressText').textContent = `${data.stats.completed_topics} out of ${data.stats.total_topics} topics completed`;
+                }
+            } catch (err) {
+                console.error('Error loading progress:', err);
+            }
+        }
+
+        // Load student marks (Private)
+        async function loadStudentMarks() {
+            try {
+                const res = await fetch('/api/student/marks', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success && data.marks && data.marks.length > 0) {
+                    document.getElementById('marksList').innerHTML = data.marks.map(m => `
+                        <div class="marks-card">
+                            <h4>📖 ${m.subject_name}</h4>
+                            <div class="marks-details">
+                                <span>Score: <span class="score">${m.score}</span></span>
+                                <span>🎯 XP Earned: ${m.xp_earned}</span>
+                                <span>📅 ${new Date(m.completed_at).toLocaleDateString()}</span>
+                                <span>🔄 Attempts: ${m.attempts}</span>
+                                ${m.best_time ? `<span>⏱️ Best Time: ${m.best_time}s</span>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('marksList').innerHTML = '<div class="empty-state">🎮 No marks yet. Play games to earn points!</div>';
+                }
+            } catch (err) {
+                console.error('Error loading marks:', err);
+                document.getElementById('marksList').innerHTML = '<div class="empty-state">⚠️ Unable to load marks. Please try again later.</div>';
+            }
+        }
+
+        // Load leaderboard
+        async function loadLeaderboard() {
+            try {
+                const res = await fetch('/api/student/leaderboard', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success && data.leaderboard && data.leaderboard.length > 0) {
+                    document.getElementById('leaderboardList').innerHTML = data.leaderboard.map(l => {
+                        let rankClass = '';
+                        if (l.rank === 1) rankClass = 'gold';
+                        else if (l.rank === 2) rankClass = 'silver';
+                        else if (l.rank === 3) rankClass = 'bronze';
+                        return `
+                            <div class="leaderboard-item ${l.isCurrentUser ? 'current-user' : ''}">
+                                <div class="leaderboard-rank ${rankClass}">#${l.rank}</div>
+                                <div class="leaderboard-name">${l.name} ${l.isCurrentUser ? '(You)' : ''}</div>
+                                <div class="leaderboard-points">⭐ ${l.total_points}</div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    document.getElementById('userRankCard').innerHTML = `
+                        🏆 Your Rank: #${data.user_rank} out of ${data.total_students} students
+                        <br><small>Keep playing to climb higher!</small>
+                    `;
+                } else {
+                    document.getElementById('leaderboardList').innerHTML = '<div class="empty-state">No students in leaderboard yet.</div>';
+                }
+            } catch (err) {
+                console.error('Error loading leaderboard:', err);
+                document.getElementById('leaderboardList').innerHTML = '<div class="empty-state">⚠️ Unable to load leaderboard.</div>';
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+                color: white;
+                border-radius: 8px;
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // ========== ADDED NAVIGATION FUNCTIONS (BINA KUCH CHANGE KIYE) ==========
+        function goToPlay() {
+            window.location.href = '/';
+        }
+
+        function refreshDashboard() {
+            window.location.reload();
+        }
+
+        function viewProfile() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showNotification('Your profile information is displayed in the stats cards above!', 'success');
+        }
+        // ========== NAVIGATION FUNCTIONS END ==========
+
+        // Initialize
+        async function init() {
+            await checkAuth();
+            await loadStudentProgress();
+            await loadStudentMarks();
+            await loadLeaderboard();
+        }
+
+        init();
+    </script>
+</body>
+</html>

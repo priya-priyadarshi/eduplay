@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Memory Match | EduPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .game-header {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .game-header h1 { color: #e94560; margin-bottom: 0.3rem; font-size: 1.8rem; }
+        .game-header p { color: #666; font-size: 0.9rem; }
+        
+        .stats-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: #e94560; }
+        .stat-label { font-size: 0.7rem; color: #666; }
+        
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .timer-value { font-size: 2rem; font-weight: bold; color: white; }
+        
+        /* Memory Match Grid */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .memory-card.flipped {
+            background: white;
+            border: 3px solid #e94560;
+        }
+        .memory-card.matched {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            cursor: default;
+            opacity: 0.7;
+        }
+        .memory-card.matched::after {
+            content: "✓";
+            font-size: 2rem;
+            color: white;
+        }
+        .memory-card .card-front, .memory-card .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: 500;
+        }
+        .memory-card .card-front {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            word-break: break-word;
+        }
+        .memory-card .card-back {
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            color: white;
+            font-size: 2rem;
+            transform: rotateY(0deg);
+        }
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        /* Start Screen */
+        .start-screen, .result-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .start-btn, .restart-btn {
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .start-btn:hover, .restart-btn:hover { transform: scale(1.05); }
+        .final-score { font-size: 3rem; font-weight: bold; color: #e94560; margin: 1rem 0; }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .moves-count {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e94560;
+        }
+        
+        .feedback-popup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            animation: fadeOut 1s ease;
+            z-index: 1000;
+            font-weight: bold;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateX(-50%) scale(1); }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+        }
+        
+        @media (max-width: 768px) {
+            .memory-grid { gap: 0.5rem; }
+            .memory-card .card-front { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🧠 Memory Match: Programming Edition</h1>
+            <p>Match the programming terms with their correct definitions!</p>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" style="display: none;">
+            <div class="stats-bar">
+                <div class="stat-item"><div class="stat-value" id="pairsMatched">0</div><div class="stat-label">✅ Pairs Matched</div></div>
+                <div class="stat-item"><div class="stat-value" id="movesCount">0</div><div class="stat-label">🖱️ Moves</div></div>
+                <div class="stat-item"><div class="timer-circle"><div class="timer-value" id="timerDisplay">60</div></div><div class="stat-label">⏱️ Time Left</div></div>
+                <div class="stat-item"><div class="stat-value" id="currentScore">0</div><div class="stat-label">⭐ Score</div></div>
+            </div>
+
+            <div class="memory-grid" id="memoryGrid"></div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="start-screen">
+            <div style="font-size: 4rem;">🧠</div>
+            <h2>Memory Match Challenge</h2>
+            <p>Test your memory! Match programming terms with their definitions!</p>
+            <p>• 8 pairs of cards (16 cards)</p>
+            <p>• 60 seconds time limit</p>
+            <p>• Less moves = more points!</p>
+            <button class="start-btn" onclick="startGame()">🎮 Start Memory Match →</button>
+            <div style="margin-top: 1rem;"><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="result-screen" style="display: none;">
+            <div style="font-size: 4rem;">🏆</div>
+            <h2>Game Complete!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <p id="resultMessage"></p>
+            <button class="restart-btn" onclick="restartGame()">🔄 Play Again</button>
+            <div><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== PROGRAMMING TERMS & DEFINITIONS ====================
+        const cardPairs = [
+            { term: "Variable", definition: "Container that stores data value" },
+            { term: "Array", definition: "Collection of elements of same type" },
+            { term: "Loop", definition: "Repeats a block of code" },
+            { term: "Function", definition: "Reusable block of code" },
+            { term: "Class", definition: "Blueprint for creating objects" },
+            { term: "Object", definition: "Instance of a class" },
+            { term: "Stack", definition: "LIFO data structure" },
+            { term: "Queue", definition: "FIFO data structure" }
+        ];
+
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let gameActive = false;
+        let timeLeft = 60;
+        let timerInterval = null;
+        let currentScore = 0;
+        let canFlip = true;
+
+        // Calculate score based on moves and time
+        function calculateScore() {
+            // Base score: 100 points
+            // Minus 2 points per move
+            // Time bonus: remaining time
+            let score = 100 - (moves * 2) + timeLeft;
+            if(score < 0) score = 10;
+            return Math.floor(score);
+        }
+
+        function updateScore() {
+            currentScore = calculateScore();
+            document.getElementById('currentScore').textContent = currentScore;
+        }
+
+        // Initialize cards
+        function initCards() {
+            cards = [];
+            // Create term and definition cards
+            cardPairs.forEach((pair, idx) => {
+                cards.push({ id: idx * 2, type: 'term', text: pair.term, pairId: idx, flipped: false, matched: false });
+                cards.push({ id: idx * 2 + 1, type: 'def', text: pair.definition, pairId: idx, flipped: false, matched: false });
+            });
+            // Shuffle cards
+            for(let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+        }
+
+        // Render memory grid
+        function renderGrid() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            
+            cards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'memory-card';
+                if(card.matched) {
+                    cardDiv.classList.add('matched');
+                } else if(card.flipped) {
+                    cardDiv.classList.add('flipped');
+                }
+                
+                const frontDiv = document.createElement('div');
+                frontDiv.className = 'card-front';
+                frontDiv.textContent = card.text;
+                
+                const backDiv = document.createElement('div');
+                backDiv.className = 'card-back';
+                backDiv.innerHTML = '?';
+                
+                cardDiv.appendChild(frontDiv);
+                cardDiv.appendChild(backDiv);
+                
+                cardDiv.onclick = () => flipCard(index);
+                grid.appendChild(cardDiv);
+            });
+        }
+
+        // Flip card
+        function flipCard(index) {
+            if(!gameActive) return;
+            if(!canFlip) return;
+            
+            const card = cards[index];
+            if(card.matched) return;
+            if(card.flipped) return;
+            if(flippedCards.length >= 2) return;
+            
+            // Flip the card
+            card.flipped = true;
+            flippedCards.push({ index, pairId: card.pairId, type: card.type });
+            renderGrid();
+            
+            // Check for match
+            if(flippedCards.length === 2) {
+                moves++;
+                document.getElementById('movesCount').textContent = moves;
+                updateScore();
+                checkMatch();
+            }
+        }
+
+        // Check if two flipped cards match
+        function checkMatch() {
+            const card1 = flippedCards[0];
+            const card2 = flippedCards[1];
+            
+            canFlip = false;
+            
+            if(card1.pairId === card2.pairId) {
+                // Match found
+                cards[card1.index].matched = true;
+                cards[card2.index].matched = true;
+                matchedPairs++;
+                document.getElementById('pairsMatched').textContent = matchedPairs;
+                updateScore();
+                showFeedback(true);
+                
+                flippedCards = [];
+                canFlip = true;
+                renderGrid();
+                
+                // Check if game complete
+                if(matchedPairs === cardPairs.length) {
+                    endGame(true);
+                }
+            } else {
+                // No match - flip back after delay
+                setTimeout(() => {
+                    cards[card1.index].flipped = false;
+                    cards[card2.index].flipped = false;
+                    flippedCards = [];
+                    canFlip = true;
+                    renderGrid();
+                    showFeedback(false);
+                }, 800);
+            }
+        }
+
+        function showFeedback(isMatch) {
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback-popup';
+            feedback.innerHTML = isMatch ? '✅ Match Found! +10 Points!' : '❌ No Match! Try Again!';
+            feedback.style.background = isMatch ? '#4CAF50' : '#ff4757';
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 800);
+        }
+
+        function startTimer() {
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(!gameActive) return;
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame(false);
+                } else {
+                    timeLeft--;
+                    document.getElementById('timerDisplay').textContent = timeLeft;
+                    if(timeLeft <= 10) {
+                        document.getElementById('timerDisplay').style.color = '#ff4757';
+                    }
+                    updateScore();
+                }
+            }, 1000);
+        }
+
+        function endGame(completed) {
+            gameActive = false;
+            if(timerInterval) clearInterval(timerInterval);
+            
+            let finalPoints = currentScore;
+            if(completed && matchedPairs === cardPairs.length) {
+                finalPoints = currentScore + 50; // Bonus for completion
+            }
+            
+            savePointsToProfile(finalPoints);
+            
+            document.getElementById('finalScore').textContent = finalPoints;
+            let message = `Matched ${matchedPairs}/${cardPairs.length} pairs in ${moves} moves!`;
+            if(completed && matchedPairs === cardPairs.length) {
+                message += `\n🏆 Perfect! +50 Bonus Points!`;
+            }
+            document.getElementById('resultMessage').innerHTML = message;
+            
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+        }
+
+        function savePointsToProfile(points) {
+            let currentUser = localStorage.getItem('currentUser');
+            if(currentUser) {
+                currentUser = JSON.parse(currentUser);
+                currentUser.points = (currentUser.points || 0) + points;
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                currentUser.level = Math.floor(currentUser.points / 500) + 1;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                let users = localStorage.getItem('registeredUsers');
+                if(users) {
+                    users = JSON.parse(users);
+                    const idx = users.findIndex(u => u.email === currentUser.email);
+                    if(idx !== -1) {
+                        users[idx].points = currentUser.points;
+                        users[idx].gamesPlayed = currentUser.gamesPlayed;
+                        users[idx].level = currentUser.level;
+                        localStorage.setItem('registeredUsers', JSON.stringify(users));
+                    }
+                }
+            }
+        }
+
+        function startGame() {
+            let currentUser = localStorage.getItem('currentUser');
+            if(!currentUser) {
+                alert('⚠️ Please login as Student to play!');
+                window.location.href = '/';
+                return;
+            }
+            currentUser = JSON.parse(currentUser);
+            if(currentUser.role !== 'student') {
+                alert('🔒 Only Students can play Memory Match!');
+                window.location.href = '/';
+                return;
+            }
+            
+            gameActive = true;
+            moves = 0;
+            matchedPairs = 0;
+            timeLeft = 60;
+            flippedCards = [];
+            canFlip = true;
+            currentScore = 0;
+            
+            document.getElementById('movesCount').textContent = moves;
+            document.getElementById('pairsMatched').textContent = matchedPairs;
+            document.getElementById('timerDisplay').textContent = timeLeft;
+            document.getElementById('timerDisplay').style.color = 'white';
+            
+            initCards();
+            renderGrid();
+            updateScore();
+            
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            
+            startTimer();
+        }
+
+        function restartGame() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

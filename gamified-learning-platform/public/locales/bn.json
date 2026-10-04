@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "গেমিফাইড লার্নিং প্ল্যাটফর্মে স্বাগতম",
+        "login": "লগইন করুন",
+        "signup": "সাইন আপ করুন",
+        "logout": "লগআউট",
+        "profile": "প্রোফাইল",
+        "home": "হোম",
+        "play": "খেলুন",
+        "leaderboard": "লিডারবোর্ড",
+        "settings": "সেটিংস"
+    },
+    "game": {
+        "match_title": "জোড়া মেলান",
+        "memory_title": "মেমরি গেম",
+        "score": "স্কোর",
+        "time": "সময়",
+        "hints": "ইঙ্গিত",
+        "perfect": "নিখুঁত স্কোর!",
+        "next_level": "পরবর্তী স্তর",
+        "game_complete": "গেম সম্পূর্ণ!",
+        "xp_earned": "XP অর্জিত",
+        "matches": "মিল",
+        "terms": "পদ",
+        "definitions": "সংজ্ঞা"
+    },
+    "progress": {
+        "streak": "দিনের ধারাবাহিকতা",
+        "xp": "XP পয়েন্ট",
+        "level": "স্তর",
+        "badges": "অর্জিত ব্যাজ",
+        "leaderboard": "লিডারবোর্ড",
+        "total_points": "মোট পয়েন্ট",
+        "completed_topics": "সম্পূর্ণ বিষয়",
+        "recent_activity": "সাম্প্রতিক কার্যকলাপ",
+        "your_rank": "আপনার র্যাঙ্ক"
+    },
+    "subjects": {
+        "select_degree": "আপনার ডিগ্রি নির্বাচন করুন",
+        "select_year": "বছর নির্বাচন করুন",
+        "select_semester": "সেমিস্টার নির্বাচন করুন",
+        "select_branch": "শাখা নির্বাচন করুন",
+        "select_subject": "বিষয় নির্বাচন করুন",
+        "select_topic": "খেলার জন্য বিষয় নির্বাচন করুন"
+    },
+    "badges": {
+        "first_victory": "প্রথম বিজয়",
+        "first_victory_desc": "আপনার প্রথম বিষয় সম্পূর্ণ করুন",
+        "seven_day_warrior": "৭ দিনের যোদ্ধা",
+        "seven_day_warrior_desc": "৭ দিনের ধারাবাহিকতা বজায় রাখুন",
+        "perfect_player": "নিখুঁত খেলোয়াড়",
+        "perfect_player_desc": "3 নিখুঁত স্কোর অর্জন করুন",
+        "speed_demon": "স্পিড ডেমন",
+        "speed_demon_desc": "30 সেকেন্ডের মধ্যে গেম সম্পূর্ণ করুন"
+    },
+    "messages": {
+        "login_success": "লগইন সফল! ফিরে আসার জন্য স্বাগতম!",
+        "signup_success": "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! স্বাগতম!",
+        "logout_success": "সফলভাবে লগআউট করা হয়েছে",
+        "game_submit_success": "গেম সম্পূর্ণ! আপনি {xp} XP অর্জন করেছেন!",
+        "already_completed": "বিষয় ইতিমধ্যে সম্পূর্ণ",
+        "topic_locked": "প্রথমে পূর্ববর্তী স্তর সম্পূর্ণ করুন"
+    }
+}

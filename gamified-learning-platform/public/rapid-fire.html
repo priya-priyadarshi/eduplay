@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Rapid Fire Challenge | EduPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .game-header {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .game-header h1 { color: #FF6B6B; margin-bottom: 0.5rem; font-size: 2rem; }
+        .game-header p { color: #666; font-size: 0.9rem; }
+        
+        .level-selector {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .level-btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f0f0f0;
+            color: #333;
+        }
+        .level-btn.active {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white;
+        }
+        .level-btn:hover { transform: scale(1.05); }
+        
+        .timer-container {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+        .timer-circle {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            border: 4px solid #FF6B6B;
+        }
+        .timer-value { font-size: 3rem; font-weight: bold; color: #FF6B6B; }
+        .timer-label { font-size: 0.8rem; opacity: 0.8; }
+        
+        .score-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .score-box { text-align: center; flex: 1; padding: 0.5rem; }
+        .score-value { font-size: 1.8rem; font-weight: bold; color: #FF6B6B; }
+        .score-label { font-size: 0.7rem; color: #666; }
+        .divider { width: 1px; height: 40px; background: #e0e0e0; }
+        
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .question-number {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .question-text { font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.4; }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: 500;
+        }
+        .option-btn:hover { border-color: #4ECDC4; background: #e8f5e9; transform: scale(1.02); }
+        
+        .start-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .start-btn {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .start-btn:hover { transform: scale(1.05); }
+        
+        .result-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .final-score { font-size: 4rem; font-weight: bold; color: #FF6B6B; margin: 1rem 0; }
+        .high-score { font-size: 1.2rem; color: #4ECDC4; margin-bottom: 1rem; }
+        .restart-btn {
+            background: linear-gradient(135deg, #4ECDC4, #FF6B6B);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .powerup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            animation: bounce 0.5s ease;
+            z-index: 1000;
+            font-weight: bold;
+        }
+        @keyframes bounce {
+            0% { transform: translateX(-50%) scale(0); opacity: 0; }
+            50% { transform: translateX(-50%) scale(1.2); }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
+        .warning { color: #ff4757; animation: shake 0.5s; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .score-card { flex-direction: column; }
+            .divider { display: none; }
+            .question-text { font-size: 1rem; }
+            .level-selector { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>⚡ Rapid Fire Challenge</h1>
+            <p>Choose your level | 60 seconds | +10 for correct | -5 for wrong</p>
+        </div>
+
+        <!-- Level Selector -->
+        <div class="level-selector">
+            <button class="level-btn active" onclick="selectLevel('basic')" id="levelBasicBtn">📘 BASIC LEVEL (School)</button>
+            <button class="level-btn" onclick="selectLevel('higher')" id="levelHigherBtn">🎓 HIGHER EDUCATION (College)</button>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer-circle"><div class="timer-value" id="timerDisplay">60</div></div>
+            <div class="timer-label">⏱️ Time Remaining</div>
+        </div>
+
+        <div class="score-card">
+            <div class="score-box"><div class="score-value" id="currentScore">0</div><div class="score-label">🏆 Current Score</div></div>
+            <div class="divider"></div>
+            <div class="score-box"><div class="score-value" id="questionsAnswered">0</div><div class="score-label">📝 Questions</div></div>
+            <div class="divider"></div>
+            <div class="score-box"><div class="score-value" id="highScore">0</div><div class="score-label">⭐ High Score</div></div>
+        </div>
+
+        <div id="gameArea" style="display: none;">
+            <div class="question-card">
+                <div class="question-number" id="qNum">Question 1</div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options-grid" id="optionsContainer"></div>
+            </div>
+        </div>
+
+        <div id="startScreen" class="start-screen">
+            <div style="font-size: 4rem;">⚡</div>
+            <h2>Ready for the Challenge?</h2>
+            <p id="levelDescription">📘 BASIC LEVEL: General Knowledge, Basic Maths, Simple GK</p>
+            <p>• 60 seconds on the clock</p>
+            <p>• +10 points for each correct answer</p>
+            <p>• -5 points for wrong answer</p>
+            <p>• Answer as fast as you can!</p>
+            <button class="start-btn" onclick="startGame()">🚀 Start Rapid Fire →</button>
+            <div style="margin-top: 1rem;"><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+
+        <div id="resultScreen" class="result-screen" style="display: none;">
+            <div style="font-size: 4rem;">🏆</div>
+            <h2>Game Over!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <div class="high-score" id="finalHighScoreMsg"></div>
+            <button class="restart-btn" onclick="restartGame()">🔄 Play Again</button>
+            <a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // ==================== LEVEL 1: BASIC QUESTIONS (School Level) ====================
+        const basicQuestions = [
+            { q: "What is the capital of India?", options: ["New Delhi", "Mumbai", "Kolkata", "Chennai"], correct: 0 },
+            { q: "What is 15 + 27?", options: ["42", "40", "41", "43"], correct: 0 },
+            { q: "Who wrote 'Romeo and Juliet'?", options: ["Shakespeare", "Dickens", "Austen", "Hemingway"], correct: 0 },
+            { q: "What is 8 × 7?", options: ["56", "48", "64", "54"], correct: 0 },
+            { q: "What is the square root of 144?", options: ["12", "14", "16", "10"], correct: 0 },
+            { q: "What does CPU stand for?", options: ["Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Control Processing Unit"], correct: 0 },
+            { q: "What is H₂O?", options: ["Water", "Oxygen", "Hydrogen", "Carbon Dioxide"], correct: 0 },
+            { q: "Which planet is known as the Red Planet?", options: ["Mars", "Jupiter", "Venus", "Saturn"], correct: 0 },
+            { q: "What is the largest ocean on Earth?", options: ["Pacific", "Atlantic", "Indian", "Arctic"], correct: 0 },
+            { q: "Who painted the Mona Lisa?", options: ["Leonardo da Vinci", "Picasso", "Van Gogh", "Rembrandt"], correct: 0 },
+            { q: "What is 100 ÷ 4?", options: ["25", "20", "30", "40"], correct: 0 },
+            { q: "What is the national animal of Australia?", options: ["Kangaroo", "Koala", "Emu", "Platypus"], correct: 0 },
+            { q: "What is the speed of light?", options: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10¹⁰ m/s", "3 × 10⁴ m/s"], correct: 0 },
+            { q: "Who discovered penicillin?", options: ["Alexander Fleming", "Marie Curie", "Einstein", "Newton"], correct: 0 },
+            { q: "What is the tallest mountain in the world?", options: ["Mount Everest", "K2", "Kangchenjunga", "Makalu"], correct: 0 },
+            { q: "What is the chemical symbol for Gold?", options: ["Au", "Ag", "Fe", "Cu"], correct: 0 },
+            { q: "What is the square of 13?", options: ["169", "144", "196", "121"], correct: 0 },
+            { q: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], correct: 0 },
+            { q: "Who invented the light bulb?", options: ["Thomas Edison", "Nikola Tesla", "Albert Einstein", "Isaac Newton"], correct: 0 },
+            { q: "What is the value of π?", options: ["3.14", "2.71", "1.61", "4.13"], correct: 0 },
+            { q: "What is Newton's First Law?", options: ["Law of Inertia", "F = ma", "Action-Reaction", "Gravitation"], correct: 0 },
+            { q: "What is the unit of Force?", options: ["Newton", "Joule", "Watt", "Pascal"], correct: 0 },
+            { q: "What is the pH of pure water?", options: ["7", "5", "9", "3"], correct: 0 },
+            { q: "What is the national sport of India?", options: ["Hockey", "Cricket", "Football", "Badminton"], correct: 0 },
+            { q: "Who was the first Prime Minister of India?", options: ["Jawaharlal Nehru", "Gandhi", "Patel", "Ambedkar"], correct: 0 },
+            { q: "Complete the series: 2, 4, 8, 16, ?", options: ["32", "24", "30", "28"], correct: 0 },
+            { q: "Which is different? Apple, Mango, Orange, Carrot", options: ["Carrot", "Apple", "Mango", "Orange"], correct: 0 },
+            { q: "Complete: 1, 1, 2, 3, 5, 8, ?", options: ["13", "11", "10", "21"], correct: 0 },
+            { q: "What is 25% of 400?", options: ["100", "50", "75", "125"], correct: 0 },
+            { q: "What is 7 + 8 × 3?", options: ["31", "45", "23", "38"], correct: 0 }
+        ];
+
+        // ==================== LEVEL 2: HIGHER EDUCATION QUESTIONS (College Level) ====================
+        const higherQuestions = [
+            // Programming
+            { q: "What is the time complexity of binary search?", options: ["O(log n)", "O(n)", "O(n²)", "O(1)"], correct: 0 },
+            { q: "What is the difference between stack and heap memory?", options: ["Stack for static, Heap for dynamic", "Both are same", "Stack for dynamic, Heap for static", "Neither is used"], correct: 0 },
+            { q: "What is polymorphism in OOP?", options: ["Many forms", "Single form", "No form", "Fixed form"], correct: 0 },
+            { q: "What is a deadlock in operating systems?", options: ["Processes waiting indefinitely", "Memory error", "CPU error", "Disk error"], correct: 0 },
+            { q: "What is the primary key in DBMS?", options: ["Unique identifier", "Foreign key", "Index", "Constraint"], correct: 0 },
+            { q: "What is the OSI model layer count?", options: ["7", "5", "4", "6"], correct: 0 },
+            { q: "What is TCP used for?", options: ["Reliable data transfer", "Fast transfer", "Broadcast", "Multicast"], correct: 0 },
+            { q: "What is recursion?", options: ["Function calling itself", "Loop", "Array", "Pointer"], correct: 0 },
+            { q: "Which data structure uses LIFO principle?", options: ["Stack", "Queue", "Array", "Tree"], correct: 0 },
+            { q: "What is a hash table collision?", options: ["Two keys same hash", "No hash", "Wrong key", "Empty hash"], correct: 0 },
+            // OS
+            { q: "What is virtual memory?", options: ["Disk as RAM", "Physical RAM", "Cache", "Register"], correct: 0 },
+            { q: "What is a semaphore?", options: ["Synchronization tool", "Memory unit", "Process", "Thread"], correct: 0 },
+            { q: "What is thrashing?", options: ["Excessive paging", "Memory leak", "Deadlock", "Starvation"], correct: 0 },
+            { q: "What is a kernel?", options: ["Core of OS", "Shell", "Process", "Thread"], correct: 0 },
+            // Networks
+            { q: "What is DNS used for?", options: ["Domain to IP", "IP to Domain", "Email", "File transfer"], correct: 0 },
+            { q: "What is HTTP status code 404?", options: ["Not Found", "OK", "Server Error", "Bad Request"], correct: 0 },
+            { q: "What is a firewall?", options: ["Network security", "Virus", "Malware", "Hack"], correct: 0 },
+            { q: "What is VPN?", options: ["Virtual Private Network", "Virtual Protocol", "Virtual Program", "Virtual Port"], correct: 0 },
+            // DBMS
+            { q: "What is normalization?", options: ["Reduce redundancy", "Increase speed", "Add columns", "Delete data"], correct: 0 },
+            { q: "What is ACID in DBMS?", options: ["Atomicity, Consistency, Isolation, Durability", "Access Control", "Authentication", "Authorization"], correct: 0 },
+            { q: "What is a JOIN in SQL?", options: ["Combine tables", "Delete tables", "Create table", "Update table"], correct: 0 },
+            // Software Engineering
+            { q: "What is SDLC?", options: ["Software Development Life Cycle", "System Design", "Testing", "Security"], correct: 0 },
+            { q: "What is Agile methodology?", options: ["Iterative development", "Waterfall", "Spiral", "V-model"], correct: 0 },
+            { q: "What is Git used for?", options: ["Version control", "Database", "Framework", "Language"], correct: 0 },
+            // Web Technologies
+            { q: "What is React?", options: ["Frontend library", "Backend", "Database", "Server"], correct: 0 },
+            { q: "What is Node.js?", options: ["Server-side JavaScript", "Frontend", "Database", "Styling"], correct: 0 },
+            { q: "What is MongoDB?", options: ["NoSQL database", "SQL database", "Framework", "Language"], correct: 0 },
+            // AI
+            { q: "What is Machine Learning?", options: ["Data-driven learning", "Rules", "Programming", "Database"], correct: 0 },
+            { q: "What is Deep Learning?", options: ["Neural networks", "Basic ML", "Statistics", "Rules"], correct: 0 },
+            { q: "What is NLP?", options: ["Natural Language Processing", "Network Protocol", "Neural Learning", "New Language"], correct: 0 },
+            // Cloud Computing
+            { q: "What is IaaS?", options: ["Infrastructure as a Service", "Internet as Service", "Integrated as Service", "Identity as Service"], correct: 0 },
+            { q: "What is PaaS?", options: ["Platform as a Service", "Program as Service", "Process as Service", "Protocol as Service"], correct: 0 },
+            { q: "What is SaaS?", options: ["Software as a Service", "System as Service", "Security as Service", "Storage as Service"], correct: 0 },
+            { q: "What is AWS?", options: ["Amazon Web Services", "Advanced Web System", "Application Web Server", "Automated Web Service"], correct: 0 },
+            // Cyber Security
+            { q: "What is encryption?", options: ["Converting data to cipher text", "Decoding", "Hashing", "Encoding"], correct: 0 },
+            { q: "What is a DDoS attack?", options: ["Distributed Denial of Service", "Data Security", "Digital System", "Domain Service"], correct: 0 },
+            { q: "What is phishing?", options: ["Fake emails/websites", "Virus", "Hack", "Spam"], correct: 0 },
+            // IoT & Big Data
+            { q: "What is IoT?", options: ["Internet of Things", "Internet of Tech", "Internet of Tasks", "Internet of Tools"], correct: 0 },
+            { q: "What is Big Data?", options: ["Large complex datasets", "Small datasets", "Medium datasets", "Simple datasets"], correct: 0 },
+            { q: "What is Hadoop?", options: ["Big Data framework", "Database", "Language", "OS"], correct: 0 },
+            // DevOps
+            { q: "What is DevOps?", options: ["Development + Operations", "Design + Operations", "Deployment + Operations", "Data + Operations"], correct: 0 },
+            { q: "What is Docker?", options: ["Containerization platform", "Database", "Language", "Framework"], correct: 0 },
+            { q: "What is Kubernetes?", options: ["Container orchestration", "Database", "Language", "Framework"], correct: 0 }
+        ];
+
+        // Game Variables
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let currentScore = 0;
+        let timeLeft = 60;
+        let timerInterval = null;
+        let gameActive = false;
+        let questionsAnswered = 0;
+        let currentLevel = 'basic';
+        let highScoreBasic = localStorage.getItem('rapidFireHighScoreBasic') || 0;
+        let highScoreHigher = localStorage.getItem('rapidFireHighScoreHigher') || 0;
+
+        function selectLevel(level) {
+            currentLevel = level;
+            document.getElementById('levelBasicBtn').classList.remove('active');
+            document.getElementById('levelHigherBtn').classList.remove('active');
+            
+            if(level === 'basic') {
+                document.getElementById('levelBasicBtn').classList.add('active');
+                document.getElementById('levelDescription').innerHTML = '📘 BASIC LEVEL: General Knowledge, Basic Maths, Simple GK';
+                document.getElementById('highScore').textContent = highScoreBasic;
+            } else {
+                document.getElementById('levelHigherBtn').classList.add('active');
+                document.getElementById('levelDescription').innerHTML = '🎓 HIGHER EDUCATION: Programming, DS, OS, Networks, DBMS, AI, Cloud';
+                document.getElementById('highScore').textContent = highScoreHigher;
+            }
+        }
+
+        function shuffleArray(arr) {
+            for(let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function shuffleOptions(question) {
+            const options = [...question.options];
+            const correctAnswer = options[question.correct];
+            for(let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            const newCorrectIndex = options.indexOf(correctAnswer);
+            return { ...question, options: options, correct: newCorrectIndex };
+        }
+
+        function loadQuestions() {
+            let sourceQuestions = currentLevel === 'basic' ? basicQuestions : higherQuestions;
+            let shuffled = shuffleArray([...sourceQuestions]);
+            currentQuestions = shuffled.slice(0, 25).map(q => shuffleOptions(q));
+            currentIndex = 0;
+        }
+
+        function displayQuestion() {
+            if(!gameActive) return;
+            if(currentIndex >= currentQuestions.length) { endGame(); return; }
+            
+            const q = currentQuestions[currentIndex];
+            document.getElementById('qNum').textContent = `Question ${currentIndex + 1}/${currentQuestions.length}`;
+            document.getElementById('questionText').textContent = q.q;
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<strong>${letters[idx]}.</strong> ${opt}`;
+                btn.onclick = () => checkAnswer(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            if(!gameActive) return;
+            const currentQ = currentQuestions[currentIndex];
+            const isCorrect = (selectedIdx === currentQ.correct);
+            
+            if(isCorrect) { currentScore += 10; showFeedback(true); } 
+            else { currentScore -= 5; showFeedback(false); }
+            
+            questionsAnswered++;
+            currentIndex++;
+            updateUI();
+            
+            if(currentIndex < currentQuestions.length) displayQuestion();
+            else endGame();
+        }
+
+        function showFeedback(isCorrect) {
+            const feedback = document.createElement('div');
+            feedback.className = 'powerup';
+            feedback.innerHTML = isCorrect ? '✅ +10 Points!' : '❌ -5 Points';
+            feedback.style.background = isCorrect ? '#4CAF50' : '#ff4757';
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 800);
+        }
+
+        function checkPowerUp() {
+            if(!gameActive) return;
+            if(Math.random() < 0.1) {
+                timeLeft += 5;
+                const powerup = document.createElement('div');
+                powerup.className = 'powerup';
+                powerup.innerHTML = '⚡ POWER-UP! +5 Seconds! ⚡';
+                powerup.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+                document.body.appendChild(powerup);
+                setTimeout(() => powerup.remove(), 1500);
+                updateUI();
+            }
+        }
+
+        function startTimer() {
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(!gameActive) return;
+                if(timeLeft <= 0) { clearInterval(timerInterval); endGame(); } 
+                else {
+                    timeLeft--;
+                    updateUI();
+                    if(timeLeft <= 10) document.getElementById('timerDisplay').classList.add('warning');
+                    else document.getElementById('timerDisplay').classList.remove('warning');
+                }
+            }, 1000);
+        }
+
+        function updateUI() {
+            document.getElementById('timerDisplay').textContent = timeLeft;
+            document.getElementById('currentScore').textContent = currentScore;
+            document.getElementById('questionsAnswered').textContent = questionsAnswered;
+            
+            let highScore = currentLevel === 'basic' ? highScoreBasic : highScoreHigher;
+            document.getElementById('highScore').textContent = highScore;
+        }
+
+        function endGame() {
+            gameActive = false;
+            if(timerInterval) clearInterval(timerInterval);
+            
+            let highScore = currentLevel === 'basic' ? highScoreBasic : highScoreHigher;
+            
+            if(currentScore > highScore) {
+                if(currentLevel === 'basic') {
+                    highScoreBasic = currentScore;
+                    localStorage.setItem('rapidFireHighScoreBasic', highScoreBasic);
+                } else {
+                    highScoreHigher = currentScore;
+                    localStorage.setItem('rapidFireHighScoreHigher', highScoreHigher);
+                }
+                document.getElementById('finalHighScoreMsg').innerHTML = '🎉 NEW HIGH SCORE! 🎉';
+            } else {
+                document.getElementById('finalHighScoreMsg').innerHTML = `High Score: ${highScore}`;
+            }
+            
+            savePointsToProfile(currentScore);
+            document.getElementById('finalScore').textContent = currentScore;
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+        }
+
+        function savePointsToProfile(points) {
+            let currentUser = localStorage.getItem('currentUser');
+            if(currentUser) {
+                currentUser = JSON.parse(currentUser);
+                currentUser.points = (currentUser.points || 0) + points;
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                currentUser.level = Math.floor(currentUser.points / 500) + 1;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                let users = localStorage.getItem('registeredUsers');
+                if(users) {
+                    users = JSON.parse(users);
+                    const idx = users.findIndex(u => u.email === currentUser.email);
+                    if(idx !== -1) {
+                        users[idx].points = currentUser.points;
+                        users[idx].gamesPlayed = currentUser.gamesPlayed;
+                        users[idx].level = currentUser.level;
+                        localStorage.setItem('registeredUsers', JSON.stringify(users));
+                    }
+                }
+                showNotification(`✨ +${points} Points Added!`, 'success');
+            }
+        }
+
+        function showNotification(msg, type) {
+            const notif = document.createElement('div');
+            notif.innerHTML = `<div style="position:fixed; bottom:20px; right:20px; background:${type==='success'?'#4CAF50':'#ff4757'}; color:white; padding:10px 20px; border-radius:10px; z-index:2000; animation:slideIn 0.3s;">${msg}</div>`;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 2000);
+        }
+
+        function startGame() {
+            let currentUser = localStorage.getItem('currentUser');
+            if(!currentUser) { alert('⚠️ Please login as Student to play!'); window.location.href = '/'; return; }
+            currentUser = JSON.parse(currentUser);
+            if(currentUser.role !== 'student') { alert('🔒 Only Students can play!'); window.location.href = '/'; return; }
+            
+            gameActive = true;
+            currentScore = 0;
+            timeLeft = 60;
+            questionsAnswered = 0;
+            loadQuestions();
+            updateUI();
+            
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            
+            startTimer();
+            displayQuestion();
+            
+            setInterval(() => { if(gameActive) checkPowerUp(); }, 3000);
+        }
+
+        function restartGame() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('timerDisplay').classList.remove('warning');
+            let highScore = currentLevel === 'basic' ? highScoreBasic : highScoreHigher;
+            document.getElementById('highScore').textContent = highScore;
+        }
+
+        // Initialize
+        document.getElementById('highScore').textContent = highScoreBasic;
+    </script>
+</body>
+</html>

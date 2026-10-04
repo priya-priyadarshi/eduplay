@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlay | Complete Learning Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: 'Poppins', sans-serif; min-height: 100vh; }
+        .navbar { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.5rem; font-weight: 800; cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        .nav-links a:hover { color: #667eea; }
+        .nav-right { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+        #languageSelect { padding: 0.5rem 1rem; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; background: white; }
+        .btn-login { padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .btn-logout { background: #ff4757; color: white; padding: 0.5rem 1.5rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .page { display: none; animation: fadeIn 0.5s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .hero { background: rgba(255,255,255,0.95); border-radius: 30px; padding: 4rem 3rem; text-align: center; margin-bottom: 2rem; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; color: #333; }
+        .hero p { color: #666; margin-bottom: 1rem; font-size: 1.1rem; }
+        .section { background: rgba(255,255,255,0.95); border-radius: 30px; padding: 3rem; margin-bottom: 2rem; }
+        .section-title { text-align: center; font-size: 2rem; margin-bottom: 2rem; color: #333; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .feature-card-ai, .feature-card-quiz, .feature-card-puzzle, .feature-card-badge, .feature-card-rapid, .feature-card-skill, .feature-card-detective, .feature-card-memory { text-align: center; padding: 2rem; border-radius: 20px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.08); cursor: pointer; color: white; }
+        .feature-card-ai:hover, .feature-card-quiz:hover, .feature-card-puzzle:hover, .feature-card-badge:hover, .feature-card-rapid:hover, .feature-card-skill:hover, .feature-card-detective:hover, .feature-card-memory:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .feature-card-ai { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .feature-card-quiz { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .feature-card-puzzle { background: linear-gradient(135deg, #FF6B6B, #4ECDC4); }
+        .feature-card-badge { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .feature-card-rapid { background: linear-gradient(135deg, #FF4757, #FF6B6B); }
+        .feature-card-skill { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        .feature-card-detective { background: linear-gradient(135deg, #0f0c29, #302b63); }
+        .feature-card-memory { background: linear-gradient(135deg, #1a1a2e, #0f3460); }
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center; }
+        .stat-number { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .cta-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 3rem; border-radius: 30px; }
+        .btn-cta { background: white; color: #667eea; padding: 1rem 2rem; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .footer { background: rgba(255,255,255,0.95); border-radius: 30px; padding: 3rem; margin-top: 2rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .copyright { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e0e0e0; color: #999; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .degree-card, .branch-card, .semester-card, .subject-card, .topic-card { background: white; padding: 1.5rem; border-radius: 20px; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .degree-card:hover, .branch-card:hover, .semester-card:hover, .subject-card:hover, .topic-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .back-btn { background: #f0f0f0; padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer; margin-bottom: 1rem; transition: all 0.3s; }
+        .back-btn:hover { background: #e0e0e0; transform: translateX(-3px); }
+        .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .difficulty-buttons { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .diff-btn { flex: 1; padding: 0.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; min-width: 100px; transition: all 0.3s; }
+        .diff-btn.low { background: #4CAF50; color: white; }
+        .diff-btn.medium { background: #FF9800; color: white; }
+        .diff-btn.high { background: #f44336; color: white; }
+        .diff-btn.ai-game { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .diff-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 20px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; padding: 2rem; position: relative; }
+        .close { position: absolute; right: 20px; top: 20px; font-size: 28px; cursor: pointer; }
+        .auth-modal { max-width: 450px; }
+        .auth-input { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e0e0e0; border-radius: 10px; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-weight: 600; transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .social-login { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: white; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        .btn-google:hover { background: #f0f0f0; transform: translateY(-2px); }
+        .divider { text-align: center; margin: 20px 0; position: relative; color: #999; }
+        .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 45%; height: 1px; background: #ddd; }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+        .role-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .role-card { text-align: center; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 15px; cursor: pointer; transition: all 0.3s; background: white; }
+        .role-card:hover { transform: translateY(-3px); border-color: #667eea; }
+        .role-card.active { border-color: #667eea; background: linear-gradient(135deg, #667eea10, #764ba210); }
+        .role-icon { font-size: 2rem; margin-bottom: 0.3rem; }
+        .role-title { font-weight: 600; color: #333; font-size: 0.9rem; }
+        .auth-switch { text-align: center; margin-top: 1rem; }
+        .auth-switch a { color: #667eea; cursor: pointer; font-weight: 600; }
+        .dashboard-container { background: white; border-radius: 30px; padding: 2rem; margin-bottom: 2rem; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f0f0; }
+        .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card-dashboard { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1.5rem; border-radius: 20px; text-align: center; }
+        .stat-number-dashboard { font-size: 2rem; font-weight: bold; }
+        .form-card { background: #f8f9fa; padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        .form-row input, .form-row select { padding: 0.75rem; border: 1px solid #ddd; border-radius: 10px; font-family: 'Poppins', sans-serif; }
+        .btn-add { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-add:hover { transform: translateY(-2px); }
+        .btn-delete { background: #ff4757; color: white; padding: 0.5rem 1rem; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .btn-delete:hover { background: #ff3344; transform: translateY(-2px); }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
+        .teacher-nav-link, .director-nav-link { display: none; }
+        .teacher-nav-link.visible, .director-nav-link.visible { display: inline-block; }
+        .otp-container { display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; }
+        .otp-input { width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid #e0e0e0; border-radius: 10px; }
+        .otp-input:focus { outline: none; border-color: #667eea; }
+        .resend-timer { text-align: center; color: #666; font-size: 0.8rem; margin-top: 0.5rem; }
+        .resend-link { color: #667eea; cursor: pointer; text-decoration: underline; }
+        .game-header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 15px; padding: 1rem; margin-bottom: 1.5rem; color: white; }
+        .difficulty-badge { display: inline-block; padding: 0.3rem 1rem; border-radius: 20px; font-weight: bold; margin-bottom: 0.5rem; }
+        .difficulty-badge.low { background: #4CAF50; }
+        .difficulty-badge.medium { background: #FF9800; }
+        .difficulty-badge.high { background: #f44336; }
+        .game-stats { display: flex; justify-content: space-between; margin: 1rem 0; flex-wrap: wrap; gap: 0.5rem; }
+        .timer-bar-container { background: #333; border-radius: 10px; height: 10px; margin-top: 0.5rem; }
+        .timer-bar { background: #4CAF50; height: 100%; border-radius: 10px; transition: width 1s linear; }
+        .code-editor { background: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 1.5rem; }
+        .code-header { background: #2d2d2d; padding: 0.5rem 1rem; color: #fff; }
+        .code-content { padding: 1rem; color: #d4d4d4; font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto; white-space: pre-wrap; }
+        .question-text { font-size: 1.2rem; margin-bottom: 1.5rem; padding: 1rem; background: #f0f0f0; border-radius: 10px; border-left: 4px solid #667eea; }
+        .options-grid { display: grid; gap: 0.8rem; }
+        .option-btn { background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s; text-align: left; font-weight: 500; }
+        .option-btn:hover { border-color: #667eea; transform: translateX(5px); background: #f0f0ff; }
+        .hint-box { background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-top: 1rem; font-size: 0.9rem; border-left: 4px solid #667eea; }
+        .feedback-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+        .feedback-card { background: white; padding: 2rem; border-radius: 20px; text-align: center; max-width: 400px; animation: bounce 0.5s ease; }
+        @keyframes bounce { 0% { transform: scale(0.8); opacity: 0; } 80% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+        .next-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.8rem 1.5rem; border: none; border-radius: 10px; cursor: pointer; margin-top: 1rem; transition: all 0.3s; }
+        .next-btn:hover { transform: translateY(-2px); }
+        .final-stats { display: flex; justify-content: center; gap: 2rem; margin: 2rem 0; }
+        .loading { text-align: center; padding: 2rem; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .user-name { color: #667eea; font-weight: 600; margin-right: 0.5rem; }
+        .leaderboard-container { background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .leaderboard-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; text-align: center; color: white; }
+        .leaderboard-tabs { display: flex; justify-content: center; gap: 1rem; padding: 1rem; background: #f8f9fa; flex-wrap: wrap; }
+        .leaderboard-tab { padding: 0.5rem 1.5rem; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; background: white; color: #667eea; transition: all 0.3s; }
+        .leaderboard-tab.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .leaderboard-tab:hover { transform: translateY(-2px); }
+        .leaderboard-table { padding: 1rem; }
+        .leaderboard-row { display: grid; grid-template-columns: 80px 1fr 120px 100px; padding: 1rem; margin: 0.5rem; border-radius: 15px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .leaderboard-row:hover { transform: translateX(5px); }
+        .leaderboard-row.header { background: #f0f0f0; font-weight: 600; }
+        .rank-1 { background: linear-gradient(135deg, #FFD70020, #FFA50020); border-left: 4px solid #FFD700; }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C020, #E0E0E020); border-left: 4px solid #C0C0C0; }
+        .rank-3 { background: linear-gradient(135deg, #CD7F3220, #D2691E20); border-left: 4px solid #CD7F32; }
+        .user-rank-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 1rem; padding: 1.5rem; border-radius: 20px; color: white; text-align: center; }
+        .profile-container { background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .profile-cover { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 140px; position: relative; }
+        .profile-avatar { position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%); text-align: center; }
+        .avatar-circle { width: 120px; height: 120px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 4px solid white; }
+        .profile-info { padding: 4rem 2rem 2rem; text-align: center; background: linear-gradient(to bottom, #f8f9fa, white); }
+        .profile-name { font-size: 2rem; font-weight: 700; color: #333; margin-bottom: 0.3rem; }
+        .profile-role { display: inline-block; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-top: 0.5rem; }
+        .role-student { background: #4CAF50; color: white; }
+        .role-teacher { background: #FF9800; color: white; }
+        .role-director { background: #f44336; color: white; }
+        .profile-email { color: #666; margin-top: 0.5rem; font-size: 0.9rem; }
+        .profile-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; padding: 2rem; background: #f8f9fa; }
+        .profile-stat-card { text-align: center; padding: 1.2rem; background: white; border-radius: 20px; transition: all 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .profile-stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .profile-stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .profile-stat-value { font-size: 1.8rem; font-weight: 700; color: #667eea; }
+        .profile-stat-label { font-size: 0.8rem; color: #666; }
+        .profile-details { padding: 2rem; }
+        .detail-section { margin-bottom: 2rem; }
+        .detail-title { font-size: 1.2rem; font-weight: 600; color: #333; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #667eea; display: inline-block; }
+        .progress-section { margin-bottom: 1.5rem; }
+        .progress-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: #666; }
+        .progress-bar-container { background: #e0e0e0; border-radius: 10px; height: 10px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; border-radius: 10px; transition: width 0.5s; }
+        .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .badge-item { background: linear-gradient(135deg, #FFD700, #FFA500); padding: 1rem; border-radius: 15px; text-align: center; color: white; transition: all 0.3s; }
+        .badge-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .badge-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .badge-name { font-size: 0.8rem; font-weight: 600; }
+        .activity-list { margin-top: 1rem; }
+        .activity-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #f8f9fa; border-radius: 12px; margin-bottom: 0.5rem; transition: all 0.3s; }
+        .activity-item:hover { transform: translateX(5px); background: #f0f0f0; }
+        .activity-left { display: flex; align-items: center; gap: 1rem; }
+        .activity-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; }
+        .activity-text { font-weight: 500; color: #333; }
+        .activity-time { font-size: 0.8rem; color: #999; }
+        .activity-points { color: #4CAF50; font-weight: 600; }
+        .edit-profile-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.8rem 2rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 1rem; transition: all 0.3s; }
+        .edit-profile-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .student-progress { width: 100px; height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
+        .student-progress-fill { background: #4CAF50; height: 100%; }
+        .ai-game-modal-content { background: transparent; box-shadow: none; padding: 0; max-width: 950px; }
+        .ai-game-close { color: white; font-size: 32px; position: absolute; right: 20px; top: 10px; z-index: 100; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
+        .ai-game-close:hover { background: rgba(0,0,0,0.8); transform: scale(1.1); }
+        .puzzle-hero-btn, .rapid-hero-btn { color: white; padding: 12px 30px; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: transform 0.3s; }
+        .puzzle-hero-btn { background: linear-gradient(135deg, #FF6B6B, #4ECDC4); }
+        .rapid-hero-btn { background: linear-gradient(135deg, #FF4757, #FF6B6B); }
+        .puzzle-hero-btn:hover, .rapid-hero-btn:hover { transform: scale(1.05); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .role-cards { grid-template-columns: 1fr; }
+            .profile-stats { grid-template-columns: repeat(2, 1fr); }
+            .leaderboard-row { grid-template-columns: 60px 1fr 80px 70px; font-size: 0.8rem; }
+            .game-stats { flex-direction: column; text-align: center; }
+            .difficulty-buttons { flex-direction: column; }
+            .diff-btn { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showPage('home')">🎓 EduPlay</div>
+            <div class="nav-links">
+                <a onclick="showPage('home')" id="navHome">🏠 Home</a>
+                <a onclick="showPage('play')" id="navPlay">🎯 Play</a>
+                <a onclick="showPage('leaderboard')" id="navLeaderboard">🏆 Leaderboard</a>
+                <a onclick="showPage('profile')" id="navProfile">👤 Profile</a>
+                <a id="teacherNavLink" class="teacher-nav-link" onclick="showPage('teacher')">👨‍🏫 Teacher Panel</a>
+                <a id="directorNavLink" class="director-nav-link" onclick="showPage('director')">👔 Director Panel</a>
+            </div>
+            <div class="nav-right">
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="hi">🇮🇳 हिन्दी</option>
+                    <option value="mr">🇮🇳 मराठी</option>
+                    <option value="ta">🇮🇳 தமிழ்</option>
+                    <option value="te">🇮🇳 తెలుగు</option>
+                    <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+                    <option value="ml">🇮🇳 മലയാളം</option>
+                    <option value="bn">🇮🇳 বাংলা</option>
+                    <option value="gu">🇮🇳 ગુજરાતી</option>
+                    <option value="or">🇮🇳 ଓଡ଼ିଆ</option>
+                    <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+                    <option value="ur">🇮🇳 اُردُو</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                </select>
+                <span id="userNameDisplay" class="user-name" style="display:none;"></span>
+                <button id="authBtn" class="btn-login" onclick="showAuthModal()">🔐 Login</button>
+                <button id="logoutBtn" class="btn-logout" onclick="logout()" style="display:none;">🚪 Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="homePage" class="page active">
+            <div class="hero">
+                <h1 id="heroTitle">Welcome to <span style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">EduPlay</span></h1>
+                <p id="heroSubtitle">🎓 10+ Degrees | 60+ Branches | Complete Semester-wise Learning</p>
+                <p id="heroGameTypes">🤖 AI | 📝 Quiz | 🧩 Puzzle | ⚡ Rapid Fire | 🏆 Skill Arena | 🔍 Code Detective | 🧠 Memory Match</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-primary" style="width: auto; padding: 12px 30px; margin-top: 1rem;" onclick="handleStartLearning()" id="startLearningBtn">🚀 Start Learning →</button>
+                    <button class="puzzle-hero-btn" onclick="window.location.href='/puzzle-game.html'" id="puzzleGameBtn">🧩 Puzzle Game →</button>
+                    <button class="rapid-hero-btn" onclick="window.location.href='/rapid-fire.html'" id="rapidFireBtn">⚡ Rapid Fire →</button>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title" id="whyChooseTitle">🌟 Why Choose EduPlay?</h2>
+                <div class="features-grid">
+                    <div class="feature-card-ai" onclick="handleStartLearning()"><div class="feature-icon">🤖</div><h3 id="featureAiTitle">AI Questions</h3><p id="featureAiDesc">Smart questions generated by AI</p><small id="featureAiSmall">✨ Click to Play →</small></div>
+                    <div class="feature-card-quiz" onclick="handleStartLearning()"><div class="feature-icon">📝</div><h3 id="featureQuizTitle">Quiz Games</h3><p id="featureQuizDesc">Test your knowledge with quizzes</p><small id="featureQuizSmall">✨ Click to Play →</small></div>
+                    <div class="feature-card-puzzle" onclick="window.location.href='/puzzle-game.html'"><div class="feature-icon">🧩</div><h3 id="featurePuzzleTitle">Puzzle Adventure</h3><p id="featurePuzzleDesc">Solve puzzles, answer questions & earn rewards!</p><small id="featurePuzzleSmall">✨ Play Now →</small></div>
+                    <div class="feature-card-rapid" onclick="window.location.href='/rapid-fire.html'"><div class="feature-icon">⚡</div><h3 id="featureRapidTitle">Rapid Fire</h3><p id="featureRapidDesc">60 second challenge | Fast answers, high scores!</p><small id="featureRapidSmall">✨ Play Now →</small></div>
+                    <div class="feature-card-skill" onclick="window.location.href='/skill-arena.html'"><div class="feature-icon">🏆</div><h3 id="featureSkillTitle">Skill Arena</h3><p id="featureSkillDesc">Test Aptitude, Reasoning & Communication!</p><small id="featureSkillSmall">✨ 3 Challenges →</small></div>
+                    <div class="feature-card-detective" onclick="window.location.href='/code-detective.html'"><div class="feature-icon">🔍</div><h3 id="featureDetectiveTitle">Code Detective</h3><p id="featureDetectiveDesc">Identify programming languages & code concepts!</p><small id="featureDetectiveSmall">✨ Solve Code Puzzles →</small></div>
+                    <div class="feature-card-memory" onclick="window.location.href='/memory-match.html'"><div class="feature-icon">🧠</div><h3 id="featureMemoryTitle">Memory Match</h3><p id="featureMemoryDesc">Match programming terms with definitions!</p><small id="featureMemorySmall">✨ Test Your Memory →</small></div>
+                    <div class="feature-card-badge" onclick="showLeaderboardOrProfile()"><div class="feature-icon">🏆</div><h3 id="featureBadgeTitle">Earn Badges & Points</h3><p id="featureBadgeDesc">Compete globally</p><small id="featureBadgeSmall">✨ View Leaderboard →</small></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title" id="statsTitle">📊 Platform Statistics</h2>
+                <div class="stats-grid" id="statsGrid">
+                    <div><div class="stat-number">10+</div><div class="stat-label" id="statDegreesLabel">Degrees</div></div>
+                    <div><div class="stat-number">60+</div><div class="stat-label" id="statBranchesLabel">Branches</div></div>
+                    <div><div class="stat-number">500+</div><div class="stat-label" id="statSubjectsLabel">Subjects</div></div>
+                    <div><div class="stat-number">10,000+</div><div class="stat-label" id="statStudentsLabel">Active Students</div></div>
+                </div>
+            </div>
+            <div class="cta-section">
+                <h2 id="ctaTitle">✨ Ready to Start Your Learning Journey?</h2>
+                <p id="ctaDesc">Join thousands of students already learning on EduPlay</p>
+                <button class="btn-cta" onclick="handleStartLearning()" id="ctaBtn">Get Started for Free →</button>
+            </div>
+            <div class="footer">
+                <div class="footer-grid">
+                    <div><h4 id="footerAboutTitle">🎓 EduPlay</h4><p id="footerAboutDesc">Learn through games, earn points, collect badges!</p></div>
+                    <div><h4 id="footerQuickLinks">Quick Links</h4>
+                        <p onclick="showPage('home')" style="cursor:pointer;" id="footerHome">🏠 Home</p>
+                        <p onclick="handleStartLearning()" style="cursor:pointer;" id="footerStart">🎯 Start Learning</p>
+                        <p onclick="showPage('leaderboard')" style="cursor:pointer;" id="footerLeaderboard">🏆 Leaderboard</p>
+                        <p onclick="window.location.href='/puzzle-game.html'" style="cursor:pointer;" id="footerPuzzle">🧩 Puzzle Game</p>
+                        <p onclick="window.location.href='/rapid-fire.html'" style="cursor:pointer;" id="footerRapid">⚡ Rapid Fire</p>
+                        <p onclick="window.location.href='/skill-arena.html'" style="cursor:pointer;" id="footerSkill">🏆 Skill Arena</p>
+                        <p onclick="window.location.href='/code-detective.html'" style="cursor:pointer;" id="footerDetective">🔍 Code Detective</p>
+                        <p onclick="window.location.href='/memory-match.html'" style="cursor:pointer;" id="footerMemory">🧠 Memory Match</p>
+                    </div>
+                    <div><h4 id="footerContact">Contact</h4><p id="footerEmail">📧 support@eduplay.com</p><p id="footerPhone">📞 +91 1234567890</p></div>
+                </div>
+                <div class="copyright"><p id="copyrightText">&copy; 2024 EduPlay. All rights reserved. | Made with ❤️ for Education</p></div>
+            </div>
+        </div>
+
+        <div id="playPage" class="page">
+            <div class="play-container">
+                <div class="play-header"><h2 id="playSelectDegree">🎓 Select Your Degree</h2><p id="playChoosePath">Choose your academic path and start your gaming journey</p></div>
+                <div id="degreeSection">
+                    <div id="degreeList" class="card-grid"></div>
+                </div>
+                <div id="branchSection" style="display:none;">
+                    <div class="section-header"><button class="back-btn" onclick="goBackToDegrees()" id="backToDegreesBtn">← Back to Degrees</button><h2 id="selectBranchTitle">🔧 Select Your Branch</h2></div>
+                    <div id="branchList" class="card-grid"></div>
+                </div>
+                <div id="semesterSection" style="display:none;">
+                    <div class="section-header"><button class="back-btn" onclick="goBackToBranches()" id="backToBranchesBtn">← Back to Branches</button><h2 id="selectSemesterTitle">📚 Select Semester</h2></div>
+                    <div id="semesterList" class="card-grid"></div>
+                </div>
+                <div id="subjectSection" style="display:none;">
+                    <div class="section-header"><button class="back-btn" onclick="goBackToSemesters()" id="backToSemestersBtn">← Back to Semesters</button><h2 id="selectSubjectTitle">📖 Select Subject</h2></div>
+                    <div id="subjectList" class="card-grid"></div>
+                </div>
+                <div id="topicSection" style="display:none;">
+                    <div class="section-header"><button class="back-btn" onclick="goBackToSubjects()" id="backToSubjectsBtn">← Back to Subjects</button><h2 id="selectTopicTitle">🎮 Select Topic to Play</h2></div>
+                    <div id="topicList" class="card-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="teacherPage" class="page"><div class="dashboard-container"><div class="dashboard-header"><h2 id="teacherDashboardTitle">👨‍🏫 Teacher Dashboard</h2><div>Welcome, <span id="teacherName">Teacher</span></div></div><div class="dashboard-stats"><div class="stat-card-dashboard"><h3 id="teacherMyStudents">My Students</h3><div class="stat-number-dashboard" id="teacherTotalStudents">0</div></div><div class="stat-card-dashboard"><h3 id="teacherActiveCourses">Active Courses</h3><div class="stat-number-dashboard" id="teacherCourses">3</div></div><div class="stat-card-dashboard"><h3 id="teacherAssignmentsLabel">Assignments</h3><div class="stat-number-dashboard" id="teacherAssignments">12</div></div><div class="stat-card-dashboard"><h3 id="teacherAvgPerf">Avg Performance</h3><div class="stat-number-dashboard" id="teacherAvgPerformance">78%</div></div></div><div class="form-card"><h3 id="teacherAddStudentTitle">➕ Add New Student</h3><div class="form-row"><input type="text" id="studentName" placeholder="Student Full Name"><input type="email" id="studentEmail" placeholder="Student Email"><input type="text" id="studentCourse" placeholder="Course Name"><button class="btn-add" onclick="addStudent()" id="teacherAddStudentBtn">Add Student →</button></div></div><h3 id="teacherStudentsListTitle">📋 My Students List</h3><div id="studentsListContainer"></div></div></div>
+        
+        <div id="directorPage" class="page"><div class="dashboard-container"><div class="dashboard-header"><h2 id="directorDashboardTitle">👔 Director Dashboard</h2><div>Welcome, <span id="directorName">Director</span></div></div><div class="dashboard-stats"><div class="stat-card-dashboard"><h3 id="directorTotalTeachersLabel">Total Teachers</h3><div class="stat-number-dashboard" id="directorTotalTeachers">0</div></div><div class="stat-card-dashboard"><h3 id="directorTotalStudentsLabel">Total Students</h3><div class="stat-number-dashboard" id="directorTotalStudents">0</div></div><div class="stat-card-dashboard"><h3 id="directorTotalCollegesLabel">Total Colleges</h3><div class="stat-number-dashboard" id="directorTotalColleges">15</div></div><div class="stat-card-dashboard"><h3 id="directorTotalCoursesLabel">Active Courses</h3><div class="stat-number-dashboard" id="directorTotalCourses">25</div></div></div><div class="form-card"><h3 id="directorAddTeacherTitle">➕ Add New Teacher</h3><div class="form-row"><input type="text" id="teacherFullName" placeholder="Full Name"><input type="email" id="teacherEmailAddr" placeholder="Email Address"><input type="text" id="teacherSubject" placeholder="Subject"><select id="teacherCollegeSelect"><option value="">Select College</option><option>Prestige Institute of Management and Research, Bhopal</option><option>PIMR - Prestige Institute of Management and Research</option><option>MANIT Bhopal</option><option>LNCT University</option><option>SAGE University</option><option>RKDF University</option><option>IES University Bhopal</option><option>Barkatullah University Bhopal</option><option>RGPV Bhopal</option></select><button class="btn-add" onclick="addTeacher()" id="directorAddTeacherBtn">Add Teacher →</button></div></div><h3 id="directorTeachersListTitle">📋 Registered Teachers</h3><div id="teachersListContainer"></div></div></div>
+
+        <div id="gameModal" class="modal"><div class="modal-content"><span class="close" onclick="closeGame()">&times;</span><div id="gameContent"></div></div></div>
+        <div id="aiGameModal" class="modal"><div class="modal-content ai-game-modal-content"><span class="ai-game-close" onclick="closeAIGameModal()">&times;</span><div id="aiGameContainer"></div></div></div>
+
+        <div id="leaderboardPage" class="page">
+            <div class="leaderboard-container">
+                <div class="leaderboard-header"><h2 id="leaderboardTitle">🏆 Global Leaderboard</h2><p id="leaderboardSub">Top players from around the world</p></div>
+                <div class="leaderboard-tabs">
+                    <button class="leaderboard-tab active" onclick="loadLeaderboard('points')" id="tabOverall">🏆 Overall</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('puzzle')" id="tabPuzzle">🧩 Puzzle</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('quiz')" id="tabQuiz">📝 Quiz</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('rapid')" id="tabRapid">⚡ Rapid Fire</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('ai')" id="tabAI">🤖 AI Game</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('skill')" id="tabSkill">🏆 Skill Arena</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('detective')" id="tabDetective">🔍 Code Detective</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('memory')" id="tabMemory">🧠 Memory Match</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('level')" id="tabLevel">📈 Top Level</button>
+                    <button class="leaderboard-tab" onclick="loadLeaderboard('games')" id="tabGames">🎮 Most Games</button>
+                </div>
+                <div id="leaderboardList" class="leaderboard-table"></div>
+                <div id="userRankCard" class="user-rank-card"></div>
+            </div>
+        </div>
+
+        <div id="profilePage" class="page"><div class="profile-container"><div class="profile-cover"></div><div class="profile-avatar"><div class="avatar-circle" id="profileAvatar">👤</div></div><div class="profile-info"><h2 class="profile-name" id="profileName">Guest User</h2><span class="profile-role" id="profileRoleBadge">Student</span><p class="profile-email" id="profileEmail">guest@eduplay.com</p></div><div class="profile-stats"><div class="profile-stat-card"><div class="profile-stat-icon">⭐</div><div class="profile-stat-value" id="totalPoints">0</div><div class="profile-stat-label" id="profileTotalPointsLabel">Total Points</div></div><div class="profile-stat-card"><div class="profile-stat-icon">🎯</div><div class="profile-stat-value" id="userLevel">1</div><div class="profile-stat-label" id="profileLevelLabel">Level</div></div><div class="profile-stat-card"><div class="profile-stat-icon">🔥</div><div class="profile-stat-value" id="streakDays">0</div><div class="profile-stat-label" id="profileStreakLabel">Day Streak</div></div><div class="profile-stat-card"><div class="profile-stat-icon">🎮</div><div class="profile-stat-value" id="gamesPlayedCount">0</div><div class="profile-stat-label" id="profileGamesLabel">Games Played</div></div></div><div class="profile-details"><div class="detail-section"><h3 class="detail-title" id="profileProgressTitle">📈 Your Progress</h3><div class="progress-section"><div class="progress-label"><span id="profileOverallLabel">Overall Progress</span><span id="progressPercent">0%</span></div><div class="progress-bar-container"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div></div><div class="progress-section"><div class="progress-label"><span id="profilePointsLabel">Points to Next Level</span><span id="pointsToNext">500 points needed</span></div><div class="progress-bar-container"><div class="progress-fill" id="levelProgressFill" style="width: 0%"></div></div></div></div><div class="detail-section"><h3 class="detail-title" id="profileBadgesTitle">🏅 Earned Badges</h3><div class="badges-grid" id="badgesList"></div></div><div class="detail-section"><h3 class="detail-title" id="profileActivityTitle">📜 Recent Activity</h3><div class="activity-list" id="recentActivity"></div></div><button class="edit-profile-btn" onclick="editProfile()" id="editProfileBtn">✏️ Edit Profile</button></div></div></div>
+    </div>
+
+    <div id="authModal" class="modal"><div class="modal-content auth-modal"><span class="close" onclick="closeAuthModal()">&times;</span><div id="loginForm"><div style="text-align:center; margin-bottom:20px;"><h2 id="loginTitle">🔐 Welcome Back!</h2><p id="loginSub">Select role and login</p></div><div class="role-cards"><div class="role-card" data-role="student" onclick="selectRole('student')"><div class="role-icon">🧑‍🎓</div><div class="role-title" id="roleStudent">Student</div></div><div class="role-card" data-role="teacher" onclick="selectRole('teacher')"><div class="role-icon">👨‍🏫</div><div class="role-title" id="roleTeacher">Teacher</div></div><div class="role-card" data-role="director" onclick="selectRole('director')"><div class="role-icon">👔</div><div class="role-title" id="roleDirector">Director</div></div></div><div class="social-login"><button class="btn-google" onclick="googleLogin()" id="googleBtn">🍔 Continue with Google</button></div><div class="divider">OR</div><input type="email" id="loginEmail" placeholder="📧 Email Address" class="auth-input"><input type="password" id="loginPassword" placeholder="🔒 Password" class="auth-input"><div class="forgot-password-link" style="text-align: right; margin-bottom: 0.5rem;"><a href="#" onclick="showForgotPasswordModal()" style="color: #667eea; font-size: 0.8rem;" id="forgotLink">Forgot Password?</a></div><button onclick="emailLogin()" class="btn-primary" id="loginBtn">🎮 Login</button><div class="auth-switch"><p id="noAccount">Don't have an account? <a onclick="showSignupForm()" id="createAccountLink">Create Account →</a></p></div></div><div id="signupForm" style="display:none;"><div style="text-align:center; margin-bottom:20px;"><h2 id="signupTitle">✨ Create Account</h2><p id="signupSub">Start your learning journey!</p></div><div class="role-cards"><div class="role-card" data-role="student" onclick="selectRole('student')"><div class="role-icon">🧑‍🎓</div><div class="role-title">Student</div></div><div class="role-card" data-role="teacher" onclick="selectRole('teacher')"><div class="role-icon">👨‍🏫</div><div class="role-title">Teacher</div></div><div class="role-card" data-role="director" onclick="selectRole('director')"><div class="role-icon">👔</div><div class="role-title">Director</div></div></div><div class="social-login"><button class="btn-google" onclick="googleLogin()" id="signupGoogleBtn">🍔 Sign up with Google</button></div><div class="divider">OR</div><input type="text" id="signupName" placeholder="👤 Full Name" class="auth-input"><input type="email" id="signupEmail" placeholder="📧 Email Address" class="auth-input"><input type="password" id="signupPassword" placeholder="🔒 Password (min 6 characters)" class="auth-input"><select id="signupRoleSelect" class="auth-input"><option value="student">🧑‍🎓 Student</option><option value="teacher">👨‍🏫 Teacher</option><option value="director">👔 Director</option></select><button onclick="signup()" class="btn-primary" id="signupBtn">🚀 Sign Up</button><div class="auth-switch"><p id="haveAccount">Already have an account? <a onclick="showLoginForm()" id="loginLink">Login →</a></p></div></div></div></div>
+
+    <div id="forgotPasswordModal" class="modal"><div class="modal-content auth-modal"><span class="close" onclick="closeForgotPasswordModal()">&times;</span><div id="forgotStep1"><div class="auth-header"><h2 id="forgotTitle">🔐 Forgot Password?</h2><p id="forgotSub">Enter your email to receive reset link</p></div><input type="email" id="resetEmail" placeholder="📧 Email Address" class="auth-input"><button onclick="sendResetLink()" class="btn-primary" id="sendResetBtn">Send Reset Link →</button><div class="auth-switch"><a onclick="closeForgotPasswordModal(); showAuthModal()" id="backToLoginLink">← Back to Login</a></div></div><div id="forgotStep2" style="display:none;"><div class="auth-header"><h2 id="otpTitle">📧 Check Your Email</h2><p id="otpSub">We've sent a verification code to <span id="otpEmailDisplay"></span></p></div><div class="otp-container"><input type="text" maxlength="1" class="otp-input" id="otp1" onkeyup="moveToNext(this,'otp2')"><input type="text" maxlength="1" class="otp-input" id="otp2" onkeyup="moveToNext(this,'otp3')"><input type="text" maxlength="1" class="otp-input" id="otp3" onkeyup="moveToNext(this,'otp4')"><input type="text" maxlength="1" class="otp-input" id="otp4" onkeyup="moveToNext(this,'otp5')"><input type="text" maxlength="1" class="otp-input" id="otp5" onkeyup="moveToNext(this,'otp6')"><input type="text" maxlength="1" class="otp-input" id="otp6" onkeyup="validateOtp()"></div><button onclick="verifyOtp()" class="btn-primary" id="verifyOtpBtn">Verify OTP →</button><div class="resend-timer"><span id="timerText">Resend code in <span id="timerCount">60</span> seconds</span><span id="resendLink" class="resend-link" style="display:none;" onclick="resendOtp()">Resend Code</span></div><div class="auth-switch"><a onclick="goBackToStep1()" id="backToStep1Link">← Back</a></div></div><div id="forgotStep3" style="display:none;"><div class="auth-header"><h2 id="newPwTitle">✨ Create New Password</h2><p id="newPwSub">Enter your new password</p></div><input type="password" id="newPassword" placeholder="🔒 New Password (min 6 characters)" class="auth-input"><input type="password" id="confirmPassword" placeholder="🔒 Confirm Password" class="auth-input"><button onclick="resetPassword()" class="btn-primary" id="resetPwBtn">Reset Password →</button><div class="auth-switch"><a onclick="closeForgotPasswordModal(); showAuthModal()" id="backToLoginLink2">← Back to Login</a></div></div></div></div>
+
+    <script>
+        // ==================== DEGREES DATABASE ====================
+        const degreesDatabase = {
+            "B.Tech (Bachelor of Technology)": { duration: "4 Years", type: "Engineering",
+                branches: [{ id: "cse", name: "Computer Science Engineering", code: "CSE", semesters: 8 },
+                    { id: "it", name: "Information Technology", code: "IT", semesters: 8 },
+                    { id: "me", name: "Mechanical Engineering", code: "ME", semesters: 8 },
+                    { id: "ce", name: "Civil Engineering", code: "CE", semesters: 8 },
+                    { id: "ece", name: "Electronics & Communication", code: "ECE", semesters: 8 },
+                    { id: "ee", name: "Electrical Engineering", code: "EE", semesters: 8 }] },
+            "MBA (Master of Business Administration)": { duration: "2 Years", type: "Management",
+                branches: [{ id: "mba_marketing", name: "Marketing Management", code: "MKT", semesters: 4 },
+                    { id: "mba_finance", name: "Finance Management", code: "FIN", semesters: 4 },
+                    { id: "mba_hr", name: "Human Resources", code: "HR", semesters: 4 }] },
+            "BCA (Bachelor of Computer Applications)": { duration: "3 Years", type: "Computer Applications",
+                branches: [{ id: "bca_gen", name: "BCA General", code: "BCA", semesters: 6 }] },
+            "B.Com (Bachelor of Commerce)": { duration: "3 Years", type: "Commerce",
+                branches: [{ id: "bcom_gen", name: "B.Com General", code: "BCOM", semesters: 6 }] },
+            "BBA (Bachelor of Business Administration)": { duration: "3 Years", type: "Business",
+                branches: [{ id: "bba_gen", name: "BBA General", code: "BBA", semesters: 6 }] },
+            "B.Pharm (Bachelor of Pharmacy)": { duration: "4 Years", type: "Pharmacy",
+                branches: [{ id: "bpharm_gen", name: "B.Pharm General", code: "BPHARM", semesters: 8 }] },
+            "LLB (Bachelor of Laws)": { duration: "3 Years", type: "Law",
+                branches: [{ id: "llb_gen", name: "LLB General", code: "LLB", semesters: 6 }] },
+            "MCA (Master of Computer Applications)": { duration: "2 Years", type: "Computer Applications",
+                branches: [{ id: "mca_gen", name: "MCA General", code: "MCA", semesters: 4 }] },
+            "B.Sc (Bachelor of Science)": { duration: "3 Years", type: "Science",
+                branches: [{ id: "bsc_cs", name: "Computer Science", code: "CS", semesters: 6 }] },
+            "B.A (Bachelor of Arts)": { duration: "3 Years", type: "Arts",
+                branches: [{ id: "ba_english", name: "English Literature", code: "ENG", semesters: 6 }] }
+        };
+
+        // ==================== COMPLETE TRANSLATIONS ====================
+        const translations = {
+            home: { en: "🏠 Home", hi: "🏠 होम", mr: "🏠 मुख्यपृष्ठ", ta: "🏠 முகப்பு", te: "🏠 హోమ్", kn: "🏠 ಮುಖಪುಟ", ml: "🏠 ഹോം", bn: "🏠 হোম", gu: "🏠 હોમ", or: "🏠 ହୋମ୍", pa: "🏠 ਹੋਮ", ur: "🏠 ہوم", es: "🏠 Inicio", fr: "🏠 Accueil", de: "🏠 Startseite", ja: "🏠 ホーム", ko: "🏠 홈", zh: "🏠 首页", ru: "🏠 Главная", ar: "🏠 الرئيسية" },
+            play: { en: "🎯 Play", hi: "🎯 खेलें", mr: "🎯 खेळा", ta: "🎯 விளையாடு", te: "🎯 ఆడు", kn: "🎯 ಆಟ", ml: "🎯 കളിക്കുക", bn: "🎯 খেলুন", gu: "🎯 રમો", or: "🎯 ଖେଳନ୍ତୁ", pa: "🎯 ਖੇਡੋ", ur: "🎯 کھیلیں", es: "🎯 Jugar", fr: "🎯 Jouer", de: "🎯 Spielen", ja: "🎯 プレイ", ko: "🎯 플레이", zh: "🎯 游戏", ru: "🎯 Играть", ar: "🎯 العب" },
+            leaderboard: { en: "🏆 Leaderboard", hi: "🏆 लीडरबोर्ड", mr: "🏆 लीडरबोर्ड", ta: "🏆 முன்னணி", te: "🏆 లీడర్బోర్డ్", kn: "🏆 ನಾಯಕರ ಪಟ್ಟಿ", ml: "🏆 ലീഡർബോർഡ്", bn: "🏆 লিডারবোর্ড", gu: "🏆 લીડરબોર્ડ", or: "🏆 ଲିଡରବୋର୍ଡ", pa: "🏆 ਲੀਡਰਬੋਰਡ", ur: "🏆 لیڈر بورڈ", es: "🏆 Tabla de clasificación", fr: "🏆 Classement", de: "🏆 Bestenliste", ja: "🏆 ランキング", ko: "🏆 리더보드", zh: "🏆 排行榜", ru: "🏆 Таблица лидеров", ar: "🏆 لوحة المتصدرين" },
+            profile: { en: "👤 Profile", hi: "👤 प्रोफाइल", mr: "👤 प्रोफाइल", ta: "👤 சுயவிவரம்", te: "👤 ప్రొఫైల్", kn: "👤 ಪ್ರೊಫೈಲ್", ml: "👤 പ്രൊഫൈൽ", bn: "👤 প্রোফাইল", gu: "👤 પ્રોફાઇલ", or: "👤 ପ୍ରୋଫାଇଲ୍", pa: "👤 ਪ੍ਰੋਫਾਈਲ", ur: "👤 پروفائل", es: "👤 Perfil", fr: "👤 Profil", de: "👤 Profil", ja: "👤 プロフィール", ko: "👤 프로필", zh: "👤 个人资料", ru: "👤 Профиль", ar: "👤 الملف الشخصي" },
+            login_btn: { en: "🔐 Login", hi: "🔐 लॉगिन", mr: "🔐 लॉगिन", ta: "🔐 உள்நுழைக", te: "🔐 లాగిన్", kn: "🔐 ಲಾಗಿನ್", ml: "🔐 ലോഗിൻ", bn: "🔐 লগইন", gu: "🔐 લોગિન", or: "🔐 ଲଗଇନ୍", pa: "🔐 ਲੌਗਿਨ", ur: "🔐 لاگ ان", es: "🔐 Iniciar sesión", fr: "🔐 Se connecter", de: "🔐 Anmelden", ja: "🔐 ログイン", ko: "🔐 로그인", zh: "🔐 登录", ru: "🔐 Войти", ar: "🔐 تسجيل الدخول" },
+            start_learning: { en: "🚀 Start Learning →", hi: "🚀 सीखना शुरू करें →", mr: "🚀 शिक्षण सुरू करा →", ta: "🚀 கற்கத் தொடங்கு →", te: "🚀 నేర్చుకోవడం ప్రారంభించండి →", kn: "🚀 ಕಲಿಯಲು ಪ್ರಾರಂಭಿಸಿ →", ml: "🚀 പഠിക്കാൻ ആരംഭിക്കുക →", bn: "🚀 শেখা শুরু করুন →", gu: "🚀 શીખવાનું શરૂ કરો →", or: "🚀 ଶିକ୍ଷା ଆରମ୍ଭ କରନ୍ତୁ →", pa: "🚀 ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ →", ur: "🚀 سیکھنا شروع کریں →", es: "🚀 Comenzar a aprender →", fr: "🚀 Commencer à apprendre →", de: "🚀 Lernen beginnen →", ja: "🚀 学習を始める →", ko: "🚀 학습 시작 →", zh: "🚀 开始学习 →", ru: "🚀 Начать обучение →", ar: "🚀 ابدأ التعلم →" },
+            puzzle_game: { en: "🧩 Puzzle Game →", hi: "🧩 पहेली खेल →", mr: "🧩 कोडे खेळ →", ta: "🧩 புதிர் விளையாட்டு →", te: "🧩 పజిల్ గేమ్ →", kn: "🧩 ಒಗಟು ಆಟ →", ml: "🧩 പസിൽ ഗെയിം →", bn: "🧩 পাজল গেম →", gu: "🧩 પઝલ રમત →", or: "🧩 ପଜଲ୍ ଗେମ୍ →", pa: "🧩 ਪਜ਼ਲ ਗੇਮ →", ur: "🧩 پزل گیم →", es: "🧩 Juego de rompecabezas →", fr: "🧩 Jeu de puzzle →", de: "🧩 Puzzlespiel →", ja: "🧩 パズルゲーム →", ko: "🧩 퍼즐 게임 →", zh: "🧩 益智游戏 →", ru: "🧩 Игра-головоломка →", ar: "🧩 لعبة الألغاز →" },
+            rapid_fire: { en: "⚡ Rapid Fire →", hi: "⚡ रैपिड फायर →", mr: "⚡ रॅपिड फायर →", ta: "⚡ விரைவு தீ →", te: "⚡ ర్యాపిడ్ ఫైర్ →", kn: "⚡ ರಾಪಿಡ್ ಫೈರ್ →", ml: "⚡ റാപ്പിഡ് ഫയർ →", bn: "⚡ র্যাপিড ফায়ার →", gu: "⚡ રેપિડ ફાયર →", or: "⚡ ରାପିଡ୍ ଫାୟାର୍ →", pa: "⚡ ਰੈਪਿਡ ਫਾਇਰ →", ur: "⚡ ریپڈ فائر →", es: "⚡ Fuego Rápido →", fr: "⚡ Tir Rapide →", de: "⚡ Schnellfeuer →", ja: "⚡ ラピッドファイア →", ko: "⚡ 래피드 파이어 →", zh: "⚡ 快速射击 →", ru: "⚡ Быстрый огонь →", ar: "⚡ نار سريعة →" },
+            why_choose: { en: "🌟 Why Choose EduPlay?", hi: "🌟 EduPlay क्यों चुनें?", mr: "🌟 EduPlay का निवडावे?", ta: "🌟 ஏன் EduPlay ஐ தேர்வு செய்ய வேண்டும்?", te: "🌟 ఎందుకు EduPlay ఎంచుకోవాలి?", kn: "🌟 ಏಕೆ EduPlay ಆಯ್ಕೆಮಾಡಬೇಕು?", ml: "🌟 എന്തുകൊണ്ട് EduPlay തിരഞ്ഞെടുക്കണം?", bn: "🌟 কেন EduPlay বেছে নেবেন?", gu: "🌟 શા માટે EduPlay પસંદ કરો?", or: "🌟 କାହିଁକି EduPlay ଚୟନ କରିବେ?", pa: "🌟 EduPlay ਕਿਉਂ ਚੁਣੋ?", ur: "🌟 EduPlay کیوں منتخب کریں؟", es: "🌟 ¿Por qué elegir EduPlay?", fr: "🌟 Pourquoi choisir EduPlay?", de: "🌟 Warum EduPlay wählen?", ja: "🌟 EduPlayを選ぶ理由", ko: "🌟 EduPlay를 선택해야 하는 이유", zh: "🌟 为什么选择EduPlay", ru: "🌟 Почему выбрать EduPlay?", ar: "🌟 لماذا تختار EduPlay؟" },
+            ai_questions: { en: "AI Questions", hi: "एआई प्रश्न", mr: "एआय प्रश्न", ta: "AI கேள்விகள்", te: "AI ప్రశ్నలు", kn: "AI ಪ್ರಶ್ನೆಗಳು", ml: "AI ചോദ്യങ്ങൾ", bn: "AI প্রশ্ন", gu: "AI પ્રશ્નો", or: "AI ପ୍ରଶ୍ନ", pa: "AI ਸਵਾਲ", ur: "AI سوالات", es: "Preguntas de IA", fr: "Questions IA", de: "KI-Fragen", ja: "AI質問", ko: "AI 질문", zh: "人工智能问题", ru: "Вопросы ИИ", ar: "أسئلة الذكاء الاصطناعي" },
+            ai_desc: { en: "Smart questions generated by AI", hi: "एआई द्वारा उत्पन्न स्मार्ट प्रश्न", mr: "एआय द्वारे निर्मित स्मार्ट प्रश्न", ta: "AI மூலம் உருவாக்கப்பட்ட ஸ்மார்ட் கேள்விகள்", te: "AI ద్వారా రూపొందించబడిన స్మార్ట్ ప్రశ్నలు", kn: "AI ಯಿಂದ ರಚಿಸಲಾದ ಸ್ಮಾರ್ಟ್ ಪ್ರಶ್ನೆಗಳು", ml: "AI സൃഷ്ടിച്ച സ്മാർട്ട് ചോദ്യങ്ങൾ", bn: "AI দ্বারা তৈরি স্মার্ট প্রশ্ন", gu: "AI દ્વારા પેદા થયેલ સ્માર્ટ પ્રશ્નો", or: "AI ଦ୍ୱାରା ସୃଷ୍ଟ ସ୍ମାର୍ଟ ପ୍ରଶ୍ନ", pa: "AI ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੇ ਗਏ ਸਮਾਰਟ ਸਵਾਲ", ur: "AI کے ذریعہ تیار کردہ سمارٹ سوالات", es: "Preguntas inteligentes generadas por IA", fr: "Questions intelligentes générées par l'IA", de: "Von KI generierte intelligente Fragen", ja: "AIが生成するスマートな質問", ko: "AI가 생성하는 스마트 질문", zh: "人工智能生成的智能问题", ru: "Умные вопросы, созданные ИИ", ar: "أسئلة ذكية تم إنشاؤها بواسطة الذكاء الاصطناعي" },
+            quiz_games: { en: "Quiz Games", hi: "क्विज़ गेम्स", mr: "क्विझ गेम्स", ta: "வினாடி வினா விளையாட்டுகள்", te: "క్విజ్ గేమ్స్", kn: "ಕ್ವಿಜ್ ಆಟಗಳು", ml: "ക്വിസ് ഗെയിമുകൾ", bn: "কুইজ গেমস", gu: "ક્વિઝ રમતો", or: "କ୍ୱିଜ୍ ଗେମ୍", pa: "ਕੁਇਜ਼ ਗੇਮਾਂ", ur: "کوئز گیمز", es: "Juegos de preguntas", fr: "Jeux questionnaire", de: "Quiz-Spiele", ja: "クイズゲーム", ko: "퀴즈 게임", zh: "测验游戏", ru: "Игры-викторины", ar: "ألعاب الاختبارات" },
+            quiz_desc: { en: "Test your knowledge with quizzes", hi: "क्विज़ के साथ अपने ज्ञान का परीक्षण करें", mr: "क्विझसह आपले ज्ञान तपासा", ta: "வினாடி வினாக்களுடன் உங்கள் அறிவை சோதிக்கவும்", te: "క్విజ్లతో మీ జ్ఞానాన్ని పరీక్షించుకోండి", kn: "ಕ್ವಿಜ್ಗಳೊಂದಿಗೆ ನಿಮ್ಮ ಜ್ಞಾನವನ್ನು ಪರೀಕ್ಷಿಸಿ", ml: "ക്വിസുകൾ ഉപയോഗിച്ച് നിങ്ങളുടെ അറിവ് പരിശോധിക്കുക", bn: "কুইজের মাধ্যমে আপনার জ্ঞান পরীক্ষা করুন", gu: "ક્વિઝ સાથે તમારા જ્ઞાનનું પરીક્ષણ કરો", or: "କ୍ୱିଜ୍ ସହିତ ଆପଣଙ୍କ ଜ୍ଞାନ ପରୀକ୍ଷା କରନ୍ତୁ", pa: "ਕੁਇਜ਼ਾਂ ਨਾਲ ਆਪਣੇ ਗਿਆਨ ਦੀ ਜਾਂਚ ਕਰੋ", ur: "کوئز کے ساتھ اپنے علم کی جانچ کریں", es: "Pon a prueba tus conocimientos con cuestionarios", fr: "Testez vos connaissances avec des quiz", de: "Testen Sie Ihr Wissen mit Quiz", ja: "クイズで知識をテスト", ko: "퀴즈로 지식 테스트", zh: "通过测验测试你的知识", ru: "Проверьте свои знания с помощью викторин", ar: "اختبر معرفتك بالاختبارات" },
+            puzzle_adventure: { en: "Puzzle Adventure", hi: "पहेली साहसिक", mr: "कोडे साहस", ta: "புதிர் சாகசம்", te: "పజిల్ సాహసం", kn: "ಒಗಟು ಸಾಹಸ", ml: "പസിൽ സാഹസികത", bn: "পাজল অ্যাডভেঞ্চার", gu: "પઝલ સાહસ", or: "ପଜଲ୍ ଆଡଭେଞ୍ଚର", pa: "ਪਜ਼ਲ ਐਡਵੈਂਚਰ", ur: "پزل ایڈونچر", es: "Aventura de rompecabezas", fr: "Aventure puzzle", de: "Rätselabenteuer", ja: "パズルアドベンチャー", ko: "퍼즐 어드벤처", zh: "益智冒险", ru: "Приключение-головоломка", ar: "مغامرة الألغاز" },
+            puzzle_desc: { en: "Solve puzzles, answer questions & earn rewards!", hi: "पहेलियाँ सुलझाएं, प्रश्नों के उत्तर दें और पुरस्कार अर्जित करें!", mr: "कोडी सोडवा, प्रश्नांची उत्तरे द्या आणि बक्षिसे मिळवा!", ta: "புதிர்களைத் தீர்க்கவும், கேள்விகளுக்கு பதிலளிக்கவும், வெகுமதிகளைப் பெறவும்!", te: "పజిల్స్ పరిష్కరించండి, ప్రశ్నలకు సమాధానం ఇవ్వండి, బహుమతులు సంపాదించండి!", kn: "ಒಗಟುಗಳನ್ನು ಬಿಡಿಸಿ, ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ, ಬಹುಮಾನಗಳನ್ನು ಗಳಿಸಿ!", ml: "പസിലുകൾ പരിഹരിക്കുക, ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകുക, റിവാർഡുകൾ നേടുക!", bn: "পাজল সমাধান করুন, প্রশ্নের উত্তর দিন এবং পুরস্কার অর্জন করুন!", gu: "પઝલ ઉકેલો, પ્રશ્નોના જવાબ આપો અને ઇનામો મેળવો!", or: "ପଜଲ୍ ସମାଧାନ କରନ୍ତୁ, ପ୍ରଶ୍ନର ଉତ୍ତର ଦିଅନ୍ତୁ, ପୁରସ୍କାର ଅର୍ଜନ କରନ୍ତୁ!", pa: "ਪਜ਼ਲ ਹੱਲ ਕਰੋ, ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦਿਓ ਅਤੇ ਇਨਾਮ ਪ੍ਰਾਪਤ ਕਰੋ!", ur: "پزل حل کریں، سوالات کے جوابات دیں اور انعامات حاصل کریں!", es: "¡Resuelve acertijos, responde preguntas y gana recompensas!", fr: "Résolvez des énigmes, répondez à des questions et gagnez des récompenses !", de: "Löse Rätsel, beantworte Fragen und sammle Belohnungen!", ja: "パズルを解き、質問に答え、報酬を獲得しよう！", ko: "퍼즐을 풀고, 질문에 답하고, 보상을 받으세요!", zh: "解决谜题、回答问题并获得奖励！", ru: "Решайте головоломки, отвечайте на вопросы и получайте награды!", ar: "حل الألغاز، أجب على الأسئلة، واكسب المكافآت!" },
+            rapid_fire_title: { en: "Rapid Fire", hi: "रैपिड फायर", mr: "रॅपिड फायर", ta: "விரைவு தீ", te: "ర్యాపిడ్ ఫైర్", kn: "ರಾಪಿಡ್ ಫೈರ್", ml: "റാപ്പിഡ് ഫയർ", bn: "র্যাপিড ফায়ার", gu: "રેપિડ ફાયર", or: "ରାପିଡ୍ ଫାୟାର୍", pa: "ਰੈਪਿਡ ਫਾਇਰ", ur: "ریپڈ فائر", es: "Fuego Rápido", fr: "Tir Rapide", de: "Schnellfeuer", ja: "ラピッドファイア", ko: "래피드 파이어", zh: "快速射击", ru: "Быстрый огонь", ar: "نار سريعة" },
+            rapid_desc: { en: "60 second challenge | Fast answers, high scores!", hi: "60 सेकंड की चुनौती | तेज़ उत्तर, उच्च स्कोर!", mr: "60 सेकंदाचे आव्हान | जलद उत्तरे, उच्च गुण!", ta: "60 வினாடி சவால் | வேகமான பதில்கள், உயர் மதிப்பெண்கள்!", te: "60 సెకన్ల సవాలు | వేగవంతమైన సమాధానాలు, అధిక స్కోర్లు!", kn: "60 ಸೆಕೆಂಡ್ ಸವಾಲು | ವೇಗದ ಉತ್ತರಗಳು, ಹೆಚ್ಚಿನ ಅಂಕಗಳು!", ml: "60 സെക്കൻഡ് ചലഞ്ച് | വേഗത്തിലുള്ള ഉത്തരങ്ങൾ, ഉയർന്ന സ്കോറുകൾ!", bn: "60 সেকেন্ড চ্যালেঞ্জ | দ্রুত উত্তর, উচ্চ স্কোর!", gu: "60 સેકન્ડનો પડકાર | ઝડપી જવાબો, ઉચ્ચ સ્કોર્સ!", or: "60 ସେକେଣ୍ଡ ଚ୍ୟାଲେଞ୍ଜ | ଶୀଘ୍ର ଉତ୍ତର, ଉଚ୍ଚ ସ୍କୋର!", pa: "60 ਸਕਿੰਟ ਚੈਲੇਂਜ | ਤੇਜ਼ ਜਵਾਬ, ਉੱਚ ਸਕੋਰ!", ur: "60 سیکنڈ چیلنج | تیز جوابات، اعلی اسکور!", es: "¡Desafío de 60 segundos | Respuestas rápidas, puntuaciones altas!", fr: "Défi de 60 secondes | Réponses rapides, scores élevés !", de: "60-Sekunden-Herausforderung | Schnelle Antworten, hohe Punktzahlen!", ja: "60秒チャレンジ | 速い回答、高得点！", ko: "60초 챌린지 | 빠른 답변, 높은 점수!", zh: "60秒挑战 | 快速回答，高分！", ru: "60-секундный вызов | Быстрые ответы, высокие баллы!", ar: "تحدي 60 ثانية | إجابات سريعة ، درجات عالية!" },
+            skill_arena: { en: "Skill Arena", hi: "स्किल एरिना", mr: "कौशल्य अरेना", ta: "திறன் அரங்கம்", te: "స్కిల్ అరేనా", kn: "ಕೌಶಲ್ಯ ಅರೇನಾ", ml: "സ്കിൽ അരീന", bn: "স্কিল এরিনা", gu: "સ્કીલ એરેના", or: "ସ୍କିଲ୍ ଆରେନା", pa: "ਸਕਿੱਲ ਅਰੀਨਾ", ur: "سکل ارینا", es: "Arena de Habilidades", fr: "Arène de Compétences", de: "Fähigkeiten-Arena", ja: "スキルアリーナ", ko: "스킬 아레나", zh: "技能竞技场", ru: "Арена навыков", ar: "ساحة المهارات" },
+            skill_desc: { en: "Test Aptitude, Reasoning & Communication!", hi: "योग्यता, तर्क और संचार का परीक्षण करें!", mr: "क्षमता, तर्कशक्ती आणि संवाद क्षमता तपासा!", ta: "திறன், பகுத்தறிவு மற்றும் தொடர்பை சோதிக்கவும்!", te: "సామర్థ్యం, తార్కికం మరియు కమ్యూనికేషన్ పరీక్షించండి!", kn: "ಸಾಮರ್ಥ್ಯ, ತರ್ಕ ಮತ್ತು ಸಂವಹನವನ್ನು ಪರೀಕ್ಷಿಸಿ!", ml: "കഴിവ്, യുക്തി, ആശയവിനിമയം എന്നിവ പരിശോധിക്കുക!", bn: "যোগ্যতা, যুক্তি এবং যোগাযোগ পরীক্ষা করুন!", gu: "યોગ્યતા, તર્ક અને સંદેશાવ્યવહારનું પરીક્ષણ કરો!", or: "ଯୋଗ୍ୟତା, ତର୍କ ଏବଂ ଯୋଗାଯୋଗ ପରୀକ୍ଷା କରନ୍ତୁ!", pa: "ਯੋਗਤਾ, ਤਰਕ ਅਤੇ ਸੰਚਾਰ ਦੀ ਜਾਂਚ ਕਰੋ!", ur: "قابلیت، استدلال اور مواصلات کی جانچ کریں!", es: "¡Prueba aptitud, razonamiento y comunicación!", fr: "Testez vos aptitudes, votre raisonnement et votre communication !", de: "Testen Sie Ihre Fähigkeiten, Ihr logisches Denken und Ihre Kommunikation!", ja: "適性、推理、コミュニケーションをテスト！", ko: "적성, 추론, 의사 소통 테스트!", zh: "测试能力、推理和沟通！", ru: "Проверьте свои способности, логику и общение!", ar: "اختبر الكفاءة والاستدلال والتواصل!" },
+            code_detective: { en: "Code Detective", hi: "कोड डिटेक्टिव", mr: "कोड डिटेक्टिव", ta: "குறியீடு துப்பறிவு", te: "కోడ్ డిటెక్టివ్", kn: "ಕೋಡ್ ಡಿಟೆಕ್ಟಿವ್", ml: "കോഡ് ഡിറ്റക്ടീവ്", bn: "কোড ডিটেকটিভ", gu: "કોડ ડિટેક્ટીવ", or: "କୋଡ୍ ଡିଟେକ୍ଟିଭ୍", pa: "ਕੋਡ ਜਾਸੂਸ", ur: "کوڈ جاسوس", es: "Detective de Código", fr: "Détective de Code", de: "Code-Detektiv", ja: "コード探偵", ko: "코드 탐정", zh: "代码侦探", ru: "Детектив кода", ar: "محقق الشفرة" },
+            code_desc: { en: "Identify programming languages & code concepts!", hi: "प्रोग्रामिंग भाषाओं और कोड अवधारणाओं को पहचानें!", mr: "प्रोग्रामिंग भाषा आणि कोड संकल्पना ओळखा!", ta: "நிரலாக்க மொழிகள் மற்றும் குறியீடு கருத்துக்களை அடையாளம் காணவும்!", te: "ప్రోగ్రామింగ్ భాషలు & కోడ్ కాన్సెప్ట్లను గుర్తించండి!", kn: "ಪ್ರೋಗ್ರಾಮಿಂಗ್ ಭಾಷೆಗಳು ಮತ್ತು ಕೋಡ್ ಪರಿಕಲ್ಪನೆಗಳನ್ನು ಗುರುತಿಸಿ!", ml: "പ്രോഗ്രാമിംഗ് ഭാഷകളും കോഡ് ആശയങ്ങളും തിരിച്ചറിയുക!", bn: "প্রোগ্রামিং ভাষা এবং কোড ধারণা সনাক্ত করুন!", gu: "પ્રોગ્રામિંગ ભાષાઓ અને કોડ ખ્યાલોને ઓળખો!", or: "ପ୍ରୋଗ୍ରାମିଂ ଭାଷା ଏବଂ କୋଡ୍ ଧାରଣାଗୁଡ଼ିକୁ ଚିହ୍ନଟ କରନ୍ତୁ!", pa: "ਪ੍ਰੋਗਰਾਮਿੰਗ ਭਾਸ਼ਾਵਾਂ ਅਤੇ ਕੋਡ ਸੰਕਲਪਾਂ ਦੀ ਪਛਾਣ ਕਰੋ!", ur: "پروگرامنگ زبانوں اور کوڈ کے تصورات کی شناخت کریں!", es: "¡Identifica lenguajes de programación y conceptos de código!", fr: "Identifiez les langages de programmation et les concepts de code !", de: "Identifizieren Sie Programmiersprachen und Code-Konzepte!", ja: "プログラミング言語とコードの概念を識別！", ko: "프로그래밍 언어 및 코드 개념 식별!", zh: "识别编程语言和代码概念！", ru: "Определяйте языки программирования и концепции кода!", ar: "تحديد لغات البرمجة ومفاهيم التعليمات البرمجية!" },
+            memory_match: { en: "Memory Match", hi: "मेमोरी मैच", mr: "मेमरी मॅच", ta: "நினைவக பொருத்தம்", te: "మెమరీ మ్యాచ్", kn: "ಮೆಮೊರಿ ಮ್ಯಾಚ್", ml: "മെമ്മറി മാച്ച്", bn: "মেমরি ম্যাচ", gu: "મેમરી મેચ", or: "ମେମୋରୀ ମ୍ୟାଚ୍", pa: "ਮੈਮੋਰੀ ਮੈਚ", ur: "میموری میچ", es: "Juego de Memoria", fr: "Jeu de Mémoire", de: "Gedächtnisspiel", ja: "メモリーマッチ", ko: "메모리 매치", zh: "记忆匹配", ru: "Игра на память", ar: "مباراة الذاكرة" },
+            memory_desc: { en: "Match programming terms with definitions!", hi: "प्रोग्रामिंग शर्तों को परिभाषाओं से मिलाएं!", mr: "प्रोग्रामिंग अटी व्याख्यांशी जुळवा!", ta: "நிரலாக்க விதிமுறைகளை வரையறைகளுடன் பொருத்தவும்!", te: "ప్రోగ్రామింగ్ నిబంధనలను నిర్వచనాలతో సరిపోల్చండి!", kn: "ಪ್ರೋಗ್ರಾಮಿಂಗ್ ನಿಯಮಗಳನ್ನು ವ್ಯಾಖ್ಯಾನಗಳೊಂದಿಗೆ ಹೊಂದಿಸಿ!", ml: "പ്രോഗ്രാമിംഗ് നിബന്ധനകൾ നിർവചനങ്ങളുമായി പൊരുത്തപ്പെടുത്തുക!", bn: "প্রোগ্রামিং শর্তাবলী সংজ্ঞা সঙ্গে মেলে!", gu: "પ્રોગ્રામિંગ શરતોને વ્યાખ્યાઓ સાથે મેચ કરો!", or: "ପ୍ରୋଗ୍ରାମିଂ ଶବ୍ଦଗୁଡ଼ିକୁ ସଂଜ୍ଞା ସହିତ ମେଳ କରନ୍ତୁ!", pa: "ਪ੍ਰੋਗਰਾਮਿੰਗ ਸ਼ਰਤਾਂ ਨੂੰ ਪਰਿਭਾਸ਼ਾਵਾਂ ਨਾਲ ਮਿਲਾਓ!", ur: "پروگرامنگ کی شرائط کو تعریفوں سے ملائیں!", es: "¡Empareja términos de programación con definiciones!", fr: "Associez les termes de programmation aux définitions !", de: "Ordnen Sie Programmierbegriffe den Definitionen zu!", ja: "プログラミング用語と定義を一致させよう！", ko: "프로그래밍 용어를 정의와 매치하세요!", zh: "将编程术语与定义匹配！", ru: "Сопоставьте термины программирования с определениями!", ar: "طابق مصطلحات البرمجة مع التعريفات!" },
+            earn_badges: { en: "Earn Badges & Points", hi: "बैज और अंक अर्जित करें", mr: "बॅजेस आणि पॉइंट्स मिळवा", ta: "பேட்ஜ்கள் மற்றும் புள்ளிகளைப் பெறுங்கள்", te: "బ్యాడ్జీలు & పాయింట్లు సంపాదించండి", kn: "ಬ್ಯಾಡ್ಜ್ಗಳು ಮತ್ತು ಅಂಕಗಳನ್ನು ಗಳಿಸಿ", ml: "ബാഡ്ജുകളും പോയിന്റുകളും നേടുക", bn: "ব্যাজ এবং পয়েন্ট অর্জন করুন", gu: "બેજ અને પોઈન્ટ મેળવો", or: "ବ୍ୟାଡ୍ଜ୍ ଏବଂ ପଏଣ୍ଟ ଅର୍ଜନ କରନ୍ତୁ", pa: "ਬੈਜ ਅਤੇ ਪੁਆਇੰਟ ਪ੍ਰਾਪਤ ਕਰੋ", ur: "بیجز اور پوائنٹس حاصل کریں", es: "Gana insignias y puntos", fr: "Gagnez des badges et des points", de: "Sammle Abzeichen und Punkte", ja: "バッジとポイントを獲得", ko: "배지와 포인트 획득", zh: "获得徽章和积分", ru: "Зарабатывайте значки и очки", ar: "اكسب الشارات والنقاط" },
+            badges_desc: { en: "Compete globally", hi: "वैश्विक स्तर पर प्रतिस्पर्धा करें", mr: "जागतिक स्तरावर स्पर्धा करा", ta: "உலகளவில் போட்டியிடுங்கள்", te: "ప్రపంచవ్యాప్తంగా పోటీపడండి", kn: "ಜಾಗತಿಕವಾಗಿ ಸ್ಪರ್ಧಿಸಿ", ml: "ആഗോളതലത്തിൽ മത്സരിക്കുക", bn: "বিশ্বব্যাপী প্রতিযোগিতা করুন", gu: "વૈશ્વિક સ્તરે સ્પર્ધા કરો", or: "ବିଶ୍ୱସ୍ତରରେ ପ୍ରତିଦ୍ୱନ୍ଦ୍ୱିତା କରନ୍ତୁ", pa: "ਵਿਸ਼ਵ ਪੱਧਰ 'ਤੇ ਮੁਕਾਬਲਾ ਕਰੋ", ur: "عالمی سطح پر مقابلہ کریں", es: "Compite globalmente", fr: "Compétitionnez mondialement", de: "Tritt global an", ja: "グローバルに競争", ko: "전 세계적으로 경쟁", zh: "全球竞争", ru: "Соревнуйтесь по всему миру", ar: "تنافس عالميا" },
+            click_to_play: { en: "✨ Click to Play →", hi: "✨ खेलने के लिए क्लिक करें →", mr: "✨ खेळण्यासाठी क्लिक करा →", ta: "✨ விளையாட கிளிக் செய்யவும் →", te: "✨ ఆడటానికి క్లిక్ చేయండి →", kn: "✨ ಆಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ →", ml: "✨ കളിക്കാൻ ക്ലിക്ക് ചെയ്യുക →", bn: "✨ খেলতে ক্লিক করুন →", gu: "✨ રમવા માટે ક્લિક કરો →", or: "✨ ଖେଳିବାକୁ କ୍ଲିକ୍ କରନ୍ତୁ →", pa: "✨ ਖੇਡਣ ਲਈ ਕਲਿੱਕ ਕਰੋ →", ur: "✨ کھیلنے کے لیے کلک کریں →", es: "✨ Haz clic para jugar →", fr: "✨ Cliquez pour jouer →", de: "✨ Klicken Sie zum Spielen →", ja: "✨ クリックしてプレイ →", ko: "✨ 플레이하려면 클릭 →", zh: "✨ 点击游玩 →", ru: "✨ Нажмите, чтобы играть →", ar: "✨ انقر للعب ←" },
+            select_degree: { en: "🎓 Select Your Degree", hi: "🎓 अपनी डिग्री चुनें", mr: "🎓 आपली पदवी निवडा", ta: "🎓 உங்கள் பட்டத்தைத் தேர்ந்தெடுக்கவும்", te: "🎓 మీ డిగ్రీని ఎంచుకోండి", kn: "🎓 ನಿಮ್ಮ ಪದವಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ", ml: "🎓 നിങ്ങളുടെ ബിരുദം തിരഞ്ഞെടുക്കുക", bn: "🎓 আপনার ডিগ্রি নির্বাচন করুন", gu: "🎓 તમારી ડિગ્રી પસંદ કરો", or: "🎓 ଆପଣଙ୍କ ଡିଗ୍ରୀ ଚୟନ କରନ୍ତୁ", pa: "🎓 ਆਪਣੀ ਡਿਗਰੀ ਚੁਣੋ", ur: "🎓 اپنی ڈگری منتخب کریں", es: "🎓 Selecciona tu título", fr: "🎓 Choisissez votre diplôme", de: "🎓 Wählen Sie Ihren Abschluss", ja: "🎓 学位を選択", ko: "🎓 학위 선택", zh: "🎓 选择你的学位", ru: "🎓 Выберите свою степень", ar: "🎓 اختر شهادتك" },
+            choose_path: { en: "Choose your academic path and start your gaming journey", hi: "अपना शैक्षणिक पथ चुनें और अपनी गेमिंग यात्रा शुरू करें", mr: "तुमचा शैक्षणिक मार्ग निवडा आणि तुमचा गेमिंग प्रवास सुरू करा", ta: "உங்கள் கல்விப் பாதையைத் தேர்ந்தெடுத்து உங்கள் விளையாட்டு பயணத்தைத் தொடங்குங்கள்", te: "మీ విద్యా మార్గాన్ని ఎంచుకోండి మరియు మీ గేమింగ్ ప్రయాణాన్ని ప్రారంభించండి", kn: "ನಿಮ್ಮ ಶೈಕ್ಷಣಿಕ ಮಾರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಗೇಮಿಂಗ್ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸಿ", ml: "നിങ്ങളുടെ അക്കാദമിക് പാത തിരഞ്ഞെടുത്ത് നിങ്ങളുടെ ഗെയിമിംഗ് യാത്ര ആരംഭിക്കുക", bn: "আপনার শিক্ষাগত পথ বেছে নিন এবং আপনার গেমিং যাত্রা শুরু করুন", gu: "તમારો શૈક્ષણિક માર્ગ પસંદ કરો અને તમારી ગેમિંગ યાત્રા શરૂ કરો", or: "ଆପଣଙ୍କ ଶିକ୍ଷାଗତ ପଥ ଚୟନ କରନ୍ତୁ ଏବଂ ଆପଣଙ୍କ ଗେମିଂ ଯାତ୍ରା ଆରମ୍ଭ କରନ୍ତୁ", pa: "ਆਪਣਾ ਅਕਾਦਮਿਕ ਰਸਤਾ ਚੁਣੋ ਅਤੇ ਆਪਣੀ ਗੇਮਿੰਗ ਯਾਤਰਾ ਸ਼ੁਰੂ ਕਰੋ", ur: "اپنا تعلیمی راستہ منتخب کریں اور اپنا گیمنگ سفر شروع کریں", es: "Elige tu camino académico y comienza tu viaje de juegos", fr: "Choisissez votre voie académique et commencez votre voyage de jeu", de: "Wählen Sie Ihren akademischen Weg und beginnen Sie Ihre Spiele-Reise", ja: "学問の道を選び、ゲームの旅を始めましょう", ko: "학문적 길을 선택하고 게임 여행을 시작하세요", zh: "选择你的学术道路，开始你的游戏之旅", ru: "Выберите свой академический путь и начните игровое путешествие", ar: "اختر مسارك الأكاديمي وابدأ رحلة الألعاب الخاصة بك" },
+            back_degrees: { en: "← Back to Degrees", hi: "← डिग्री पर वापस", mr: "← पदवी वर परत", ta: "← பட்டங்களுக்குத் திரும்பு", te: "← డిగ్రీలకు తిరిగి వెళ్ళు", kn: "← ಪದವಿಗಳಿಗೆ ಹಿಂತಿರುಗಿ", ml: "← ഡിഗ്രികളിലേക്ക് മടങ്ങുക", bn: "← ডিগ্রিতে ফিরে যান", gu: "← ડિગ્રી પર પાછા જાઓ", or: "← ଡିଗ୍ରୀକୁ ଫେରନ୍ତୁ", pa: "← ਡਿਗਰੀਆਂ ਤੇ ਵਾਪਸ ਜਾਓ", ur: "← ڈگریوں پر واپس جائیں", es: "← Volver a Grados", fr: "← Retour aux diplômes", de: "← Zurück zu Abschlüssen", ja: "← 学位に戻る", ko: "← 학위로 돌아가기", zh: "← 返回学位", ru: "← Назад к степеням", ar: "← العودة إلى الدرجات" },
+            select_branch: { en: "🔧 Select Your Branch", hi: "🔧 अपनी शाखा चुनें", mr: "🔧 आपली शाखा निवडा", ta: "🔧 உங்கள் கிளையைத் தேர்ந்தெடுக்கவும்", te: "🔧 మీ బ్రాంచ్ ఎంచుకోండి", kn: "🔧 ನಿಮ್ಮ ಶಾಖೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ", ml: "🔧 നിങ്ങളുടെ ബ്രാഞ്ച് തിരഞ്ഞെടുക്കുക", bn: "🔧 আপনার শাখা নির্বাচন করুন", gu: "🔧 તમારી શાખા પસંદ કરો", or: "🔧 ଆପଣଙ୍କ ଶାଖା ଚୟନ କରନ୍ତୁ", pa: "🔧 ਆਪਣੀ ਬ੍ਰਾਂਚ ਚੁਣੋ", ur: "🔧 اپنی شاخ منتخب کریں", es: "🔧 Selecciona tu Rama", fr: "🔧 Choisissez votre branche", de: "🔧 Wählen Sie Ihren Zweig", ja: "🔧 学科を選択", ko: "🔧 학과 선택", zh: "🔧 选择你的分支", ru: "🔧 Выберите филиал", ar: "🔧 اختر فرعك" },
+            back_branches: { en: "← Back to Branches", hi: "← शाखाओं पर वापस", mr: "← शाखांवर परत", ta: "← கிளைகளுக்குத் திரும்பு", te: "← బ్రాంచీలకు తిరిగి వెళ్ళు", kn: "← ಶಾಖೆಗಳಿಗೆ ಹಿಂತಿರುಗಿ", ml: "← ബ്രാഞ്ചുകളിലേക്ക് മടങ്ങുക", bn: "← শাখায় ফিরে যান", gu: "← શાખાઓ પર પાછા જાઓ", or: "← ଶାଖାକୁ ଫେରନ୍ତୁ", pa: "← ਬ੍ਰਾਂਚਾਂ ਤੇ ਵਾਪਸ ਜਾਓ", ur: "← شاخوں پر واپس جائیں", es: "← Volver a Ramas", fr: "← Retour aux branches", de: "← Zurück zu Zweigen", ja: "← 学科に戻る", ko: "← 학과로 돌아가기", zh: "← 返回分支", ru: "← Назад к филиалам", ar: "← العودة إلى الفروع" },
+            select_semester: { en: "📚 Select Semester", hi: "📚 सेमेस्टर चुनें", mr: "📚 सत्र निवडा", ta: "📚 செமஸ்டரைத் தேர்ந்தெடுக்கவும்", te: "📚 సెమిస్టర్ ఎంచుకోండి", kn: "📚 ಸೆಮಿಸ್ಟರ್ ಆಯ್ಕೆಮಾಡಿ", ml: "📚 സെമസ്റ്റർ തിരഞ്ഞെടുക്കുക", bn: "📚 সেমিস্টার নির্বাচন করুন", gu: "📚 સેમેસ્ટર પસંદ કરો", or: "📚 ସେମିଷ୍ଟର ଚୟନ କରନ୍ତୁ", pa: "📚 ਸਮੈਸਟਰ ਚੁਣੋ", ur: "📚 سمسٹر منتخب کریں", es: "📚 Seleccionar Semestre", fr: "📚 Choisir le semestre", de: "📚 Semester auswählen", ja: "📚 学期を選択", ko: "📚 학기 선택", zh: "📚 选择学期", ru: "📚 Выбрать семестр", ar: "📚 اختر الفصل الدراسي" },
+            back_semesters: { en: "← Back to Semesters", hi: "← सेमेस्टर पर वापस", mr: "← सत्रांवर परत", ta: "← செமஸ்டர்களுக்குத் திரும்பு", te: "← సెమిస్టర్లకు తిరిగి వెళ్ళు", kn: "← ಸೆಮಿಸ್ಟರ್ಗಳಿಗೆ ಹಿಂತಿರುಗಿ", ml: "← സെമസ്റ്ററുകളിലേക്ക് മടങ്ങുക", bn: "← সেমিস্টারে ফিরে যান", gu: "← સેમેસ્ટર પર પાછા જાઓ", or: "← ସେମିଷ୍ଟରକୁ ଫେରନ୍ତୁ", pa: "← ਸਮੈਸਟਰਾਂ ਤੇ ਵਾਪਸ ਜਾਓ", ur: "← سمسٹروں پر واپس جائیں", es: "← Volver a Semestres", fr: "← Retour aux semestres", de: "← Zurück zu Semestern", ja: "← 学期に戻る", ko: "← 학기로 돌아가기", zh: "← 返回学期", ru: "← Назад к семестрам", ar: "← العودة إلى الفصول الدراسية" },
+            select_subject: { en: "📖 Select Subject", hi: "📖 विषय चुनें", mr: "📖 विषय निवडा", ta: "📖 பாடத்தைத் தேர்ந்தெடுக்கவும்", te: "📖 విషయాన్ని ఎంచుకోండి", kn: "📖 ವಿಷಯ ಆಯ್ಕೆಮಾಡಿ", ml: "📖 വിഷയം തിരഞ്ഞെടുക്കുക", bn: "📖 বিষয় নির্বাচন করুন", gu: "📖 વિષય પસંદ કરો", or: "📖 ବିଷୟ ଚୟନ କରନ୍ତୁ", pa: "📖 ਵਿਸ਼ਾ ਚੁਣੋ", ur: "📖 مضمون منتخب کریں", es: "📖 Seleccionar Materia", fr: "📖 Choisir la matière", de: "📖 Fach auswählen", ja: "📖 科目を選択", ko: "📖 과목 선택", zh: "📖 选择科目", ru: "📖 Выбрать предмет", ar: "📖 اختر المادة" },
+            back_subjects: { en: "← Back to Subjects", hi: "← विषयों पर वापस", mr: "← विषयांवर परत", ta: "← பாடங்களுக்குத் திரும்பு", te: "← విషయాలకు తిరిగి వెళ్ళు", kn: "← ವಿಷಯಗಳಿಗೆ ಹಿಂತಿರುಗಿ", ml: "← വിഷയങ്ങളിലേക്ക് മടങ്ങുക", bn: "← বিষয়ে ফিরে যান", gu: "← વિષયો પર પાછા જાઓ", or: "← ବିଷୟକୁ ଫେରନ୍ତୁ", pa: "← ਵਿਸ਼ਿਆਂ ਤੇ ਵਾਪਸ ਜਾਓ", ur: "← مضامین پر واپس جائیں", es: "← Volver a Materias", fr: "← Retour aux matières", de: "← Zurück zu Fächern", ja: "← 科目に戻る", ko: "← 과목으로 돌아가기", zh: "← 返回科目", ru: "← Назад к предметам", ar: "← العودة إلى المواد" },
+            select_topic: { en: "🎮 Select Topic to Play", hi: "🎮 खेलने के लिए टॉपिक चुनें", mr: "🎮 खेळण्यासाठी विषय निवडा", ta: "🎮 விளையாட தலைப்பைத் தேர்ந்தெடுக்கவும்", te: "🎮 ఆడటానికి టాపిక్ ఎంచుకోండి", kn: "🎮 ಆಡಲು ವಿಷಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ", ml: "🎮 കളിക്കാൻ വിഷയം തിരഞ്ഞെടുക്കുക", bn: "🎮 খেলতে টপিক নির্বাচন করুন", gu: "🎮 રમવા માટે ટોપિક પસંદ કરો", or: "🎮 ଖେଳିବାକୁ ଟପିକ୍ ଚୟନ କରନ୍ତୁ", pa: "🎮 ਖੇਡਣ ਲਈ ਟਾਪਿਕ ਚੁਣੋ", ur: "🎮 کھیلنے کے لیے موضوع منتخب کریں", es: "🎮 Seleccionar tema para jugar", fr: "🎮 Choisir le sujet pour jouer", de: "🎮 Thema zum Spielen auswählen", ja: "🎮 プレイするトピックを選択", ko: "🎮 플레이할 주제 선택", zh: "🎮 选择要玩的主题", ru: "🎮 Выберите тему для игры", ar: "🎮 اختر موضوعًا للعب" },
+            stats_title: { en: "📊 Platform Statistics", hi: "📊 प्लेटफॉर्म आंकड़े", mr: "📊 प्लॅटफॉर्म आकडेवारी", ta: "📊 மேடை புள்ளிவிவரங்கள்", te: "📊 ప్లాట్ఫామ్ గణాంకాలు", kn: "📊 ವೇದಿಕೆಯ ಅಂಕಿಅಂಶಗಳು", ml: "📊 പ്ലാറ്റ്ഫോം സ്ഥിതിവിവരക്കണക്കുകൾ", bn: "📊 প্ল্যাটফর্ম পরিসংখ্যান", gu: "📊 પ્લેટફોર્મ આંકડા", or: "📊 ପ୍ଲାଟଫର୍ମ ପରିସଂଖ୍ୟାନ", pa: "📊 ਪਲੇਟਫਾਰਮ ਅੰਕੜੇ", ur: "📊 پلیٹ فارم کے اعدادوشمار", es: "📊 Estadísticas de la plataforma", fr: "📊 Statistiques de la plateforme", de: "📊 Plattform-Statistiken", ja: "📊 プラットフォーム統計", ko: "📊 플랫폼 통계", zh: "📊 平台统计", ru: "📊 Статистика платформы", ar: "📊 إحصائيات المنصة" },
+            stat_degrees: { en: "Degrees", hi: "डिग्री", mr: "पदव्या", ta: "பட்டங்கள்", te: "డిగ్రీలు", kn: "ಪದವಿಗಳು", ml: "ഡിഗ്രികൾ", bn: "ডিগ্রি", gu: "ડિગ્રીઓ", or: "ଡିଗ୍ରୀ", pa: "ਡਿਗਰੀਆਂ", ur: "ڈگریاں", es: "Títulos", fr: "Diplômes", de: "Abschlüsse", ja: "学位", ko: "학위", zh: "学位", ru: "Степени", ar: "الدرجات" },
+            stat_branches: { en: "Branches", hi: "शाखाएं", mr: "शाखा", ta: "கிளைகள்", te: "బ్రాంచీలు", kn: "ಶಾಖೆಗಳು", ml: "ബ്രാഞ്ചുകൾ", bn: "শাখা", gu: "શાખાઓ", or: "ଶାଖା", pa: "ਬ੍ਰਾਂਚਾਂ", ur: "شاخیں", es: "Ramas", fr: "Branches", de: "Zweige", ja: "学科", ko: "학과", zh: "分支", ru: "Филиалы", ar: "الفروع" },
+            stat_subjects: { en: "Subjects", hi: "विषय", mr: "विषय", ta: "பாடங்கள்", te: "విషయాలు", kn: "ವಿಷಯಗಳು", ml: "വിഷയങ്ങൾ", bn: "বিষয়", gu: "વિષયો", or: "ବିଷୟ", pa: "ਵਿਸ਼ੇ", ur: "مضامین", es: "Materias", fr: "Matières", de: "Fächer", ja: "科目", ko: "과목", zh: "科目", ru: "Предметы", ar: "المواد" },
+            stat_students: { en: "Active Students", hi: "सक्रिय छात्र", mr: "सक्रिय विद्यार्थी", ta: "செயலில் உள்ள மாணவர்கள்", te: "యాక్టివ్ విద్యార్థులు", kn: "ಸಕ್ರಿಯ ವಿದ್ಯಾರ್ಥಿಗಳು", ml: "സജീവ വിദ്യാർത്ഥികൾ", bn: "সক্রিয় ছাত্র", gu: "સક્રિય વિદ્યાર્થીઓ", or: "ସକ୍ରିୟ ଛାତ୍ର", pa: "ਸਰਗਰਮ ਵਿਦਿਆਰਥੀ", ur: "فعال طلباء", es: "Estudiantes activos", fr: "Étudiants actifs", de: "Aktive Studenten", ja: "アクティブな学生", ko: "활성 학생", zh: "活跃学生", ru: "Активные студенты", ar: "الطلاب النشطاء" },
+            cta_title: { en: "✨ Ready to Start Your Learning Journey?", hi: "✨ अपनी सीखने की यात्रा शुरू करने के लिए तैयार हैं?", mr: "✨ तुमचा शिक्षण प्रवास सुरू करण्यास तयार आहात?", ta: "✨ உங்கள் கற்றல் பயணத்தைத் தொடங்க தயாரா?", te: "✨ మీ లెర్నింగ్ జర్నీని ప్రారంభించడానికి సిద్ధంగా ఉన్నారా?", kn: "✨ ನಿಮ್ಮ ಕಲಿಕೆಯ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸಲು ಸಿದ್ಧರಿದ್ದೀರಾ?", ml: "✨ നിങ്ങളുടെ പഠന യാത്ര ആരംഭിക്കാൻ തയ്യാറാണോ?", bn: "✨ আপনার শেখার যাত্রা শুরু করতে প্রস্তুত?", gu: "✨ તમારી શીખવાની યાત્રા શરૂ કરવા માટે તૈયાર છો?", or: "✨ ଆପଣଙ୍କ ଶିକ୍ଷା ଯାତ୍ରା ଆରମ୍ଭ କରିବାକୁ ପ୍ରସ୍ତୁତ?", pa: "✨ ਆਪਣੀ ਸਿਖਲਾਈ ਯਾਤਰਾ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਤਿਆਰ ਹੋ?", ur: "✨ اپنے سیکھنے کے سفر کو شروع کرنے کے لیے تیار ہیں؟", es: "✨ ¿Listo para comenzar tu viaje de aprendizaje?", fr: "✨ Prêt à commencer votre voyage d'apprentissage ?", de: "✨ Bereit, Ihre Lernreise zu beginnen?", ja: "✨ 学習の旅を始める準備はできましたか？", ko: "✨ 학습 여정을 시작할 준비가 되셨나요?", zh: "✨ 准备好开始你的学习之旅了吗？", ru: "✨ Готовы начать свое учебное путешествие?", ar: "✨ هل أنت مستعد لبدء رحلة التعلم الخاصة بك؟" },
+            cta_desc: { en: "Join thousands of students already learning on EduPlay", hi: "EduPlay पर पहले से सीख रहे हजारों छात्रों से जुड़ें", mr: "EduPlay वर आधीच शिक्षण घेत असलेल्या हजारो विद्यार्थ्यांमध्ये सामील व्हा", ta: "EduPlay இல் ஏற்கனவே கற்கும் ஆயிரக்கணக்கான மாணவர்களுடன் சேருங்கள்", te: "EduPlay లో ఇప్పటికే నేర్చుకుంటున్న వేలాది మంది విద్యార్థులతో చేరండి", kn: "EduPlay ನಲ್ಲಿ ಈಗಾಗಲೇ ಕಲಿಯುತ್ತಿರುವ ಸಾವಿರಾರು ವಿದ್ಯಾರ್ಥಿಗಳೊಂದಿಗೆ ಸೇರಿ", ml: "EduPlay ൽ ഇതിനകം പഠിക്കുന്ന ആയിരക്കണക്കിന് വിദ്യാർത്ഥികളോടൊപ്പം ചേരൂ", bn: "EduPlay এ ইতিমধ্যে শেখা হাজার হাজার শিক্ষার্থীর সাথে যোগ দিন", gu: "EduPlay પર પહેલેથી શીખતા હજારો વિદ્યાર્થીઓ સાથે જોડાઓ", or: "EduPlay ରେ ପୂର୍ବରୁ ଶିଖୁଥିବା ହଜାର ହଜାର ଛାତ୍ରଙ୍କ ସହିତ ଯୋଗ ଦିଅନ୍ତୁ", pa: "EduPlay 'ਤੇ ਪਹਿਲਾਂ ਤੋਂ ਸਿੱਖ ਰਹੇ ਹਜ਼ਾਰਾਂ ਵਿਦਿਆਰਥੀਆਂ ਨਾਲ ਜੁੜੋ", ur: "EduPlay پر پہلے سے سیکھنے والے ہزاروں طلباء میں شامل ہوں", es: "Únete a miles de estudiantes que ya están aprendiendo en EduPlay", fr: "Rejoignez des milliers d'étudiants qui apprennent déjà sur EduPlay", de: "Schließen Sie sich Tausenden von Studenten an, die bereits auf EduPlay lernen", ja: "すでにEduPlayで学んでいる何千人もの学生に参加しましょう", ko: "이미 EduPlay에서 학습 중인 수천 명의 학생들과 함께하세요", zh: "加入成千上万已经在EduPlay学习的学生", ru: "Присоединяйтесь к тысячам студентов, уже обучающихся на EduPlay", ar: "انضم إلى الآلاف من الطلاب الذين يتعلمون بالفعل على EduPlay" },
+            cta_btn: { en: "Get Started for Free →", hi: "मुफ्त में शुरू करें →", mr: "विनामूल्य प्रारंभ करा →", ta: "இலவசமாகத் தொடங்குங்கள் →", te: "ఉచితంగా ప్రారంభించండి →", kn: "ಉಚಿತವಾಗಿ ಪ್ರಾರಂಭಿಸಿ →", ml: "സൗജന്യമായി ആരംഭിക്കൂ →", bn: "বিনামূল্যে শুরু করুন →", gu: "મફતમાં શરૂ કરો →", or: "ମାଗଣାରେ ଆରମ୍ଭ କରନ୍ତୁ →", pa: "ਮੁਫਤ ਸ਼ੁਰੂ ਕਰੋ →", ur: "مفت شروع کریں →", es: "Comienza gratis →", fr: "Commencez gratuitement →", de: "Kostenlos loslegen →", ja: "無料で始める →", ko: "무료로 시작하기 →", zh: "免费开始 →", ru: "Начать бесплатно →", ar: "ابدأ مجانًا ←" },
+            footer_about: { en: "🎓 EduPlay", hi: "🎓 EduPlay", mr: "🎓 EduPlay", ta: "🎓 EduPlay", te: "🎓 EduPlay", kn: "🎓 EduPlay", ml: "🎓 EduPlay", bn: "🎓 EduPlay", gu: "🎓 EduPlay", or: "🎓 EduPlay", pa: "🎓 EduPlay", ur: "🎓 EduPlay", es: "🎓 EduPlay", fr: "🎓 EduPlay", de: "🎓 EduPlay", ja: "🎓 EduPlay", ko: "🎓 EduPlay", zh: "🎓 EduPlay", ru: "🎓 EduPlay", ar: "🎓 EduPlay" },
+            footer_about_desc: { en: "Learn through games, earn points, collect badges!", hi: "खेलों के माध्यम से सीखें, अंक अर्जित करें, बैज इकट्ठा करें!", mr: "खेळांद्वारे शिका, गुण मिळवा, बॅजेस गोळा करा!", ta: "விளையாட்டுகள் மூலம் கற்றுக்கொள்ளுங்கள், புள்ளிகளைப் பெறுங்கள், பேட்ஜ்களை சேகரிக்கவும்!", te: "గేమ్ల ద్వారా నేర్చుకోండి, పాయింట్లు సంపాదించండి, బ్యాడ్జీలను సేకరించండి!", kn: "ಆಟಗಳ ಮೂಲಕ ಕಲಿಯಿರಿ, ಅಂಕಗಳನ್ನು ಗಳಿಸಿ, ಬ್ಯಾಡ್ಜ್ಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ!", ml: "ഗെയിമുകളിലൂടെ പഠിക്കുക, പോയിന്റുകൾ നേടുക, ബാഡ്ജുകൾ ശേഖരിക്കുക!", bn: "খেলার মাধ্যমে শিখুন, পয়েন্ট অর্জন করুন, ব্যাজ সংগ্রহ করুন!", gu: "રમતો દ્વારા શીખો, પોઇન્ટ્સ મેળવો, બેજ એકત્રિત કરો!", or: "ଗେମ୍ ମାଧ୍ୟମରେ ଶିଖନ୍ତୁ, ପଏଣ୍ଟ ଅର୍ଜନ କରନ୍ତୁ, ବ୍ୟାଡ୍ଜ୍ ସଂଗ୍ରହ କରନ୍ତୁ!", pa: "ਖੇਡਾਂ ਰਾਹੀਂ ਸਿੱਖੋ, ਪੁਆਇੰਟ ਪ੍ਰਾਪਤ ਕਰੋ, ਬੈਜ ਇਕੱਠੇ ਕਰੋ!", ur: "گیمز کے ذریعے سیکھیں، پوائنٹس حاصل کریں، بیجز جمع کریں!", es: "¡Aprende a través de juegos, gana puntos, colecciona insignias!", fr: "Apprenez par le jeu, gagnez des points, collectionnez des badges !", de: "Lernen Sie durch Spiele, sammeln Sie Punkte, sammeln Sie Abzeichen!", ja: "ゲームで学び、ポイントを獲得し、バッジを集めよう！", ko: "게임을 통해 배우고, 포인트를 획득하고, 배지를 수집하세요!", zh: "通过游戏学习，赚取积分，收集徽章！", ru: "Учитесь через игры, зарабатывайте очки, собирайте значки!", ar: "تعلم من خلال الألعاب ، واكسب النقاط ، واجمع الشارات!" },
+            footer_quick: { en: "Quick Links", hi: "त्वरित लिंक", mr: "द्रुत दुवे", ta: "விரைவு இணைப்புகள்", te: "త్వరిత లింక్లు", kn: "ತ್ವರಿತ ಲಿಂಕ್ಗಳು", ml: "ദ്രുത ലിങ്കുകൾ", bn: "দ্রুত লিঙ্ক", gu: "ઝડપી લિંક્સ", or: "ଦ୍ରୁତ ଲିଙ୍କ୍", pa: "ਤੁਰੰਤ ਲਿੰਕ", ur: "فوری لنکس", es: "Enlaces rápidos", fr: "Liens rapides", de: "Schnelllinks", ja: "クイックリンク", ko: "빠른 링크", zh: "快速链接", ru: "Быстрые ссылки", ar: "روابط سريعة" },
+            footer_home: { en: "🏠 Home", hi: "🏠 होम", mr: "🏠 मुख्यपृष्ठ", ta: "🏠 முகப்பு", te: "🏠 హోమ్", kn: "🏠 ಮುಖಪುಟ", ml: "🏠 ഹോം", bn: "🏠 হোম", gu: "🏠 હોમ", or: "🏠 ହୋମ୍", pa: "🏠 ਹੋਮ", ur: "🏠 ہوم", es: "🏠 Inicio", fr: "🏠 Accueil", de: "🏠 Startseite", ja: "🏠 ホーム", ko: "🏠 홈", zh: "🏠 首页", ru: "🏠 Главная", ar: "🏠 الرئيسية" },
+            footer_start: { en: "🎯 Start Learning", hi: "🎯 सीखना शुरू करें", mr: "🎯 शिक्षण सुरू करा", ta: "🎯 கற்கத் தொடங்கு", te: "🎯 నేర్చుకోవడం ప్రారంభించండి", kn: "🎯 ಕಲಿಯಲು ಪ್ರಾರಂಭಿಸಿ", ml: "🎯 പഠിക്കാൻ ആരംഭിക്കുക", bn: "🎯 শেখা শুরু করুন", gu: "🎯 શીખવાનું શરૂ કરો", or: "🎯 ଶିକ୍ଷା ଆରମ୍ଭ କରନ୍ତୁ", pa: "🎯 ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ", ur: "🎯 سیکھنا شروع کریں", es: "🎯 Comenzar a aprender", fr: "🎯 Commencer à apprendre", de: "🎯 Lernen beginnen", ja: "🎯 学習を始める", ko: "🎯 학습 시작", zh: "🎯 开始学习", ru: "🎯 Начать обучение", ar: "🎯 ابدأ التعلم" },
+            footer_leaderboard: { en: "🏆 Leaderboard", hi: "🏆 लीडरबोर्ड", mr: "🏆 लीडरबोर्ड", ta: "🏆 முன்னணி", te: "🏆 లీడర్బోర్డ్", kn: "🏆 ನಾಯಕರ ಪಟ್ಟಿ", ml: "🏆 ലീഡർബോർഡ്", bn: "🏆 লিডারবোর্ড", gu: "🏆 લીડરબોર્ડ", or: "🏆 ଲିଡରବୋର୍ଡ", pa: "🏆 ਲੀਡਰਬੋਰਡ", ur: "🏆 لیڈر بورڈ", es: "🏆 Tabla de clasificación", fr: "🏆 Classement", de: "🏆 Bestenliste", ja: "🏆 ランキング", ko: "🏆 리더보드", zh: "🏆 排行榜", ru: "🏆 Таблица лидеров", ar: "🏆 لوحة المتصدرين" },
+            footer_contact: { en: "Contact", hi: "संपर्क करें", mr: "संपर्क", ta: "தொடர்பு", te: "సంప్రదించండి", kn: "ಸಂಪರ್ಕಿಸಿ", ml: "ബന്ധപ്പെടുക", bn: "যোগাযোগ", gu: "સંપર્ક કરો", or: "ଯୋଗାଯୋଗ କରନ୍ତୁ", pa: "ਸੰਪਰਕ ਕਰੋ", ur: "رابطہ کریں", es: "Contacto", fr: "Contact", de: "Kontakt", ja: "お問い合わせ", ko: "연락처", zh: "联系方式", ru: "Контакты", ar: "اتصل بنا" },
+            copyright: { en: "© 2024 EduPlay. All rights reserved. | Made with ❤️ for Education", hi: "© 2024 EduPlay. सर्वाधिकार सुरक्षित। | शिक्षा के लिए ❤️ के साथ निर्मित", mr: "© 2024 EduPlay. सर्व हक्क राखीव. | शिक्षणासाठी ❤️ सह निर्मित", ta: "© 2024 EduPlay. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. | கல்விக்காக ❤️ உடன் உருவாக்கப்பட்டது", te: "© 2024 EduPlay. అన్ని హక్కులు ప్రతిరక్షితం. | విద్య కోసం ❤️ తో తయారు చేయబడింది", kn: "© 2024 EduPlay. ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ. | ಶಿಕ್ಷಣಕ್ಕಾಗಿ ❤️ ನಿಂದ ಮಾಡಲ್ಪಟ್ಟಿದೆ", ml: "© 2024 EduPlay. എല്ലാ അവകാശങ്ങളും നീക്കിവച്ചിരിക്കുന്നു. | വിദ്യാഭ്യാസത്തിനായി ❤️ ഉപയോഗിച്ച് നിർമ്മിച്ചത്", bn: "© 2024 EduPlay. সমস্ত অধিকার সংরক্ষিত। | শিক্ষার জন্য ❤️ দিয়ে তৈরি", gu: "© 2024 EduPlay. સર્વાધિકાર આરક્ષિત. | શિક્ષણ માટે ❤️ સાથે બનાવવામાં આવ્યું", or: "© 2024 EduPlay. ସମସ୍ତ ଅଧିକାର ସଂରକ୍ଷିତ। | ଶିକ୍ଷା ପାଇଁ ❤️ ସହିତ ତିଆରି", pa: "© 2024 EduPlay. ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ। | ਸਿੱਖਿਆ ਲਈ ❤️ ਨਾਲ ਬਣਾਇਆ ਗਿਆ", ur: "© 2024 EduPlay. جملہ حقوق محفوظ ہیں۔ | تعلیم کے لیے ❤️ کے ساتھ تیار کردہ", es: "© 2024 EduPlay. Todos los derechos reservados. | Hecho con ❤️ para la Educación", fr: "© 2024 EduPlay. Tous droits réservés. | Fabriqué avec ❤️ pour l'éducation", de: "© 2024 EduPlay. Alle Rechte vorbehalten. | Hergestellt mit ❤️ für Bildung", ja: "© 2024 EduPlay. 無断転載を禁じます。 | 教育への❤️を込めて", ko: "© 2024 EduPlay. 판권 소유. | 교육을 위해 ❤️로 제작됨", zh: "© 2024 EduPlay。版权所有。| 为教育而制，用心制作", ru: "© 2024 EduPlay. Все права защищены. | Сделано с ❤️ для образования", ar: "© 2024 EduPlay. جميع الحقوق محفوظة. | صنع بحب للتعليم" },
+            leaderboard_title: { en: "🏆 Global Leaderboard", hi: "🏆 वैश्विक लीडरबोर्ड", mr: "🏆 जागतिक लीडरबोर्ड", ta: "🏆 உலகளாவிய முன்னணி", te: "🏆 గ్లోబల్ లీడర్బోర్డ్", kn: "🏆 ಜಾಗತಿಕ ನಾಯಕರ ಪಟ್ಟಿ", ml: "🏆 ആഗോള ലീഡർബോർഡ്", bn: "🏆 গ্লোবাল লিডারবোর্ড", gu: "🏆 વૈશ્વિક લીડરબોર્ડ", or: "🏆 ବିଶ୍ୱ ଲିଡରବୋର୍ଡ", pa: "🏆 ਗਲੋਬਲ ਲੀਡਰਬੋਰਡ", ur: "🏆 عالمی لیڈر بورڈ", es: "🏆 Tabla de clasificación global", fr: "🏆 Classement mondial", de: "🏆 Globale Bestenliste", ja: "🏆 グローバルランキング", ko: "🏆 글로벌 리더보드", zh: "🏆 全球排行榜", ru: "🏆 Глобальная таблица лидеров", ar: "🏆 لوحة المتصدرين العالمية" },
+            leaderboard_sub: { en: "Top players from around the world", hi: "दुनिया भर के शीर्ष खिलाड़ी", mr: "जगभरातील शीर्ष खेळाडू", ta: "உலகெங்கிலும் உள்ள சிறந்த வீரர்கள்", te: "ప్రపంచం నుండి టాప్ ఆటగాళ్ళు", kn: "ಪ್ರಪಂಚದಾದ್ಯಂತದ ಟಾಪ್ ಆಟಗಾರರು", ml: "ലോകമെമ്പാടുമുള്ള മികച്ച കളിക്കാർ", bn: "বিশ্বের শীর্ষ খেলোয়াড়", gu: "વિશ્વભરના ટોચના ખેલાડીઓ", or: "ବିଶ୍ୱର ଶୀର୍ଷ ଖେଳାଳି", pa: "ਦੁਨੀਆ ਭਰ ਦੇ ਚੋਟੀ ਦੇ ਖਿਡਾਰੀ", ur: "دنیا بھر کے سرفہرست کھلاڑی", es: "Los mejores jugadores de todo el mundo", fr: "Les meilleurs joueurs du monde entier", de: "Top-Spieler aus der ganzen Welt", ja: "世界中のトッププレイヤー", ko: "전 세계의 상위 플레이어", zh: "来自世界各地的顶级玩家", ru: "Лучшие игроки со всего мира", ar: "أفضل اللاعبين من جميع أنحاء العالم" },
+            login_title: { en: "🔐 Welcome Back!", hi: "🔐 वापसी पर स्वागत है!", mr: "🔐 परत स्वागत आहे!", ta: "🔐 மீண்டும் வரவேற்கிறோம்!", te: "🔐 తిరిగి స్వాగతం!", kn: "🔐 ಮರಳಿ ಸ್ವಾಗತ!", ml: "🔐 തിരികെ സ്വാഗതം!", bn: "🔐 ফিরে আসার জন্য স্বাগতম!", gu: "🔐 પાછા આવવા બદલ સ્વાગત છે!", or: "🔐 ଫେରିବାକୁ ସ୍ୱାଗତ!", pa: "🔐 ਵਾਪਸੀ ਤੇ ਸੁਆਗਤ ਹੈ!", ur: "🔐 واپسی پر خوش آمدید!", es: "🔐 ¡Bienvenido de nuevo!", fr: "🔐 Bon retour !", de: "🔐 Willkommen zurück!", ja: "🔐 おかえりなさい！", ko: "🔐 다시 오신 것을 환영합니다!", zh: "🔐 欢迎回来！", ru: "🔐 С возвращением!", ar: "🔐 مرحبا بعودتك!" },
+            login_sub: { en: "Select role and login", hi: "भूमिका चुनें और लॉगिन करें", mr: "भूमिका निवडा आणि लॉगिन करा", ta: "பங்கைத் தேர்ந்தெடுத்து உள்நுழைக", te: "పాత్రను ఎంచుకుని లాగిన్ చేయండి", kn: "ಪಾತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಲಾಗಿನ್ ಮಾಡಿ", ml: "റോൾ തിരഞ്ഞെടുത്ത് ലോഗിൻ ചെയ്യുക", bn: "ভূমিকা নির্বাচন করুন এবং লগইন করুন", gu: "ભૂમિકા પસંદ કરો અને લોગિન કરો", or: "ଭୂମିକା ଚୟନ କରନ୍ତୁ ଏବଂ ଲଗଇନ୍ କରନ୍ତୁ", pa: "ਭੂਮਿਕਾ ਚੁਣੋ ਅਤੇ ਲੌਗਿਨ ਕਰੋ", ur: "کردار منتخب کریں اور لاگ ان کریں", es: "Seleccione el rol e inicie sesión", fr: "Sélectionnez le rôle et connectez-vous", de: "Wählen Sie die Rolle aus und melden Sie sich an", ja: "役割を選択してログイン", ko: "역할을 선택하고 로그인하세요", zh: "选择角色并登录", ru: "Выберите роль и войдите в систему", ar: "اختر الدور وقم بتسجيل الدخول" },
+            role_student: { en: "Student", hi: "छात्र", mr: "विद्यार्थी", ta: "மாணவர்", te: "విద్యార్థి", kn: "ವಿದ್ಯಾರ್ಥಿ", ml: "വിദ്യാർത്ഥി", bn: "ছাত্র", gu: "વિદ્યાર્થી", or: "ଛାତ୍ର", pa: "ਵਿਦਿਆਰਥੀ", ur: "طالب علم", es: "Estudiante", fr: "Étudiant", de: "Student", ja: "学生", ko: "학생", zh: "学生", ru: "Студент", ar: "طالب" },
+            role_teacher: { en: "Teacher", hi: "शिक्षक", mr: "शिक्षक", ta: "ஆசிரியர்", te: "ఉపాధ్యాయుడు", kn: "ಶಿಕ್ಷಕ", ml: "അധ്യാപകൻ", bn: "শিক্ষক", gu: "શિક્ષક", or: "ଶିକ୍ଷକ", pa: "ਅਧਿਆਪਕ", ur: "استاد", es: "Profesor", fr: "Enseignant", de: "Lehrer", ja: "教師", ko: "교사", zh: "教师", ru: "Учитель", ar: "معلم" },
+            role_director: { en: "Director", hi: "निदेशक", mr: "संचालक", ta: "இயக்குநர்", te: "డైరెక్టర్", kn: "ನಿರ್ದೇಶಕ", ml: "ഡയറക്ടർ", bn: "পরিচালক", gu: "નિર્દેશક", or: "ନିର୍ଦ୍ଦେଶକ", pa: "ਨਿਰਦੇਸ਼ਕ", ur: "ڈائریکٹر", es: "Director", fr: "Directeur", de: "Direktor", ja: "ディレクター", ko: "이사", zh: "主任", ru: "Директор", ar: "مدير" },
+            google_btn: { en: "🍔 Continue with Google", hi: "🍔 Google के साथ जारी रखें", mr: "🍔 Google सह सुरू ठेवा", ta: "🍔 Google உடன் தொடரவும்", te: "🍔 Google తో కొనసాగించండి", kn: "🍔 Google ನೊಂದಿಗೆ ಮುಂದುವರಿಸಿ", ml: "🍔 Google ഉപയോഗിച്ച് തുടരുക", bn: "🍔 Google এর সাথে চালিয়ে যান", gu: "🍔 Google સાથે ચાલુ રાખો", or: "🍔 Google ସହିତ ଜାରି ରଖନ୍ତୁ", pa: "🍔 Google ਨਾਲ ਜਾਰੀ ਰੱਖੋ", ur: "🍔 Google کے ساتھ جاری رکھیں", es: "🍔 Continuar con Google", fr: "🍔 Continuer avec Google", de: "🍔 Mit Google fortfahren", ja: "🍔 Googleで続ける", ko: "🍔 Google로 계속하기", zh: "🍔 使用Google继续", ru: "🍔 Продолжить с Google", ar: "🍔 متابعة مع Google" },
+            forgot_link: { en: "Forgot Password?", hi: "पासवर्ड भूल गए?", mr: "पासवर्ड विसरलात?", ta: "கடவுச்சொல் மறந்துவிட்டதா?", te: "పాస్వర్డ్ మర్చిపోయారా?", kn: "ಪಾಸ್ವರ್ಡ್ ಮರೆತುಹೋಗಿದೆಯೇ?", ml: "പാസ്വേഡ് മറന്നോ?", bn: "পাসওয়ার্ড ভুলে গেছেন?", gu: "પાસવર્ડ ભૂલી ગયા?", or: "ପାସୱାର୍ଡ ଭୁଲିଗଲେ?", pa: "ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ?", ur: "پاس ورڈ بھول گئے؟", es: "¿Olvidaste tu contraseña?", fr: "Mot de passe oublié ?", de: "Passwort vergessen?", ja: "パスワードをお忘れですか？", ko: "비밀번호를 잊으셨나요?", zh: "忘记密码？", ru: "Забыли пароль?", ar: "نسيت كلمة المرور؟" },
+            login_btn_text: { en: "🎮 Login", hi: "🎮 लॉगिन", mr: "🎮 लॉगिन", ta: "🎮 உள்நுழைக", te: "🎮 లాగిన్", kn: "🎮 ಲಾಗಿನ್", ml: "🎮 ലോഗിൻ", bn: "🎮 লগইন", gu: "🎮 લોગિન", or: "🎮 ଲଗଇନ୍", pa: "🎮 ਲੌਗਿਨ", ur: "🎮 لاگ ان", es: "🎮 Iniciar sesión", fr: "🎮 Se connecter", de: "🎮 Anmelden", ja: "🎮 ログイン", ko: "🎮 로그인", zh: "🎮 登录", ru: "🎮 Войти", ar: "🎮 تسجيل الدخول" },
+            no_account: { en: "Don't have an account? ", hi: "खाता नहीं है? ", mr: "खाते नाही? ", ta: "கணக்கு இல்லையா? ", te: "ఖాతా లేదా? ", kn: "ಖಾತೆ ಇಲ್ಲವೇ? ", ml: "അക്കൗണ്ട് ഇല്ലേ? ", bn: "একাউন্ট নেই? ", gu: "એકાઉન્ટ નથી? ", or: "ଆକାଉଣ୍ଟ ନାହିଁ? ", pa: "ਖਾਤਾ ਨਹੀਂ ਹੈ? ", ur: "اکاؤنٹ نہیں ہے؟ ", es: "¿No tienes una cuenta? ", fr: "Vous n'avez pas de compte ? ", de: "Sie haben kein Konto? ", ja: "アカウントをお持ちではありませんか？ ", ko: "계정이 없으신가요? ", zh: "没有帐户？ ", ru: "Нет аккаунта? ", ar: "ليس لديك حساب؟ " },
+            create_account: { en: "Create Account →", hi: "खाता बनाएं →", mr: "खाते तयार करा →", ta: "கணக்கை உருவாக்கவும் →", te: "ఖాతాను సృష్టించండి →", kn: "ಖಾತೆಯನ್ನು ರಚಿಸಿ →", ml: "അക്കൗണ്ട് സൃഷ്ടിക്കുക →", bn: "একাউন্ট তৈরি করুন →", gu: "એકાઉન્ટ બનાવો →", or: "ଆକାଉଣ୍ଟ ତିଆରି କରନ୍ତୁ →", pa: "ਖਾਤਾ ਬਣਾਓ →", ur: "اکاؤنٹ بنائیں →", es: "Crear cuenta →", fr: "Créer un compte →", de: "Konto erstellen →", ja: "アカウントを作成 →", ko: "계정 만들기 →", zh: "创建帐户 →", ru: "Создать аккаунт →", ar: "إنشاء حساب ←" },
+            signup_title: { en: "✨ Create Account", hi: "✨ खाता बनाएं", mr: "✨ खाते तयार करा", ta: "✨ கணக்கை உருவாக்கவும்", te: "✨ ఖాతాను సృష్టించండి", kn: "✨ ಖಾತೆಯನ್ನು ರಚಿಸಿ", ml: "✨ അക്കൗണ്ട് സൃഷ്ടിക്കുക", bn: "✨ একাউন্ট তৈরি করুন", gu: "✨ એકાઉન્ટ બનાવો", or: "✨ ଆକାଉଣ୍ଟ ତିଆରି କରନ୍ତୁ", pa: "✨ ਖਾਤਾ ਬਣਾਓ", ur: "✨ اکاؤنٹ بنائیں", es: "✨ Crear cuenta", fr: "✨ Créer un compte", de: "✨ Konto erstellen", ja: "✨ アカウントを作成", ko: "✨ 계정 만들기", zh: "✨ 创建帐户", ru: "✨ Создать аккаунт", ar: "✨ إنشاء حساب" },
+            signup_sub: { en: "Start your learning journey!", hi: "अपनी सीखने की यात्रा शुरू करें!", mr: "तुमचा शिक्षण प्रवास सुरू करा!", ta: "உங்கள் கற்றல் பயணத்தைத் தொடங்குங்கள்!", te: "మీ లెర్నింగ్ జర్నీని ప్రారంభించండి!", kn: "ನಿಮ್ಮ ಕಲಿಕೆಯ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸಿ!", ml: "നിങ്ങളുടെ പഠന യാത്ര ആരംഭിക്കുക!", bn: "আপনার শেখার যাত্রা শুরু করুন!", gu: "તમારી શીખવાની યાત્રા શરૂ કરો!", or: "ଆପଣଙ୍କ ଶିକ୍ଷା ଯାତ୍ରା ଆରମ୍ଭ କରନ୍ତୁ!", pa: "ਆਪਣੀ ਸਿਖਲਾਈ ਯਾਤਰਾ ਸ਼ੁਰੂ ਕਰੋ!", ur: "اپنا سیکھنے کا سفر شروع کریں!", es: "¡Comienza tu viaje de aprendizaje!", fr: "Commencez votre voyage d'apprentissage !", de: "Starten Sie Ihre Lernreise!", ja: "学習の旅を始めましょう！", ko: "학습 여정을 시작하세요!", zh: "开始你的学习之旅！", ru: "Начните свое учебное путешествие!", ar: "ابدأ رحلة التعلم الخاصة بك!" },
+            signup_google: { en: "🍔 Sign up with Google", hi: "🍔 Google के साथ साइन अप करें", mr: "🍔 Google सह साइन अप करा", ta: "🍔 Google உடன் பதிவு செய்யுங்கள்", te: "🍔 Google తో సైన్ అప్ చేయండి", kn: "🍔 Google ನೊಂದಿಗೆ ಸೈನ್ ಅಪ್ ಮಾಡಿ", ml: "🍔 Google ഉപയോഗിച്ച് സൈൻ അപ്പ് ചെയ്യുക", bn: "🍔 Google এর সাথে সাইন আপ করুন", gu: "🍔 Google સાથે સાઇન અપ કરો", or: "🍔 Google ସହିତ ସାଇନ୍ ଅପ୍ କରନ୍ତୁ", pa: "🍔 Google ਨਾਲ ਸਾਈਨ ਅਪ ਕਰੋ", ur: "🍔 Google کے ساتھ سائن اپ کریں", es: "🍔 Registrarse con Google", fr: "🍔 S'inscrire avec Google", de: "🍔 Mit Google anmelden", ja: "🍔 Googleでサインアップ", ko: "🍔 Google로 가입하기", zh: "🍔 使用Google注册", ru: "🍔 Зарегистрироваться через Google", ar: "🍔 التسجيل مع Google" },
+            signup_btn: { en: "🚀 Sign Up", hi: "🚀 साइन अप करें", mr: "🚀 साइन अप करा", ta: "🚀 பதிவு செய்க", te: "🚀 సైన్ అప్ చేయండి", kn: "🚀 ಸೈನ್ ಅಪ್ ಮಾಡಿ", ml: "🚀 സൈൻ അപ്പ് ചെയ്യുക", bn: "🚀 সাইন আপ করুন", gu: "🚀 સાઇન અપ કરો", or: "🚀 ସାଇନ୍ ଅପ୍ କରନ୍ତୁ", pa: "🚀 ਸਾਈਨ ਅਪ ਕਰੋ", ur: "🚀 سائن اپ کریں", es: "🚀 Registrarse", fr: "🚀 S'inscrire", de: "🚀 Anmelden", ja: "🚀 サインアップ", ko: "🚀 가입하기", zh: "🚀 注册", ru: "🚀 Зарегистрироваться", ar: "🚀 اشتراك" },
+            have_account: { en: "Already have an account? ", hi: "पहले से खाता है? ", mr: "आधीच खाते आहे? ", ta: "ஏற்கனவே கணக்கு உள்ளதா? ", te: "ఇప్పటికే ఖాతా ఉందా? ", kn: "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ? ", ml: "ഇതിനകം ഒരു അക്കൗണ്ട് ഉണ്ടോ? ", bn: "ইতিমধ্যে একটি অ্যাকাউন্ট আছে? ", gu: "પહેલેથી એકાઉન્ટ છે? ", or: "ପୂର୍ବରୁ ଆକାଉଣ୍ଟ ଅଛି? ", pa: "ਪਹਿਲਾਂ ਤੋਂ ਖਾਤਾ ਹੈ? ", ur: "پہلے سے اکاؤنٹ ہے؟ ", es: "¿Ya tienes una cuenta? ", fr: "Vous avez déjà un compte ? ", de: "Sie haben bereits ein Konto? ", ja: "すでにアカウントをお持ちですか？ ", ko: "이미 계정이 있으신가요? ", zh: "已经有帐户了？ ", ru: "Уже есть аккаунт? ", ar: "هل لديك حساب بالفعل؟ " },
+            login_link: { en: "Login →", hi: "लॉगिन →", mr: "लॉगिन →", ta: "உள்நுழைக →", te: "లాగిన్ →", kn: "ಲಾಗಿನ್ →", ml: "ലോഗിൻ →", bn: "লগইন →", gu: "લોગિન →", or: "ଲଗଇନ୍ →", pa: "ਲੌਗਿਨ →", ur: "لاگ ان →", es: "Iniciar sesión →", fr: "Se connecter →", de: "Anmelden →", ja: "ログイン →", ko: "로그인 →", zh: "登录 →", ru: "Войти →", ar: "تسجيل الدخول ←" },
+            forgot_title: { en: "🔐 Forgot Password?", hi: "🔐 पासवर्ड भूल गए?", mr: "🔐 पासवर्ड विसरलात?", ta: "🔐 கடவுச்சொல் மறந்துவிட்டதா?", te: "🔐 పాస్వర్డ్ మర్చిపోయారా?", kn: "🔐 ಪಾಸ್ವರ್ಡ್ ಮರೆತುಹೋಗಿದೆಯೇ?", ml: "🔐 പാസ്വേഡ് മറന്നോ?", bn: "🔐 পাসওয়ার্ড ভুলে গেছেন?", gu: "🔐 પાસવર્ડ ભૂલી ગયા?", or: "🔐 ପାସୱାର୍ଡ ଭୁଲିଗଲେ?", pa: "🔐 ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ?", ur: "🔐 پاس ورڈ بھول گئے؟", es: "🔐 ¿Olvidaste tu contraseña?", fr: "🔐 Mot de passe oublié ?", de: "🔐 Passwort vergessen?", ja: "🔐 パスワードをお忘れですか？", ko: "🔐 비밀번호를 잊으셨나요?", zh: "🔐 忘记密码？", ru: "🔐 Забыли пароль?", ar: "🔐 نسيت كلمة المرور؟" },
+            forgot_sub: { en: "Enter your email to receive reset link", hi: "रीसेट लिंक प्राप्त करने के लिए अपना ईमेल दर्ज करें", mr: "रीसेट लिंक प्राप्त करण्यासाठी तुमचा ईमेल प्रविष्ट करा", ta: "மீட்டமை இணைப்பைப் பெற உங்கள் மின்னஞ்சலை உள்ளிடவும்", te: "రీసెట్ లింక్ పొందడానికి మీ ఇమెయిల్ను నమోదు చేయండి", kn: "ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಪಡೆಯಲು ನಿಮ್ಮ ಇಮೇಲ್ ಅನ್ನು ನಮೂದಿಸಿ", ml: "റീസെറ്റ് ലിങ്ക് ലഭിക്കുന്നതിന് നിങ്ങളുടെ ഇമെയിൽ നൽകുക", bn: "রিসেট লিংক পেতে আপনার ইমেল লিখুন", gu: "રીસેટ લિંક મેળવવા માટે તમારો ઇમેઇલ દાખલ કરો", or: "ରିସେଟ୍ ଲିଙ୍କ୍ ପାଇବାକୁ ଆପଣଙ୍କ ଇମେଲ୍ ପ୍ରବେଶ କରନ୍ତୁ", pa: "ਰੀਸੈਟ ਲਿੰਕ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਆਪਣਾ ਈਮੇਲ ਦਰਜ ਕਰੋ", ur: "ری سیٹ لنک حاصل کرنے کے لیے اپنا ای میل درج کریں", es: "Ingrese su correo electrónico para recibir el enlace de restablecimiento", fr: "Entrez votre e-mail pour recevoir le lien de réinitialisation", de: "Geben Sie Ihre E-Mail ein, um den Reset-Link zu erhalten", ja: "リセットリンクを受け取るにはメールアドレスを入力してください", ko: "재설정 링크를 받으려면 이메일을 입력하세요", zh: "输入您的电子邮件以接收重置链接", ru: "Введите свой адрес электронной почты, чтобы получить ссылку для сброса", ar: "أدخل بريدك الإلكتروني لتلقي رابط إعادة التعيين" },
+            send_reset: { en: "Send Reset Link →", hi: "रीसेट लिंक भेजें →", mr: "रीसेट लिंक पाठवा →", ta: "மீட்டமை இணைப்பை அனுப்பு →", te: "రీసెట్ లింక్ పంపండి →", kn: "ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಕಳುಹಿಸಿ →", ml: "റീസെറ്റ് ലിങ്ക് അയയ്ക്കുക →", bn: "রিসেট লিংক পাঠান →", gu: "રીસેટ લિંક મોકલો →", or: "ରିସେଟ୍ ଲିଙ୍କ୍ ପଠାନ୍ତୁ →", pa: "ਰੀਸੈਟ ਲਿੰਕ ਭੇਜੋ →", ur: "ری سیٹ لنک بھیجیں →", es: "Enviar enlace de restablecimiento →", fr: "Envoyer le lien de réinitialisation →", de: "Reset-Link senden →", ja: "リセットリンクを送信 →", ko: "재설정 링크 보내기 →", zh: "发送重置链接 →", ru: "Отправить ссылку для сброса →", ar: "إرسال رابط إعادة التعيين ←" },
+            back_login: { en: "← Back to Login", hi: "← लॉगिन पर वापस जाएं", mr: "← लॉगिन वर परत जा", ta: "← உள்நுழைவுக்குத் திரும்பு", te: "← లాగిన్కు తిరిగి వెళ్ళు", kn: "← ಲಾಗಿನ್ ಗೆ ಹಿಂತಿರುಗಿ", ml: "← ലോഗിനിലേക്ക് മടങ്ങുക", bn: "← লগইনে ফিরে যান", gu: "← લોગિન પર પાછા જાઓ", or: "← ଲଗଇନ୍ କୁ ଫେରନ୍ତୁ", pa: "← ਲੌਗਿਨ ਤੇ ਵਾਪਸ ਜਾਓ", ur: "← لاگ ان پر واپس جائیں", es: "← Volver al inicio de sesión", fr: "← Retour à la connexion", de: "← Zurück zum Login", ja: "← ログインに戻る", ko: "← 로그인으로 돌아가기", zh: "← 返回登录", ru: "← Назад к входу", ar: "← العودة إلى تسجيل الدخول" },
+            otp_title: { en: "📧 Check Your Email", hi: "📧 अपना ईमेल जांचें", mr: "📧 तुमचा ईमेल तपासा", ta: "📧 உங்கள் மின்னஞ்சலை சரிபார்க்கவும்", te: "📧 మీ ఇమెయిల్ను తనిఖీ చేయండి", kn: "📧 ನಿಮ್ಮ ಇಮೇಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ", ml: "📧 നിങ്ങളുടെ ഇമെയിൽ പരിശോധിക്കുക", bn: "📧 আপনার ইমেল চেক করুন", gu: "📧 તમારો ઇમેઇલ તપાસો", or: "📧 ଆପଣଙ୍କ ଇମେଲ୍ ଯାଞ୍ଚ କରନ୍ତୁ", pa: "📧 ਆਪਣਾ ਈਮੇਲ ਚੈੱਕ ਕਰੋ", ur: "📧 اپنا ای میل چیک کریں", es: "📧 Revisa tu correo electrónico", fr: "📧 Vérifiez votre e-mail", de: "📧 Überprüfen Sie Ihre E-Mail", ja: "📧 メールを確認してください", ko: "📧 이메일을 확인하세요", zh: "📧 检查您的电子邮件", ru: "📧 Проверьте свою электронную почту", ar: "📧 تحقق من بريدك الإلكتروني" },
+            otp_sub: { en: "We've sent a verification code to ", hi: "हमने एक सत्यापन कोड भेजा है ", mr: "आम्ही एक सत्यापन कोड पाठवला आहे ", ta: "நாங்கள் ஒரு சரிபார்ப்புக் குறியீட்டை அனுப்பியுள்ளோம் ", te: "మేము ధృవీకరణ కోడ్ను పంపాము ", kn: "ನಾವು ಪರಿಶೀಲನಾ ಕೋಡ್ ಅನ್ನು ಕಳುಹಿಸಿದ್ದೇವೆ ", ml: "ഞങ്ങൾ ഒരു സ്ഥിരീകരണ കോഡ് അയച്ചു ", bn: "আমরা একটি যাচাইকরণ কোড পাঠিয়েছি ", gu: "અમે સત્યાપન કોડ મોકલ્યો છે ", or: "ଆମେ ଏକ ଯାଞ୍ଚ କୋଡ୍ ପଠାଇଛୁ ", pa: "ਅਸੀਂ ਇੱਕ ਤਸਦੀਕ ਕੋਡ ਭੇਜਿਆ ਹੈ ", ur: "ہم نے ایک تصدیقی کوڈ بھیج دیا ہے ", es: "Hemos enviado un código de verificación a ", fr: "Nous avons envoyé un code de vérification à ", de: "Wir haben einen Bestätigungscode an gesendet ", ja: "確認コードを送信しました ", ko: "인증 코드를 보냈습니다 ", zh: "我们已将验证码发送至 ", ru: "Мы отправили проверочный код на ", ar: "لقد أرسلنا رمز التحقق إلى " },
+            verify_otp: { en: "Verify OTP →", hi: "OTP सत्यापित करें →", mr: "OTP सत्यापित करा →", ta: "OTP ஐ சரிபார்க்கவும் →", te: "OTP ని ధృవీకరించండి →", kn: "OTP ಅನ್ನು ಪರಿಶೀಲಿಸಿ →", ml: "OTP പരിശോധിക്കുക →", bn: "OTP যাচাই করুন →", gu: "OTP ચકાસો →", or: "OTP ଯାଞ୍ଚ କରନ୍ତୁ →", pa: "OTP ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ →", ur: "OTP کی تصدیق کریں →", es: "Verificar OTP →", fr: "Vérifier OTP →", de: "OTP überprüfen →", ja: "OTPを確認 →", ko: "OTP 확인 →", zh: "验证OTP →", ru: "Подтвердить OTP →", ar: "تحقق من OTP ←" },
+            back_step: { en: "← Back", hi: "← वापस", mr: "← मागे", ta: "← பின்", te: "← వెనుకకు", kn: "← ಹಿಂದೆ", ml: "← പിന്നിലേക്ക്", bn: "← পিছনে", gu: "← પાછા", or: "← ପଛକୁ", pa: "← ਪਿੱਛੇ", ur: "← واپس", es: "← Atrás", fr: "← Retour", de: "← Zurück", ja: "← 戻る", ko: "← 뒤로", zh: "← 返回", ru: "← Назад", ar: "← رجوع" },
+            new_pw_title: { en: "✨ Create New Password", hi: "✨ नया पासवर्ड बनाएं", mr: "✨ नवीन पासवर्ड तयार करा", ta: "✨ புதிய கடவுச்சொல்லை உருவாக்கவும்", te: "✨ కొత్త పాస్వర్డ్ను సృష్టించండి", kn: "✨ ಹೊಸ ಪಾಸ್ವರ್ಡ್ ರಚಿಸಿ", ml: "✨ പുതിയ പാസ്വേഡ് സൃഷ്ടിക്കുക", bn: "✨ নতুন পাসওয়ার্ড তৈরি করুন", gu: "✨ નવો પાસવર્ડ બનાવો", or: "✨ ନୂଆ ପାସୱାର୍ଡ ତିଆରି କରନ୍ତୁ", pa: "✨ ਨਵਾਂ ਪਾਸਵਰਡ ਬਣਾਓ", ur: "✨ نیا پاس ورڈ بنائیں", es: "✨ Crear nueva contraseña", fr: "✨ Créer un nouveau mot de passe", de: "✨ Neues Passwort erstellen", ja: "✨ 新しいパスワードを作成", ko: "✨ 새 비밀번호 만들기", zh: "✨ 创建新密码", ru: "✨ Создать новый пароль", ar: "✨ إنشاء كلمة مرور جديدة" },
+            new_pw_sub: { en: "Enter your new password", hi: "अपना नया पासवर्ड दर्ज करें", mr: "तुमचा नवीन पासवर्ड प्रविष्ट करा", ta: "உங்கள் புதிய கடவுச்சொல்லை உள்ளிடவும்", te: "మీ కొత్త పాస్వర్డ్ను నమోదు చేయండి", kn: "ನಿಮ್ಮ ಹೊಸ ಪಾಸ್ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ", ml: "നിങ്ങളുടെ പുതിയ പാസ്വേഡ് നൽകുക", bn: "আপনার নতুন পাসওয়ার্ড লিখুন", gu: "તમારો નવો પાસવર્ડ દાખલ કરો", or: "ଆପଣଙ୍କ ନୂଆ ପାସୱାର୍ଡ ପ୍ରବେଶ କରନ୍ତୁ", pa: "ਆਪਣਾ ਨਵਾਂ ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ", ur: "اپنا نیا پاس ورڈ درج کریں", es: "Ingrese su nueva contraseña", fr: "Entrez votre nouveau mot de passe", de: "Geben Sie Ihr neues Passwort ein", ja: "新しいパスワードを入力してください", ko: "새 비밀번호를 입력하세요", zh: "输入您的新密码", ru: "Введите новый пароль", ar: "أدخل كلمة المرور الجديدة" },
+            reset_pw: { en: "Reset Password →", hi: "पासवर्ड रीसेट करें →", mr: "पासवर्ड रीसेट करा →", ta: "கடவுச்சொல்லை மீட்டமைக்கவும் →", te: "పాస్వర్డ్ను రీసెట్ చేయండి →", kn: "ಪಾಸ್ವರ್ಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿ →", ml: "പാസ്വേഡ് പുനഃസജ്ജമാക്കുക →", bn: "পাসওয়ার্ড রিসেট করুন →", gu: "પાસવર્ડ રીસેટ કરો →", or: "ପାସୱାର୍ଡ ରିସେଟ୍ କରନ୍ତୁ →", pa: "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ →", ur: "پاس ورڈ ری سیٹ کریں →", es: "Restablecer contraseña →", fr: "Réinitialiser le mot de passe →", de: "Passwort zurücksetzen →", ja: "パスワードをリセット →", ko: "비밀번호 재설정 →", zh: "重置密码 →", ru: "Сбросить пароль →", ar: "إعادة تعيين كلمة المرور ←" },
+            back_login2: { en: "← Back to Login", hi: "← लॉगिन पर वापस जाएं", mr: "← लॉगिन वर परत जा", ta: "← உள்நுழைவுக்குத் திரும்பு", te: "← లాగిన్కు తిరిగి వెళ్ళు", kn: "← ಲಾಗಿನ್ ಗೆ ಹಿಂತಿರುಗಿ", ml: "← ലോഗിനിലേക്ക് മടങ്ങുക", bn: "← লগইনে ফিরে যান", gu: "← લોગિન પર પાછા જાઓ", or: "← ଲଗଇନ୍ କୁ ଫେରନ୍ତୁ", pa: "← ਲੌਗਿਨ ਤੇ ਵਾਪਸ ਜਾਓ", ur: "← لاگ ان پر واپس جائیں", es: "← Volver al inicio de sesión", fr: "← Retour à la connexion", de: "← Zurück zum Login", ja: "← ログインに戻る", ko: "← 로그인으로 돌아가기", zh: "← 返回登录", ru: "← Назад к входу", ar: "← العودة إلى تسجيل الدخول" },
+            profile_points: { en: "Total Points", hi: "कुल अंक", mr: "एकूण गुण", ta: "மொத்த புள்ளிகள்", te: "మొత్తం పాయింట్లు", kn: "ಒಟ್ಟು ಅಂಕಗಳು", ml: "ആകെ പോയിന്റുകൾ", bn: "মোট পয়েন্ট", gu: "કુલ પોઇન્ટ્સ", or: "ମୋଟ ପଏଣ୍ଟ", pa: "ਕੁੱਲ ਪੁਆਇੰਟ", ur: "کل پوائنٹس", es: "Puntos totales", fr: "Points totaux", de: "Gesamtpunkte", ja: "総合ポイント", ko: "총 점수", zh: "总积分", ru: "Всего очков", ar: "مجموع النقاط" },
+            profile_level: { en: "Level", hi: "स्तर", mr: "स्तर", ta: "நிலை", te: "స్థాయి", kn: "ಮಟ್ಟ", ml: "ലെവൽ", bn: "স্তর", gu: "સ્તર", or: "ସ୍ତର", pa: "ਪੱਧਰ", ur: "درجہ", es: "Nivel", fr: "Niveau", de: "Level", ja: "レベル", ko: "레벨", zh: "等级", ru: "Уровень", ar: "المستوى" },
+            profile_streak: { en: "Day Streak", hi: "दिन स्ट्रीक", mr: "दिवस स्ट्रीक", ta: "நாள் தொடர்", te: "రోజు స్ట్రీక్", kn: "ದಿನದ ಸ್ಟ್ರೀಕ್", ml: "ദിവസ സ്ട്രീക്ക്", bn: "দিনের ধারাবাহিকতা", gu: "દિવસ સ્ટ્રીક", or: "ଦିନର ଷ୍ଟ୍ରୀକ୍", pa: "ਦਿਨ ਸਟ੍ਰੀਕ", ur: "دن سٹریک", es: "Racha de días", fr: "Série de jours", de: "Tagesstreak", ja: "デイストリーク", ko: "데이 스트릭", zh: "连续天数", ru: "Дневная серия", ar: "السلسلة اليومية" },
+            profile_games: { en: "Games Played", hi: "खेले गए खेल", mr: "खेळलेले गेम्स", ta: "விளையாடிய விளையாட்டுகள்", te: "ఆడిన గేమ్స్", kn: "ಆಡಿದ ಆಟಗಳು", ml: "കളിച്ച ഗെയിമുകൾ", bn: "খেলা গেমস", gu: "રમેલી રમતો", or: "ଖେଳିଥିବା ଗେମ୍", pa: "ਖੇਡੀਆਂ ਗਈਆਂ ਗੇਮਾਂ", ur: "کھیلے گئے گیمز", es: "Juegos jugados", fr: "Jeux joués", de: "Gespielte Spiele", ja: "プレイしたゲーム", ko: "플레이한 게임", zh: "游戏次数", ru: "Сыгранных игр", ar: "الألعاب التي تم لعبها" },
+            progress_title: { en: "📈 Your Progress", hi: "📈 आपकी प्रगति", mr: "📈 तुमची प्रगती", ta: "📈 உங்கள் முன்னேற்றம்", te: "📈 మీ పురోగతి", kn: "📈 ನಿಮ್ಮ ಪ್ರಗತಿ", ml: "📈 നിങ്ങളുടെ പുരോഗതി", bn: "📈 আপনার অগ্রগতি", gu: "📈 તમારી પ્રગતિ", or: "📈 ଆପଣଙ୍କ ପ୍ରଗତି", pa: "📈 ਤੁਹਾਡੀ ਤਰੱਕੀ", ur: "📈 آپ کی پیشرفت", es: "📈 Tu progreso", fr: "📈 Votre progression", de: "📈 Ihr Fortschritt", ja: "📈 あなたの進捗", ko: "📈 당신의 진행 상황", zh: "📈 您的进度", ru: "📈 Ваш прогресс", ar: "📈 تقدمك" },
+            overall_progress: { en: "Overall Progress", hi: "समग्र प्रगति", mr: "एकूण प्रगती", ta: "ஒட்டுமொத்த முன்னேற்றம்", te: "మొత్తం పురోగతి", kn: "ಒಟ್ಟಾರೆ ಪ್ರಗತಿ", ml: "മൊത്തത്തിലുള്ള പുരോഗതി", bn: "সামগ্রিক অগ্রগতি", gu: "એકંદર પ્રગતિ", or: "ସାମଗ୍ରିକ ପ୍ରଗତି", pa: "ਸਮੁੱਚੀ ਤਰੱਕੀ", ur: "مجموعی پیشرفت", es: "Progreso general", fr: "Progression globale", de: "Gesamtfortschritt", ja: "全体的な進捗", ko: "전체 진행률", zh: "总体进度", ru: "Общий прогресс", ar: "التقدم العام" },
+            points_next: { en: "Points to Next Level", hi: "अगले स्तर के लिए अंक", mr: "पुढील स्तरासाठी गुण", ta: "அடுத்த நிலைக்கான புள்ளிகள்", te: "తదుపరి స్థాయికి పాయింట్లు", kn: "ಮುಂದಿನ ಮಟ್ಟಕ್ಕೆ ಅಂಕಗಳು", ml: "അടുത്ത ലെവലിലേക്കുള്ള പോയിന്റുകൾ", bn: "পরবর্তী স্তরের জন্য পয়েন্ট", gu: "આગલા સ્તર માટે પોઇન્ટ્સ", or: "ପରବର୍ତ୍ତୀ ସ୍ତର ପାଇଁ ପଏଣ୍ଟ", pa: "ਅਗਲੇ ਪੱਧਰ ਲਈ ਪੁਆਇੰਟ", ur: "اگلے درجے کے لیے پوائنٹس", es: "Puntos para el siguiente nivel", fr: "Points pour le prochain niveau", de: "Punkte für die nächste Stufe", ja: "次のレベルまでのポイント", ko: "다음 레벨까지의 포인트", zh: "下一级所需积分", ru: "Очков до следующего уровня", ar: "النقاط للمستوى التالي" },
+            badges_title: { en: "🏅 Earned Badges", hi: "🏅 अर्जित बैज", mr: "🏅 मिळवलेले बॅजेस", ta: "🏅 பெற்ற பேட்ஜ்கள்", te: "🏅 సంపాదించిన బ్యాడ్జీలు", kn: "🏅 ಗಳಿಸಿದ ಬ್ಯಾಡ್ಜ್ಗಳು", ml: "🏅 നേടിയ ബാഡ്ജുകൾ", bn: "🏅 অর্জিত ব্যাজ", gu: "🏅 મેળવેલ બેજ", or: "🏅 ଅର୍ଜିତ ବ୍ୟାଡ୍ଜ୍", pa: "🏅 ਪ੍ਰਾਪਤ ਕੀਤੇ ਬੈਜ", ur: "🏅 حاصل کردہ بیجز", es: "🏅 Insignias obtenidas", fr: "🏅 Badges obtenus", de: "🏅 Verdiente Abzeichen", ja: "🏅 獲得したバッジ", ko: "🏅 획득한 배지", zh: "🏅 获得的徽章", ru: "🏅 Полученные значки", ar: "🏅 الشارات المكتسبة" },
+            activity_title: { en: "📜 Recent Activity", hi: "📜 हालिया गतिविधि", mr: "📜 अलीकडील क्रियाकलाप", ta: "📜 சமீபத்திய செயல்பாடு", te: "📜 ఇటీవలి కార్యాచరణ", kn: "📜 ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ", ml: "📜 സമീപകാല പ്രവർത്തനം", bn: "📜 সাম্প্রতিক কার্যকলাপ", gu: "📜 તાજેતરની પ્રવૃત્તિ", or: "📜 ସାମ୍ପ୍ରତିକ କାର୍ଯ୍ୟକଳାପ", pa: "📜 ਹਾਲੀਆ ਗਤੀਵਿਧੀ", ur: "📜 حالیہ سرگرمی", es: "📜 Actividad reciente", fr: "📜 Activité récente", de: "📜 Letzte Aktivität", ja: "📜 最近のアクティビティ", ko: "📜 최근 활동", zh: "📜 最近活动", ru: "📜 Недавняя активность", ar: "📜 النشاط الأخير" },
+            edit_profile: { en: "✏️ Edit Profile", hi: "✏️ प्रोफाइल संपादित करें", mr: "✏️ प्रोफाइल संपादित करा", ta: "✏️ சுயவிவரத்தைத் திருத்து", te: "✏️ ప్రొఫైల్ను సవరించండి", kn: "✏️ ಪ್ರೊಫೈಲ್ ಸಂಪಾದಿಸಿ", ml: "✏️ പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യുക", bn: "✏️ প্রোফাইল সম্পাদনা করুন", gu: "✏️ પ્રોફાઇલ સંપાદિત કરો", or: "✏️ ପ୍ରୋଫାଇଲ୍ ସମ୍ପାଦନ କରନ୍ତୁ", pa: "✏️ ਪ੍ਰੋਫਾਈਲ ਸੰਪਾਦਿਤ ਕਰੋ", ur: "✏️ پروفائل میں ترمیم کریں", es: "✏️ Editar perfil", fr: "✏️ Modifier le profil", de: "✏️ Profil bearbeiten", ja: "✏️ プロフィールを編集", ko: "✏️ 프로필 수정", zh: "✏️ 编辑资料", ru: "✏️ Редактировать профиль", ar: "✏️ تحرير الملف الشخصي" }
+        };
+
+        let currentUser = null;
+        let selectedRole = "student";
+        let selectedDegree = null, selectedBranch = null, selectedSemester = null, selectedSubject = null;
+        let currentDifficulty = '', currentQuestions = [], currentIndex = 0, score = 0, timeLeft = 0, timerInterval = null;
+        let registeredUsers = [];
+        let teachers = [];
+        let students = [];
+        let resetEmailAddress = '';
+        let generatedOtp = '';
+        let otpTimer = null;
+        let currentLanguage = 'en';
+
+        // ==================== LANGUAGE FUNCTION ====================
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('preferred_language', lang);
+            
+            const t = (key) => {
+                return (translations[key] && translations[key][lang]) 
+                    ? translations[key][lang] 
+                    : (translations[key] && translations[key]['en']) 
+                        ? translations[key]['en'] 
+                        : key;
+            };
+            
+            // Navigation
+            const navHome = document.getElementById('navHome');
+            if(navHome) navHome.innerHTML = t('home');
+            const navPlay = document.getElementById('navPlay');
+            if(navPlay) navPlay.innerHTML = t('play');
+            const navLeaderboard = document.getElementById('navLeaderboard');
+            if(navLeaderboard) navLeaderboard.innerHTML = t('leaderboard');
+            const navProfile = document.getElementById('navProfile');
+            if(navProfile) navProfile.innerHTML = t('profile');
+            
+            // Auth button
+            const authBtn = document.getElementById('authBtn');
+            if(authBtn && !currentUser) authBtn.innerHTML = t('login_btn');
+            
+            // Hero buttons
+            const startBtn = document.getElementById('startLearningBtn');
+            if(startBtn) startBtn.innerHTML = t('start_learning');
+            const puzzleBtn = document.getElementById('puzzleGameBtn');
+            if(puzzleBtn) puzzleBtn.innerHTML = t('puzzle_game');
+            const rapidBtn = document.getElementById('rapidFireBtn');
+            if(rapidBtn) rapidBtn.innerHTML = t('rapid_fire');
+            
+            // Hero title special handling
+            const heroTitle = document.getElementById('heroTitle');
+            if(heroTitle) heroTitle.innerHTML = t('welcome_title') + ' <span style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">EduPlay</span>';
+            
+            // Why Choose section
+            const whyChoose = document.getElementById('whyChooseTitle');
+            if(whyChoose) whyChoose.innerHTML = t('why_choose');
+            const aiTitle = document.getElementById('featureAiTitle');
+            if(aiTitle) aiTitle.innerHTML = t('ai_questions');
+            const aiDesc = document.getElementById('featureAiDesc');
+            if(aiDesc) aiDesc.innerHTML = t('ai_desc');
+            const quizTitle = document.getElementById('featureQuizTitle');
+            if(quizTitle) quizTitle.innerHTML = t('quiz_games');
+            const quizDesc = document.getElementById('featureQuizDesc');
+            if(quizDesc) quizDesc.innerHTML = t('quiz_desc');
+            const puzzleTitle = document.getElementById('featurePuzzleTitle');
+            if(puzzleTitle) puzzleTitle.innerHTML = t('puzzle_adventure');
+            const puzzleDesc = document.getElementById('featurePuzzleDesc');
+            if(puzzleDesc) puzzleDesc.innerHTML = t('puzzle_desc');
+            const rapidTitle = document.getElementById('featureRapidTitle');
+            if(rapidTitle) rapidTitle.innerHTML = t('rapid_fire_title');
+            const rapidDesc = document.getElementById('featureRapidDesc');
+            if(rapidDesc) rapidDesc.innerHTML = t('rapid_desc');
+            const skillTitle = document.getElementById('featureSkillTitle');
+            if(skillTitle) skillTitle.innerHTML = t('skill_arena');
+            const skillDesc = document.getElementById('featureSkillDesc');
+            if(skillDesc) skillDesc.innerHTML = t('skill_desc');
+            const detectiveTitle = document.getElementById('featureDetectiveTitle');
+            if(detectiveTitle) detectiveTitle.innerHTML = t('code_detective');
+            const detectiveDesc = document.getElementById('featureDetectiveDesc');
+            if(detectiveDesc) detectiveDesc.innerHTML = t('code_desc');
+            const memoryTitle = document.getElementById('featureMemoryTitle');
+            if(memoryTitle) memoryTitle.innerHTML = t('memory_match');
+            const memoryDesc = document.getElementById('featureMemoryDesc');
+            if(memoryDesc) memoryDesc.innerHTML = t('memory_desc');
+            const badgeTitle = document.getElementById('featureBadgeTitle');
+            if(badgeTitle) badgeTitle.innerHTML = t('earn_badges');
+            const badgeDesc = document.getElementById('featureBadgeDesc');
+            if(badgeDesc) badgeDesc.innerHTML = t('badges_desc');
+            
+            // Click to play text
+            const clickText = t('click_to_play');
+            const allSmall = document.querySelectorAll('.feature-card-ai small, .feature-card-quiz small, .feature-card-puzzle small, .feature-card-rapid small, .feature-card-skill small, .feature-card-detective small, .feature-card-memory small, .feature-card-badge small');
+            allSmall.forEach(el => { if(el) el.innerHTML = clickText; });
+            
+            // Statistics
+            const statsTitle = document.getElementById('statsTitle');
+            if(statsTitle) statsTitle.innerHTML = t('stats_title');
+            const statDegrees = document.getElementById('statDegreesLabel');
+            if(statDegrees) statDegrees.innerHTML = t('stat_degrees');
+            const statBranches = document.getElementById('statBranchesLabel');
+            if(statBranches) statBranches.innerHTML = t('stat_branches');
+            const statSubjects = document.getElementById('statSubjectsLabel');
+            if(statSubjects) statSubjects.innerHTML = t('stat_subjects');
+            const statStudents = document.getElementById('statStudentsLabel');
+            if(statStudents) statStudents.innerHTML = t('stat_students');
+            
+            // CTA Section
+            const ctaTitle = document.getElementById('ctaTitle');
+            if(ctaTitle) ctaTitle.innerHTML = t('cta_title');
+            const ctaDesc = document.getElementById('ctaDesc');
+            if(ctaDesc) ctaDesc.innerHTML = t('cta_desc');
+            const ctaBtn = document.getElementById('ctaBtn');
+            if(ctaBtn) ctaBtn.innerHTML = t('cta_btn');
+            
+            // Footer
+            const footerAbout = document.getElementById('footerAboutTitle');
+            if(footerAbout) footerAbout.innerHTML = t('footer_about');
+            const footerAboutDesc = document.getElementById('footerAboutDesc');
+            if(footerAboutDesc) footerAboutDesc.innerHTML = t('footer_about_desc');
+            const footerQuick = document.getElementById('footerQuickLinks');
+            if(footerQuick) footerQuick.innerHTML = t('footer_quick');
+            const footerHome = document.getElementById('footerHome');
+            if(footerHome) footerHome.innerHTML = t('footer_home');
+            const footerStart = document.getElementById('footerStart');
+            if(footerStart) footerStart.innerHTML = t('footer_start');
+            const footerLeaderboard = document.getElementById('footerLeaderboard');
+            if(footerLeaderboard) footerLeaderboard.innerHTML = t('footer_leaderboard');
+            const footerContact = document.getElementById('footerContact');
+            if(footerContact) footerContact.innerHTML = t('footer_contact');
+            const copyright = document.getElementById('copyrightText');
+            if(copyright) copyright.innerHTML = t('copyright');
+            
+            // Play page
+            const playSelect = document.getElementById('playSelectDegree');
+            if(playSelect) playSelect.innerHTML = t('select_degree');
+            const playChoose = document.getElementById('playChoosePath');
+            if(playChoose) playChoose.innerHTML = t('choose_path');
+            const backDegrees = document.getElementById('backToDegreesBtn');
+            if(backDegrees) backDegrees.innerHTML = t('back_degrees');
+            const selectBranch = document.getElementById('selectBranchTitle');
+            if(selectBranch) selectBranch.innerHTML = t('select_branch');
+            const backBranches = document.getElementById('backToBranchesBtn');
+            if(backBranches) backBranches.innerHTML = t('back_branches');
+            const selectSem = document.getElementById('selectSemesterTitle');
+            if(selectSem) selectSem.innerHTML = t('select_semester');
+            const backSems = document.getElementById('backToSemestersBtn');
+            if(backSems) backSems.innerHTML = t('back_semesters');
+            const selectSub = document.getElementById('selectSubjectTitle');
+            if(selectSub) selectSub.innerHTML = t('select_subject');
+            const backSubs = document.getElementById('backToSubjectsBtn');
+            if(backSubs) backSubs.innerHTML = t('back_subjects');
+            const selectTopic = document.getElementById('selectTopicTitle');
+            if(selectTopic) selectTopic.innerHTML = t('select_topic');
+            
+            // Leaderboard
+            const lbTitle = document.getElementById('leaderboardTitle');
+            if(lbTitle) lbTitle.innerHTML = t('leaderboard_title');
+            const lbSub = document.getElementById('leaderboardSub');
+            if(lbSub) lbSub.innerHTML = t('leaderboard_sub');
+            
+            // Leaderboard tabs
+            const tabOverall = document.getElementById('tabOverall');
+            if(tabOverall) tabOverall.innerHTML = t('tab_overall') || '🏆 Overall';
+            const tabPuzzle = document.getElementById('tabPuzzle');
+            if(tabPuzzle) tabPuzzle.innerHTML = t('tab_puzzle') || '🧩 Puzzle';
+            const tabQuiz = document.getElementById('tabQuiz');
+            if(tabQuiz) tabQuiz.innerHTML = t('tab_quiz') || '📝 Quiz';
+            const tabRapid = document.getElementById('tabRapid');
+            if(tabRapid) tabRapid.innerHTML = t('tab_rapid') || '⚡ Rapid Fire';
+            const tabAI = document.getElementById('tabAI');
+            if(tabAI) tabAI.innerHTML = t('tab_ai') || '🤖 AI Game';
+            const tabSkill = document.getElementById('tabSkill');
+            if(tabSkill) tabSkill.innerHTML = t('tab_skill') || '🏆 Skill Arena';
+            const tabDetective = document.getElementById('tabDetective');
+            if(tabDetective) tabDetective.innerHTML = t('tab_detective') || '🔍 Code Detective';
+            const tabMemory = document.getElementById('tabMemory');
+            if(tabMemory) tabMemory.innerHTML = t('tab_memory') || '🧠 Memory Match';
+            const tabLevel = document.getElementById('tabLevel');
+            if(tabLevel) tabLevel.innerHTML = t('tab_level') || '📈 Top Level';
+            const tabGames = document.getElementById('tabGames');
+            if(tabGames) tabGames.innerHTML = t('tab_games') || '🎮 Most Games';
+            
+            // Auth modal
+            const loginTitle = document.getElementById('loginTitle');
+            if(loginTitle) loginTitle.innerHTML = t('login_title');
+            const loginSub = document.getElementById('loginSub');
+            if(loginSub) loginSub.innerHTML = t('login_sub');
+            const roleStudent = document.getElementById('roleStudent');
+            if(roleStudent) roleStudent.innerHTML = t('role_student');
+            const roleTeacher = document.getElementById('roleTeacher');
+            if(roleTeacher) roleTeacher.innerHTML = t('role_teacher');
+            const roleDirector = document.getElementById('roleDirector');
+            if(roleDirector) roleDirector.innerHTML = t('role_director');
+            const googleBtn = document.getElementById('googleBtn');
+            if(googleBtn) googleBtn.innerHTML = t('google_btn');
+            const forgotLink = document.getElementById('forgotLink');
+            if(forgotLink) forgotLink.innerHTML = t('forgot_link');
+            const loginBtn = document.getElementById('loginBtn');
+            if(loginBtn) loginBtn.innerHTML = t('login_btn_text');
+            const noAccount = document.getElementById('noAccount');
+            if(noAccount && noAccount.childNodes[0]) noAccount.childNodes[0].textContent = t('no_account');
+            const createAccLink = document.getElementById('createAccountLink');
+            if(createAccLink) createAccLink.innerHTML = t('create_account');
+            const signupTitle = document.getElementById('signupTitle');
+            if(signupTitle) signupTitle.innerHTML = t('signup_title');
+            const signupSub = document.getElementById('signupSub');
+            if(signupSub) signupSub.innerHTML = t('signup_sub');
+            const signupGoogle = document.getElementById('signupGoogleBtn');
+            if(signupGoogle) signupGoogle.innerHTML = t('signup_google');
+            const signupBtn = document.getElementById('signupBtn');
+            if(signupBtn) signupBtn.innerHTML = t('signup_btn');
+            const haveAccount = document.getElementById('haveAccount');
+            if(haveAccount && haveAccount.childNodes[0]) haveAccount.childNodes[0].textContent = t('have_account');
+            const loginLink = document.getElementById('loginLink');
+            if(loginLink) loginLink.innerHTML = t('login_link');
+            
+            // Forgot password modal
+            const forgotTitle = document.getElementById('forgotTitle');
+            if(forgotTitle) forgotTitle.innerHTML = t('forgot_title');
+            const forgotSub = document.getElementById('forgotSub');
+            if(forgotSub) forgotSub.innerHTML = t('forgot_sub');
+            const sendReset = document.getElementById('sendResetBtn');
+            if(sendReset) sendReset.innerHTML = t('send_reset');
+            const backLogin = document.getElementById('backToLoginLink');
+            if(backLogin) backLogin.innerHTML = t('back_login');
+            const otpTitle = document.getElementById('otpTitle');
+            if(otpTitle) otpTitle.innerHTML = t('otp_title');
+            const otpSub = document.getElementById('otpSub');
+            if(otpSub) otpSub.innerHTML = t('otp_sub');
+            const verifyOtp = document.getElementById('verifyOtpBtn');
+            if(verifyOtp) verifyOtp.innerHTML = t('verify_otp');
+            const backStep = document.getElementById('backToStep1Link');
+            if(backStep) backStep.innerHTML = t('back_step');
+            const newPwTitle = document.getElementById('newPwTitle');
+            if(newPwTitle) newPwTitle.innerHTML = t('new_pw_title');
+            const newPwSub = document.getElementById('newPwSub');
+            if(newPwSub) newPwSub.innerHTML = t('new_pw_sub');
+            const resetPw = document.getElementById('resetPwBtn');
+            if(resetPw) resetPw.innerHTML = t('reset_pw');
+            const backLogin2 = document.getElementById('backToLoginLink2');
+            if(backLogin2) backLogin2.innerHTML = t('back_login2');
+            
+            // Profile page
+            const profilePoints = document.getElementById('profileTotalPointsLabel');
+            if(profilePoints) profilePoints.innerHTML = t('profile_points');
+            const profileLevel = document.getElementById('profileLevelLabel');
+            if(profileLevel) profileLevel.innerHTML = t('profile_level');
+            const profileStreak = document.getElementById('profileStreakLabel');
+            if(profileStreak) profileStreak.innerHTML = t('profile_streak');
+            const profileGames = document.getElementById('profileGamesLabel');
+            if(profileGames) profileGames.innerHTML = t('profile_games');
+            const progressTitle = document.getElementById('profileProgressTitle');
+            if(progressTitle) progressTitle.innerHTML = t('progress_title');
+            const overallLabel = document.getElementById('profileOverallLabel');
+            if(overallLabel) overallLabel.innerHTML = t('overall_progress');
+            const pointsLabel = document.getElementById('profilePointsLabel');
+            if(pointsLabel) pointsLabel.innerHTML = t('points_next');
+            const badgesTitle = document.getElementById('profileBadgesTitle');
+            if(badgesTitle) badgesTitle.innerHTML = t('badges_title');
+            const activityTitle = document.getElementById('profileActivityTitle');
+            if(activityTitle) activityTitle.innerHTML = t('activity_title');
+            const editBtn = document.getElementById('editProfileBtn');
+            if(editBtn) editBtn.innerHTML = t('edit_profile');
+            
+            // Language select dropdown
+            const langSelect = document.getElementById('languageSelect');
+            if(langSelect) langSelect.value = lang;
+            
+            console.log('Language changed to:', lang);
+        }
+
+        // Add missing tab translations
+        translations.tab_overall = { en: "🏆 Overall", hi: "🏆 समग्र", mr: "🏆 एकूण" };
+        translations.tab_puzzle = { en: "🧩 Puzzle", hi: "🧩 पहेली", mr: "🧩 कोडे" };
+        translations.tab_quiz = { en: "📝 Quiz", hi: "📝 क्विज़", mr: "📝 क्विझ" };
+        translations.tab_rapid = { en: "⚡ Rapid Fire", hi: "⚡ रैपिड फायर", mr: "⚡ रॅपिड फायर" };
+        translations.tab_ai = { en: "🤖 AI Game", hi: "🤖 एआई गेम", mr: "🤖 एआय गेम" };
+        translations.tab_skill = { en: "🏆 Skill Arena", hi: "🏆 स्किल एरिना", mr: "🏆 कौशल्य अरेना" };
+        translations.tab_detective = { en: "🔍 Code Detective", hi: "🔍 कोड डिटेक्टिव", mr: "🔍 कोड डिटेक्टिव" };
+        translations.tab_memory = { en: "🧠 Memory Match", hi: "🧠 मेमोरी मैच", mr: "🧠 मेमरी मॅच" };
+        translations.tab_level = { en: "📈 Top Level", hi: "📈 शीर्ष स्तर", mr: "📈 टॉप लेवल" };
+        translations.tab_games = { en: "🎮 Most Games", hi: "🎮 सबसे अधिक खेल", mr: "🎮 सर्वाधिक गेम्स" };
+        
+        // Add welcome_title if missing
+        translations.welcome_title = { en: "Welcome to", hi: "में आपका स्वागत है", mr: "मध्ये आपले स्वागत आहे" };
+
+        // ==================== LOAD DATA FUNCTIONS ====================
+        function loadUsers() {
+            const saved = localStorage.getItem('registeredUsers');
+            if(saved) registeredUsers = JSON.parse(saved);
+            else {
+                registeredUsers = [
+                    { id: 1, name: "Alex Kumar", email: "alex@eduplay.com", password: "123456", role: "student", points: 12500, level: 15, gamesPlayed: 45, joinDate: "2024-01-15", avatar: "👨‍💻" },
+                    { id: 2, name: "Priya Singh", email: "priya@eduplay.com", password: "123456", role: "student", points: 10800, level: 13, gamesPlayed: 38, joinDate: "2024-02-10", avatar: "👩‍🎓" },
+                    { id: 3, name: "Prof. Sharma", email: "teacher@eduplay.com", password: "123456", role: "teacher", points: 5000, level: 8, gamesPlayed: 15, joinDate: "2023-06-01", avatar: "👨‍🏫" },
+                    { id: 4, name: "Dr. Johnson", email: "director@eduplay.com", password: "123456", role: "director", points: 10000, level: 20, gamesPlayed: 50, joinDate: "2023-01-10", avatar: "👔" }
+                ];
+                saveUsers();
+            }
+        }
+        
+        function saveUsers() { localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers)); }
+        function loadTeachers() { const saved = localStorage.getItem('teachers'); teachers = saved ? JSON.parse(saved) : []; }
+        function saveTeachers() { localStorage.setItem('teachers', JSON.stringify(teachers)); }
+        function loadStudents() { const saved = localStorage.getItem('students'); students = saved ? JSON.parse(saved) : []; }
+        function saveStudents() { localStorage.setItem('students', JSON.stringify(students)); }
+        
+        function addTeacher() {
+            const name = document.getElementById('teacherFullName')?.value;
+            const email = document.getElementById('teacherEmailAddr')?.value;
+            const subject = document.getElementById('teacherSubject')?.value;
+            const college = document.getElementById('teacherCollegeSelect')?.value;
+            if(!name || !email || !subject || !college) { alert('Please fill all fields'); return; }
+            teachers.push({ id: Date.now(), name, email, subject, college });
+            saveTeachers();
+            displayTeachersList();
+            updateDirectorStats();
+            document.getElementById('teacherFullName').value = '';
+            document.getElementById('teacherEmailAddr').value = '';
+            document.getElementById('teacherSubject').value = '';
+            document.getElementById('teacherCollegeSelect').value = '';
+            alert(`Teacher ${name} added!`);
+        }
+        
+        function deleteTeacher(id) {
+            if(confirm('Remove this teacher?')) {
+                teachers = teachers.filter(t => t.id !== id);
+                saveTeachers();
+                displayTeachersList();
+                updateDirectorStats();
+            }
+        }
+        
+        function displayTeachersList() {
+            const container = document.getElementById('teachersListContainer');
+            if(!container) return;
+            if(teachers.length === 0) { container.innerHTML = '<p style="text-align:center; padding:2rem;">No teachers added yet.</p>'; return; }
+            container.innerHTML = teachers.map(t => `<div class="list-item"><div><strong>${t.name}</strong><br><small>📧 ${t.email} | 📚 ${t.subject} | 🏛️ ${t.college}</small></div><button class="btn-delete" onclick="deleteTeacher(${t.id})">Delete</button></div>`).join('');
+        }
+        
+        function addStudent() {
+            const name = document.getElementById('studentName')?.value;
+            const email = document.getElementById('studentEmail')?.value;
+            const course = document.getElementById('studentCourse')?.value;
+            if(!name || !email || !course) { alert('Please fill all fields'); return; }
+            students.push({ id: Date.now(), name, email, course, teacherId: currentUser?.id, progress: Math.floor(Math.random() * 100) });
+            saveStudents();
+            displayStudentsList();
+            updateTeacherStats();
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentEmail').value = '';
+            document.getElementById('studentCourse').value = '';
+            alert(`Student ${name} added!`);
+        }
+        
+        function deleteStudent(id) {
+            if(confirm('Remove this student?')) {
+                students = students.filter(s => s.id !== id);
+                saveStudents();
+                displayStudentsList();
+                updateTeacherStats();
+            }
+        }
+        
+        function displayStudentsList() {
+            const container = document.getElementById('studentsListContainer');
+            if(!container) return;
+            const teacherStudents = students.filter(s => s.teacherId === currentUser?.id);
+            if(teacherStudents.length === 0) { container.innerHTML = '<p style="text-align:center; padding:2rem;">No students added yet.</p>'; return; }
+            container.innerHTML = teacherStudents.map(s => `<div class="list-item"><div><strong>${s.name}</strong><br><small>📧 ${s.email} | 📚 ${s.course}</small></div><div><div class="student-progress"><div class="student-progress-fill" style="width: ${s.progress}%"></div></div><small>${s.progress}% Complete</small><button class="btn-delete" style="margin-left:1rem;" onclick="deleteStudent(${s.id})">Delete</button></div></div>`).join('');
+        }
+        
+        function updateDirectorStats() {
+            const totalTeachers = document.getElementById('directorTotalTeachers');
+            if(totalTeachers) totalTeachers.textContent = teachers.length;
+            const totalStudents = document.getElementById('directorTotalStudents');
+            if(totalStudents) totalStudents.textContent = students.length;
+        }
+        
+        function updateTeacherStats() {
+            const totalStudents = document.getElementById('teacherTotalStudents');
+            if(totalStudents) totalStudents.textContent = students.filter(s => s.teacherId === currentUser?.id).length;
+        }
+        
+        // ==================== FORGOT PASSWORD ====================
+        function showForgotPasswordModal() { closeAuthModal(); document.getElementById('forgotPasswordModal').style.display = 'flex'; showStep1(); }
+        function closeForgotPasswordModal() { if(otpTimer) clearInterval(otpTimer); document.getElementById('forgotPasswordModal').style.display = 'none'; }
+        function showStep1() { document.getElementById('forgotStep1').style.display = 'block'; document.getElementById('forgotStep2').style.display = 'none'; document.getElementById('forgotStep3').style.display = 'none'; }
+        function showStep2(email) { document.getElementById('forgotStep1').style.display = 'none'; document.getElementById('forgotStep2').style.display = 'block'; document.getElementById('otpEmailDisplay').textContent = email; startOtpTimer(); }
+        function showStep3() { document.getElementById('forgotStep1').style.display = 'none'; document.getElementById('forgotStep2').style.display = 'none'; document.getElementById('forgotStep3').style.display = 'block'; }
+        function goBackToStep1() { if(otpTimer) clearInterval(otpTimer); showStep1(); }
+        function moveToNext(current, nextId) { if(current.value.length === 1) document.getElementById(nextId).focus(); }
+        function validateOtp() { let otp = ''; for(let i=1;i<=6;i++) otp += document.getElementById(`otp${i}`).value; if(otp.length === 6) verifyOtp(); }
+        
+        function sendResetLink() {
+            const email = document.getElementById('resetEmail').value;
+            if(!email || !email.includes('@')) { alert('Please enter a valid email address'); return; }
+            resetEmailAddress = email;
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            alert(`📧 Demo Mode\n\nOTP for ${email} is: ${generatedOtp}`);
+            showStep2(email);
+        }
+        
+        function startOtpTimer() {
+            let timeLeftVal = 60;
+            if(otpTimer) clearInterval(otpTimer);
+            otpTimer = setInterval(() => {
+                timeLeftVal--;
+                const timerCount = document.getElementById('timerCount');
+                if(timerCount) timerCount.textContent = timeLeftVal;
+                if(timeLeftVal <= 0) {
+                    clearInterval(otpTimer);
+                    const timerText = document.getElementById('timerText');
+                    const resendLink = document.getElementById('resendLink');
+                    if(timerText) timerText.style.display = 'none';
+                    if(resendLink) resendLink.style.display = 'inline';
+                }
+            }, 1000);
+        }
+        
+        function resendOtp() {
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            alert(`New OTP sent: ${generatedOtp}`);
+            const timerText = document.getElementById('timerText');
+            const resendLink = document.getElementById('resendLink');
+            if(timerText) timerText.style.display = 'inline';
+            if(resendLink) resendLink.style.display = 'none';
+            if(otpTimer) clearInterval(otpTimer);
+            startOtpTimer();
+        }
+        
+        function verifyOtp() {
+            let enteredOtp = '';
+            for(let i=1;i<=6;i++) enteredOtp += document.getElementById(`otp${i}`).value;
+            if(enteredOtp.length !== 6) { alert('Please enter complete 6-digit OTP'); return; }
+            if(enteredOtp === generatedOtp) { showStep3(); }
+            else { alert('❌ Invalid OTP! Please try again.'); for(let i=1;i<=6;i++) document.getElementById(`otp${i}`).value = ''; document.getElementById('otp1').focus(); }
+        }
+        
+        function resetPassword() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if(!newPassword || !confirmPassword) { alert('Please fill both password fields'); return; }
+            if(newPassword.length < 6) { alert('Password must be at least 6 characters'); return; }
+            if(newPassword !== confirmPassword) { alert('Passwords do not match!'); return; }
+            const userIndex = registeredUsers.findIndex(u => u.email === resetEmailAddress);
+            if(userIndex !== -1) { registeredUsers[userIndex].password = newPassword; saveUsers(); }
+            alert('✅ Password reset successfully! Please login with your new password.');
+            if(otpTimer) clearInterval(otpTimer);
+            closeForgotPasswordModal();
+            showAuthModal();
+            document.getElementById('resetEmail').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+        
+        // ==================== AUTH FUNCTIONS ====================
+        function showAuthModal() { document.getElementById('authModal').style.display = 'flex'; showLoginForm(); }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+        function showLoginForm() { document.getElementById('loginForm').style.display = 'block'; document.getElementById('signupForm').style.display = 'none'; }
+        function showSignupForm() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('signupForm').style.display = 'block'; }
+        
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('active');
+                if(card.getAttribute('data-role') === role) card.classList.add('active');
+            });
+        }
+        
+        function signup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const role = document.getElementById('signupRoleSelect').value;
+            if(!name || !email || !password) { alert('Please fill all fields'); return; }
+            if(password.length < 6) { alert('Password must be at least 6 characters'); return; }
+            if(registeredUsers.find(u => u.email === email)) { alert('User already exists!'); showLoginForm(); return; }
+            const newUser = { id: Date.now(), name, email, password, role, points: 0, level: 1, gamesPlayed: 0, joinDate: new Date().toISOString().split('T')[0], avatar: "👤" };
+            registeredUsers.push(newUser);
+            saveUsers();
+            currentUser = { ...newUser };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUIBoth();
+            closeAuthModal();
+            if(currentUser.role === 'student') showPage('play');
+            else if(currentUser.role === 'teacher') showPage('teacher');
+            else if(currentUser.role === 'director') showPage('director');
+            alert(`✅ Welcome ${name}!`);
+        }
+        
+        function googleLogin() {
+            const email = prompt("Enter your email:");
+            if(email && email.includes('@')) {
+                let user = registeredUsers.find(u => u.email === email);
+                if(!user) {
+                    user = { id: Date.now(), name: email.split('@')[0], email: email, role: selectedRole, points: 0, level: 1, gamesPlayed: 0, joinDate: new Date().toISOString().split('T')[0], avatar: "👤" };
+                    registeredUsers.push(user);
+                    saveUsers();
+                }
+                currentUser = { ...user };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateUIBoth();
+                closeAuthModal();
+                if(currentUser.role === 'student') showPage('play');
+                else if(currentUser.role === 'teacher') showPage('teacher');
+                else if(currentUser.role === 'director') showPage('director');
+                alert(`✅ Welcome ${currentUser.name}!`);
+            }
+        }
+        
+        function emailLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const user = registeredUsers.find(u => u.email === email && u.password === password);
+            if(user) {
+                if(user.role !== selectedRole) { alert(`You are registered as ${user.role}. Please select correct role.`); return; }
+                currentUser = { ...user };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateUIBoth();
+                closeAuthModal();
+                if(currentUser.role === 'student') showPage('play');
+                else if(currentUser.role === 'teacher') showPage('teacher');
+                else if(currentUser.role === 'director') showPage('director');
+                alert(`✅ Welcome back ${currentUser.name}!`);
+            } else {
+                alert('Invalid credentials! Demo: alex@eduplay.com / 123456');
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            updateUIBoth();
+            showPage('home');
+            alert('✅ Logged out!');
+        }
+        
+        function updateUIBoth() {
+            const authBtn = document.getElementById('authBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userNameSpan = document.getElementById('userNameDisplay');
+            const teacherNavLink = document.getElementById('teacherNavLink');
+            const directorNavLink = document.getElementById('directorNavLink');
+            
+            if(currentUser) {
+                if(authBtn) authBtn.style.display = 'none';
+                if(logoutBtn) logoutBtn.style.display = 'block';
+                if(userNameSpan) {
+                    userNameSpan.style.display = 'inline';
+                    userNameSpan.textContent = `👤 ${currentUser.name}`;
+                }
+                if(teacherNavLink) {
+                    if(currentUser.role === 'teacher') teacherNavLink.classList.add('visible');
+                    else teacherNavLink.classList.remove('visible');
+                }
+                if(directorNavLink) {
+                    if(currentUser.role === 'director') directorNavLink.classList.add('visible');
+                    else directorNavLink.classList.remove('visible');
+                }
+                updateProfileUI();
+                if(currentUser.role === 'teacher') { 
+                    const teacherName = document.getElementById('teacherName');
+                    if(teacherName) teacherName.textContent = currentUser.name;
+                    displayStudentsList(); 
+                    updateTeacherStats(); 
+                }
+                if(currentUser.role === 'director') { 
+                    const directorName = document.getElementById('directorName');
+                    if(directorName) directorName.textContent = currentUser.name;
+                    displayTeachersList(); 
+                    updateDirectorStats(); 
+                }
+            } else {
+                if(authBtn) authBtn.style.display = 'block';
+                if(logoutBtn) logoutBtn.style.display = 'none';
+                if(userNameSpan) userNameSpan.style.display = 'none';
+                if(teacherNavLink) teacherNavLink.classList.remove('visible');
+                if(directorNavLink) directorNavLink.classList.remove('visible');
+            }
+        }
+        
+        function updateProfileUI() {
+            if(!currentUser) return;
+            const profileName = document.getElementById('profileName');
+            if(profileName) profileName.textContent = currentUser.name;
+            const profileEmail = document.getElementById('profileEmail');
+            if(profileEmail) profileEmail.textContent = currentUser.email;
+            const profileAvatar = document.getElementById('profileAvatar');
+            if(profileAvatar) profileAvatar.textContent = currentUser.avatar || "👤";
+            const totalPoints = document.getElementById('totalPoints');
+            if(totalPoints) totalPoints.textContent = currentUser.points;
+            const userLevel = document.getElementById('userLevel');
+            if(userLevel) userLevel.textContent = currentUser.level;
+            const gamesPlayed = document.getElementById('gamesPlayedCount');
+            if(gamesPlayed) gamesPlayed.textContent = currentUser.gamesPlayed;
+            const streakDays = document.getElementById('streakDays');
+            if(streakDays) streakDays.textContent = Math.floor(Math.random() * 10) + 1;
+            const roleBadge = document.getElementById('profileRoleBadge');
+            if(roleBadge) {
+                roleBadge.textContent = currentUser.role === 'student' ? '🎓 Student' : (currentUser.role === 'teacher' ? '👨‍🏫 Teacher' : '👔 Director');
+                roleBadge.className = `profile-role role-${currentUser.role}`;
+            }
+            const pointsInLevel = currentUser.points % 500;
+            const progressPercent = (pointsInLevel / 500) * 100;
+            const progressFill = document.getElementById('progressFill');
+            if(progressFill) progressFill.style.width = `${progressPercent}%`;
+            const progressPercentSpan = document.getElementById('progressPercent');
+            if(progressPercentSpan) progressPercentSpan.textContent = `${Math.floor(progressPercent)}%`;
+            const pointsToNext = document.getElementById('pointsToNext');
+            if(pointsToNext) pointsToNext.textContent = `${500 - pointsInLevel} points needed`;
+            const levelProgressFill = document.getElementById('levelProgressFill');
+            if(levelProgressFill) levelProgressFill.style.width = `${progressPercent}%`;
+            const badgesList = document.getElementById('badgesList');
+            if(badgesList) badgesList.innerHTML = `<div class="badge-item"><div class="badge-icon">🎯</div><div class="badge-name">First Game</div></div><div class="badge-item"><div class="badge-icon">🔥</div><div class="badge-name">3 Day Streak</div></div><div class="badge-item"><div class="badge-icon">⭐</div><div class="badge-name">Quick Learner</div></div>`;
+            const recentActivity = document.getElementById('recentActivity');
+            if(recentActivity) recentActivity.innerHTML = `<div class="activity-item"><div class="activity-left"><div class="activity-icon">🎮</div><div><div class="activity-text">Started playing</div><div class="activity-time">Just now</div></div></div><div class="activity-points">+0 XP</div></div>`;
+        }
+        
+        function editProfile() {
+            const newName = prompt("Enter your full name:", currentUser?.name);
+            if(newName && newName.trim()) {
+                if(currentUser) {
+                    currentUser.name = newName;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    const userIndex = registeredUsers.findIndex(u => u.email === currentUser.email);
+                    if(userIndex !== -1) { registeredUsers[userIndex].name = newName; saveUsers(); }
+                    updateProfileUI();
+                    updateUIBoth();
+                    alert("Profile updated!");
+                }
+            }
+        }
+        
+        function handleStartLearning() { if(currentUser) showPage('play'); else showAuthModal(); }
+        function showLeaderboardOrProfile() { if(currentUser) showPage('leaderboard'); else showAuthModal(); }
+        
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const pageElement = document.getElementById(pageName + 'Page');
+            if(pageElement) pageElement.classList.add('active');
+            if(pageName === 'play') { 
+                if(!currentUser) { alert('Please login first!'); showAuthModal(); return; } 
+                if(currentUser.role !== 'student') { alert('Only students can access Play section!'); showPage('home'); return; }
+                loadDegrees(); 
+            }
+            else if(pageName === 'leaderboard') loadLeaderboard('points');
+            else if(pageName === 'profile' && currentUser) updateProfileUI();
+            else if(pageName === 'teacher' && currentUser?.role !== 'teacher') { alert('Teacher access only!'); showPage('home'); }
+            else if(pageName === 'director' && currentUser?.role !== 'director') { alert('Director access only!'); showPage('home'); }
+        }
+        
+        function loadDegrees() {
+            const degrees = Object.keys(degreesDatabase);
+            const degreeList = document.getElementById('degreeList');
+            if(degreeList) {
+                degreeList.innerHTML = degrees.map(degree => `
+                    <div class="degree-card" onclick="selectDegree('${degree}')">
+                        <h3>🎓 ${degree}</h3>
+                        <p>📅 ${degreesDatabase[degree].duration}</p>
+                        <p>🏷️ ${degreesDatabase[degree].type}</p>
+                        <p>📚 ${degreesDatabase[degree].branches.length} Branches</p>
+                        <small>🤖 AI Generated Games →</small>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function selectDegree(degree) {
+            selectedDegree = degree;
+            const branches = degreesDatabase[degree].branches;
+            const degreeSection = document.getElementById('degreeSection');
+            const branchSection = document.getElementById('branchSection');
+            const semesterSection = document.getElementById('semesterSection');
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            if(degreeSection) degreeSection.style.display = 'none';
+            if(branchSection) branchSection.style.display = 'block';
+            if(semesterSection) semesterSection.style.display = 'none';
+            if(subjectSection) subjectSection.style.display = 'none';
+            if(topicSection) topicSection.style.display = 'none';
+            const branchList = document.getElementById('branchList');
+            if(branchList) {
+                branchList.innerHTML = branches.map(branch => `
+                    <div class="branch-card" onclick="selectBranch('${branch.id}')">
+                        <h3>🔧 ${branch.name}</h3>
+                        <p>📛 ${branch.code} | 📚 ${branch.semesters} Semesters</p>
+                        <small>Click to select →</small>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function selectBranch(branchId) {
+            selectedBranch = branchId;
+            const branchData = degreesDatabase[selectedDegree].branches.find(b => b.id === branchId);
+            const totalSemesters = branchData.semesters;
+            const branchSection = document.getElementById('branchSection');
+            const semesterSection = document.getElementById('semesterSection');
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            if(branchSection) branchSection.style.display = 'none';
+            if(semesterSection) semesterSection.style.display = 'block';
+            if(subjectSection) subjectSection.style.display = 'none';
+            if(topicSection) topicSection.style.display = 'none';
+            let html = '';
+            for(let i=1; i<=totalSemesters; i++) {
+                html += `<div class="semester-card" onclick="selectSemester(${i})">
+                            <h3>📚 Semester ${i}</h3>
+                            <p>Year ${Math.ceil(i/2)} | ${i === totalSemesters ? 'Final' : 'Regular'}</p>
+                            <small>Click to view subjects →</small>
+                        </div>`;
+            }
+            const semesterList = document.getElementById('semesterList');
+            if(semesterList) semesterList.innerHTML = html;
+        }
+        
+        function selectSemester(semester) {
+            selectedSemester = semester;
+            const subjects = getSubjectsForSemester(selectedBranch, semester);
+            const semesterSection = document.getElementById('semesterSection');
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            if(semesterSection) semesterSection.style.display = 'none';
+            if(subjectSection) subjectSection.style.display = 'block';
+            if(topicSection) topicSection.style.display = 'none';
+            const subjectList = document.getElementById('subjectList');
+            if(subjectList) {
+                subjectList.innerHTML = subjects.map(sub => `
+                    <div class="subject-card" onclick="selectSubject('${sub}')">
+                        <h3>📖 ${sub}</h3>
+                        <small>🤖 AI Game →</small>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function selectSubject(subject) {
+            selectedSubject = subject;
+            const topics = [`Introduction to ${subject}`, `Core Concepts of ${subject}`, `Advanced ${subject}`, `${subject} Applications`];
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            if(subjectSection) subjectSection.style.display = 'none';
+            if(topicSection) topicSection.style.display = 'block';
+            const topicList = document.getElementById('topicList');
+            if(topicList) {
+                topicList.innerHTML = topics.map(topic => `
+                    <div class="topic-card">
+                        <h3>🎮 ${topic}</h3>
+                        <p>🤖 Subject-Specific Questions | ⭐ ${Math.floor(Math.random() * 80) + 50} XP</p>
+                        <div class="difficulty-buttons">
+                            <button class="diff-btn low" onclick="startQuizGame('LOW', '${subject}', '${topic}')">🟢 BASIC</button>
+                            <button class="diff-btn medium" onclick="startQuizGame('MEDIUM', '${subject}', '${topic}')">🟡 MEDIUM</button>
+                            <button class="diff-btn high" onclick="startQuizGame('HIGH', '${subject}', '${topic}')">🔴 HARD</button>
+                            <button class="diff-btn ai-game" onclick="startAIGame('${subject}', '${topic}')">🤖 AI GAME</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function getSubjectsForSemester(branchId, semester) {
+            const allSubjects = {
+                1: ["Programming Fundamentals", "Data Structures", "Digital Logic", "Mathematics I"],
+                2: ["Algorithms", "DBMS", "Computer Organization", "Mathematics II"],
+                3: ["Operating Systems", "Computer Networks", "Software Engineering", "Mathematics III"],
+                4: ["Web Technologies", "Artificial Intelligence", "Cyber Security", "Cloud Computing"],
+                5: ["Machine Learning", "Blockchain", "IoT", "Big Data"],
+                6: ["Deep Learning", "DevOps", "Quantum Computing", "Major Project"]
+            };
+            return allSubjects[semester] || [`Subject ${semester}.1`, `Subject ${semester}.2`, `Subject ${semester}.3`, `Subject ${semester}.4`];
+        }
+        
+        function goBackToDegrees() { 
+            const branchSection = document.getElementById('branchSection');
+            const semesterSection = document.getElementById('semesterSection');
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            const degreeSection = document.getElementById('degreeSection');
+            if(branchSection) branchSection.style.display = 'none';
+            if(semesterSection) semesterSection.style.display = 'none';
+            if(subjectSection) subjectSection.style.display = 'none';
+            if(topicSection) topicSection.style.display = 'none';
+            if(degreeSection) degreeSection.style.display = 'block';
+            loadDegrees(); 
+        }
+        
+        function goBackToBranches() { 
+            const semesterSection = document.getElementById('semesterSection');
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            const branchSection = document.getElementById('branchSection');
+            if(semesterSection) semesterSection.style.display = 'none';
+            if(subjectSection) subjectSection.style.display = 'none';
+            if(topicSection) topicSection.style.display = 'none';
+            if(branchSection) branchSection.style.display = 'block';
+            if (selectedDegree) selectDegree(selectedDegree); 
+        }
+        
+        function goBackToSemesters() { 
+            const subjectSection = document.getElementById('subjectSection');
+            const topicSection = document.getElementById('topicSection');
+            const semesterSection = document.getElementById('semesterSection');
+            if(subjectSection) subjectSection.style.display = 'none';
+            if(topicSection) topicSection.style.display = 'none';
+            if(semesterSection) semesterSection.style.display = 'block';
+            if (selectedBranch !== null) selectBranch(selectedBranch); 
+        }
+        
+        function goBackToSubjects() { 
+            const topicSection = document.getElementById('topicSection');
+            const subjectSection = document.getElementById('subjectSection');
+            if(topicSection) topicSection.style.display = 'none';
+            if(subjectSection) subjectSection.style.display = 'block';
+        }
+        
+        // ==================== QUIZ GAME ====================
+        function startQuizGame(difficulty, subject, topic) {
+            if(!currentUser) { alert('Please login first!'); showAuthModal(); return; }
+            const gameModal = document.getElementById('gameModal');
+            const gameContent = document.getElementById('gameContent');
+            if(gameModal) gameModal.style.display = 'flex';
+            if(gameContent) gameContent.innerHTML = `<div class="loading"><div class="spinner"></div><h3>📝 Loading ${difficulty} level Quiz for "${topic}"...</h3></div>`;
+            setTimeout(() => {
+                const questions = getQuizQuestions(difficulty, subject, topic);
+                currentDifficulty = difficulty;
+                currentQuestions = questions;
+                currentIndex = 0;
+                score = 0;
+                timeLeft = difficulty === 'LOW' ? 120 : (difficulty === 'MEDIUM' ? 90 : 60);
+                displayQuizQuestion();
+                startTimer();
+            }, 500);
+        }
+        
+        function getQuizQuestions(difficulty, subject, topic) {
+            const questionBank = [
+                { q: `What is the main concept of ${topic}?`, options: ["Core principle", "Advanced theory", "Practical application", "Historical context"], correct: 0, hint: "Fundamental concept" },
+                { q: `Why is ${topic} important in ${subject}?`, options: ["Foundation knowledge", "Optional topic", "Not important", "Just for exam"], correct: 0, hint: "Essential for understanding" },
+                { q: `Which is most related to ${topic}?`, options: ["Concept A", "Concept B", "Concept C", "All of above"], correct: 3, hint: "Multiple aspects" },
+                { q: `Best way to master ${topic}?`, options: ["Practice", "Reading only", "Memorization", "Ignoring"], correct: 0, hint: "Practice makes perfect" },
+                { q: `Where is ${topic} applied?`, options: ["Industry", "Academia", "Research", "All areas"], correct: 3, hint: "Widely applicable" }
+            ];
+            let qCount = difficulty === 'LOW' ? 5 : (difficulty === 'MEDIUM' ? 7 : 10);
+            let selected = [...questionBank];
+            while(selected.length < qCount) selected.push(...questionBank);
+            return selected.slice(0, qCount);
+        }
+        
+        function startAIGame(subject, topic) {
+            if(!currentUser) { alert('Please login first!'); showAuthModal(); return; }
+            alert(`🤖 AI Game starting for "${topic}"\nSubject: ${subject}\nThis will generate smart questions based on your learning progress!`);
+        }
+        
+        function displayQuizQuestion() {
+            if(currentIndex >= currentQuestions.length) { endQuizGame(); return; }
+            const q = currentQuestions[currentIndex];
+            const letters = ['A', 'B', 'C', 'D'];
+            const gameContent = document.getElementById('gameContent');
+            if(gameContent) {
+                gameContent.innerHTML = `
+                    <div class="game-header">
+                        <div class="difficulty-badge ${currentDifficulty === 'LOW' ? 'low' : (currentDifficulty === 'MEDIUM' ? 'medium' : 'high')}">${currentDifficulty}</div>
+                        <div class="game-stats">
+                            <span>📊 Question ${currentIndex+1}/${currentQuestions.length}</span>
+                            <span>⭐ Score: ${score}</span>
+                            <span>⏱️ Time left: <span id="timerDisplay">${timeLeft}</span>s</span>
+                        </div>
+                        <div class="timer-bar-container"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
+                    </div>
+                    <div class="question-text"><strong>❓ ${q.q}</strong></div>
+                    <div class="options-grid">${q.options.map((opt, idx) => `<button class="option-btn" onclick="checkQuizAnswer(${idx})"><strong>${letters[idx]}.</strong> ${opt}</button>`).join('')}</div>
+                    <div class="hint-box">💡 <strong>Hint:</strong> ${q.hint}</div>
+                `;
+            }
+        }
+        
+        function checkQuizAnswer(selected) {
+            if(timerInterval) clearInterval(timerInterval);
+            const isCorrect = (selected === currentQuestions[currentIndex].correct);
+            let points = 0;
+            if(isCorrect) {
+                points = (currentDifficulty === 'LOW' ? 10 : currentDifficulty === 'MEDIUM' ? 20 : 30) + Math.floor(timeLeft / 10);
+                score += points;
+                if(currentUser) {
+                    currentUser.points += points;
+                    currentUser.gamesPlayed++;
+                    currentUser.level = Math.floor(currentUser.points / 500) + 1;
+                    saveUsers();
+                    updateUIBoth();
+                }
+            }
+            const correctAnswer = currentQuestions[currentIndex].options[currentQuestions[currentIndex].correct];
+            showQuizFeedback(isCorrect, points, correctAnswer);
+        }
+        
+        function showQuizFeedback(isCorrect, points, correctAnswer) {
+            const gameContent = document.getElementById('gameContent');
+            if(gameContent) {
+                gameContent.innerHTML = `
+                    <div class="feedback-overlay"><div class="feedback-card">
+                        ${isCorrect ? '<div style="font-size:4rem;">🎉✅</div><h2 style="color:#4CAF50;">Correct! 🎉</h2>' : '<div style="font-size:4rem;">❌😢</div><h2 style="color:#f44336;">Wrong Answer!</h2>'}
+                        ${isCorrect ? `<p style="font-size:1.2rem;">✨ You earned <strong>+${points}</strong> points!</p>` : `<p>The correct answer is: <strong>${correctAnswer}</strong></p>`}
+                        <button class="next-btn" onclick="nextQuizQuestion()">Next Question →</button>
+                    </div></div>
+                `;
+            }
+        }
+        
+        function nextQuizQuestion() {
+            currentIndex++;
+            timeLeft = currentDifficulty === 'LOW' ? 120 : (currentDifficulty === 'MEDIUM' ? 90 : 60);
+            if(currentIndex < currentQuestions.length) { displayQuizQuestion(); startTimer(); }
+            else endQuizGame();
+        }
+        
+        function startTimer() {
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(timeLeft <= 0) { clearInterval(timerInterval); endQuizGame(); }
+                else {
+                    timeLeft--;
+                    const td = document.getElementById('timerDisplay');
+                    const tb = document.getElementById('timerBar');
+                    if(td) td.textContent = timeLeft;
+                    if(tb) {
+                        let max = currentDifficulty === 'LOW' ? 120 : (currentDifficulty === 'MEDIUM' ? 90 : 60);
+                        tb.style.width = (timeLeft / max) * 100 + '%';
+                        if(timeLeft < 10) tb.style.background = '#f44336';
+                    }
+                }
+            }, 1000);
+        }
+        
+        function endQuizGame() {
+            if(timerInterval) clearInterval(timerInterval);
+            const gameContent = document.getElementById('gameContent');
+            if(gameContent) {
+                gameContent.innerHTML = `
+                    <div style="text-align:center; padding:2rem;">
+                        <div style="font-size:5rem;">🏆</div>
+                        <h2>Game Complete!</h2>
+                        <div class="final-stats"><div><div class="stat-number">${score}</div><div>Final Score</div></div><div><div class="stat-number">${currentIndex}/${currentQuestions.length}</div><div>Questions</div></div></div>
+                        <p>🎉 Great job! You earned ${score} points!</p>
+                        <button class="next-btn" onclick="closeGame()">Play Again →</button>
+                    </div>
+                `;
+            }
+        }
+        
+        function closeGame() { if(timerInterval) clearInterval(timerInterval); const gameModal = document.getElementById('gameModal'); if(gameModal) gameModal.style.display = 'none'; }
+        function closeAIGameModal() { const aiGameModal = document.getElementById('aiGameModal'); if(aiGameModal) aiGameModal.style.display = 'none'; }
+        
+        // ==================== LEADERBOARD ====================
+        function loadLeaderboard(type) {
+            let sortedUsers = [...registeredUsers.filter(u => u.role === 'student')];
+            sortedUsers.sort((a, b) => b.points - a.points);
+            let html = `<div class="leaderboard-row header"><div>Rank</div><div>Player</div><div>Points</div><div>Level</div></div>`;
+            sortedUsers.forEach((user, index) => {
+                let rankBadge = index === 0 ? '👑' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : (index + 1)));
+                html += `<div class="leaderboard-row ${index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''))}"><div>${rankBadge}</div><div><strong>${user.name}</strong><br><small>${user.email}</small></div><div>⭐ ${user.points.toLocaleString()}</div><div>📈 ${user.level}</div></div>`;
+            });
+            const leaderboardList = document.getElementById('leaderboardList');
+            if(leaderboardList) leaderboardList.innerHTML = html;
+            if(currentUser) {
+                let userRank = sortedUsers.findIndex(u => u.email === currentUser.email) + 1;
+                const userRankCard = document.getElementById('userRankCard');
+                if(userRankCard) userRankCard.innerHTML = `<h3>🏆 Your Rank: #${userRank}</h3><p>⭐ ${currentUser.points} Points | Level ${currentUser.level} | 🎮 ${currentUser.gamesPlayed} Games</p>`;
+            }
+        }
+        
+        // ==================== INITIALIZE ====================
+        loadUsers();
+        loadTeachers();
+        loadStudents();
+        const savedUser = localStorage.getItem('currentUser');
+        if(savedUser) { currentUser = JSON.parse(savedUser); updateUIBoth(); }
+        loadDegrees();
+        selectRole('student');
+        
+        const savedLang = localStorage.getItem('preferred_language');
+        if(savedLang && savedLang !== 'en') changeLanguage(savedLang);
+    </script>
+    
+    <script src="/js/config.js"></script>
+    <script src="/js/ai-game.js"></script>
+    <script src="/js/ai-games.js"></script>
+    
+</body>
+</html>

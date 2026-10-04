@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "ଗେମିଫାଇଡ୍ ଲର୍ନିଂ ପ୍ଲାଟଫର୍ମରେ ଆପଣଙ୍କୁ ସ୍ୱାଗତ",
+        "login": "ଲଗିନ୍ କରନ୍ତୁ",
+        "signup": "ସାଇନ୍ ଅପ୍ କରନ୍ତୁ",
+        "logout": "ଲଗଆଉଟ୍",
+        "profile": "ପ୍ରୋଫାଇଲ୍",
+        "home": "ହୋମ୍",
+        "play": "ଖେଳନ୍ତୁ",
+        "leaderboard": "ଲିଡରବୋର୍ଡ",
+        "settings": "ସେଟିଙ୍ଗ୍ସ"
+    },
+    "game": {
+        "match_title": "ଯୋଡ଼ା ମିଳାନ୍ତୁ",
+        "memory_title": "ମେମୋରୀ ଗେମ୍",
+        "score": "ସ୍କୋର୍",
+        "time": "ସମୟ",
+        "hints": "ସଙ୍କେତ",
+        "perfect": "ପରଫେକ୍ଟ ସ୍କୋର୍!",
+        "next_level": "ପରବର୍ତ୍ତୀ ସ୍ତର",
+        "game_complete": "ଗେମ୍ ସମାପ୍ତ!",
+        "xp_earned": "XP ଅର୍ଜିତ",
+        "matches": "ମେଚ୍",
+        "terms": "ଶବ୍ଦ",
+        "definitions": "ସଂଜ୍ଞା"
+    },
+    "progress": {
+        "streak": "ଦିନର କ୍ରମ",
+        "xp": "XP ପଏଣ୍ଟ",
+        "level": "ସ୍ତର",
+        "badges": "ଅର୍ଜିତ ବ୍ୟାଜ୍",
+        "leaderboard": "ଲିଡରବୋର୍ଡ",
+        "total_points": "ମୋଟ ପଏଣ୍ଟ",
+        "completed_topics": "ସମାପ୍ତ ଟପିକ୍",
+        "recent_activity": "ସାମ୍ପ୍ରତିକ କାର୍ଯ୍ୟକଳାପ",
+        "your_rank": "ଆପଣଙ୍କ ର୍ୟାଙ୍କ"
+    },
+    "subjects": {
+        "select_degree": "ଆପଣଙ୍କ ଡିଗ୍ରୀ ଚୟନ କରନ୍ତୁ",
+        "select_year": "ବର୍ଷ ଚୟନ କରନ୍ତୁ",
+        "select_semester": "ସେମିଷ୍ଟର ଚୟନ କରନ୍ତୁ",
+        "select_branch": "ଶାଖା ଚୟନ କରନ୍ତୁ",
+        "select_subject": "ବିଷୟ ଚୟନ କରନ୍ତୁ",
+        "select_topic": "ଖେଳିବାକୁ ଟପିକ୍ ଚୟନ କରନ୍ତୁ"
+    },
+    "badges": {
+        "first_victory": "ପ୍ରଥମ ବିଜୟ",
+        "first_victory_desc": "ଆପଣଙ୍କ ପ୍ରଥମ ଟପିକ୍ ସମାପ୍ତ କରନ୍ତୁ",
+        "seven_day_warrior": "7 ଦିନର ଯୋଦ୍ଧା",
+        "seven_day_warrior_desc": "7 ଦିନର କ୍ରମ ବଜାୟ ରଖନ୍ତୁ",
+        "perfect_player": "ପରଫେକ୍ଟ ଖେଳାଳି",
+        "perfect_player_desc": "3 ପରଫେକ୍ଟ ସ୍କୋର୍ ପ୍ରାପ୍ତ କରନ୍ତୁ",
+        "speed_demon": "ସ୍ପିଡ୍ ଡେମନ୍",
+        "speed_demon_desc": "30 ସେକେଣ୍ଡରେ ଗେମ୍ ସମାପ୍ତ କରନ୍ତୁ"
+    },
+    "messages": {
+        "login_success": "ଲଗିନ୍ ସଫଳ! ପୁନଃ ସ୍ୱାଗତ!",
+        "signup_success": "ଖାତା ସଫଳତାର ସହ ତିଆରି ହେଲା! ସ୍ୱାଗତ!",
+        "logout_success": "ସଫଳତାର ସହ ଲଗଆଉଟ୍ ହେଲା",
+        "game_submit_success": "ଗେମ୍ ସମାପ୍ତ! ଆପଣ {xp} XP ଅର୍ଜିତ କଲେ!",
+        "already_completed": "ଟପିକ୍ ପୂର୍ବରୁ ସମାପ୍ତ",
+        "topic_locked": "ପ୍ରଥମେ ପୂର୍ବ ସ୍ତର ସମାପ୍ତ କରନ୍ତୁ"
+    }
+}

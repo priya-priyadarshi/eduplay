@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "Welcome to Gamified Learning",
+        "login": "Login",
+        "signup": "Sign Up",
+        "logout": "Logout",
+        "profile": "Profile",
+        "home": "Home",
+        "play": "Play",
+        "leaderboard": "Leaderboard",
+        "settings": "Settings"
+    },
+    "game": {
+        "match_title": "Match the Pairs",
+        "memory_title": "Memory Game",
+        "score": "Score",
+        "time": "Time",
+        "hints": "Hints",
+        "perfect": "Perfect Score!",
+        "next_level": "Next Level",
+        "game_complete": "Game Complete!",
+        "xp_earned": "XP Earned",
+        "matches": "Matches",
+        "terms": "Terms",
+        "definitions": "Definitions"
+    },
+    "progress": {
+        "streak": "Day Streak",
+        "xp": "XP Points",
+        "level": "Level",
+        "badges": "Badges Earned",
+        "leaderboard": "Leaderboard",
+        "total_points": "Total Points",
+        "completed_topics": "Completed Topics",
+        "recent_activity": "Recent Activity",
+        "your_rank": "Your Rank"
+    },
+    "subjects": {
+        "select_degree": "Select Your Degree",
+        "select_year": "Select Year",
+        "select_semester": "Select Semester",
+        "select_branch": "Select Branch",
+        "select_subject": "Select Subject",
+        "select_topic": "Select Topic to Play"
+    },
+    "badges": {
+        "first_victory": "First Victory",
+        "first_victory_desc": "Complete your first topic",
+        "seven_day_warrior": "7-Day Warrior",
+        "seven_day_warrior_desc": "Maintain 7 day streak",
+        "perfect_player": "Perfect Player",
+        "perfect_player_desc": "Get 3 perfect scores",
+        "speed_demon": "Speed Demon",
+        "speed_demon_desc": "Complete game under 30 sec"
+    },
+    "messages": {
+        "login_success": "Login successful! Welcome back!",
+        "signup_success": "Account created successfully! Welcome!",
+        "logout_success": "Logged out successfully",
+        "game_submit_success": "Game Complete! You earned {xp} XP!",
+        "already_completed": "Topic already completed",
+        "topic_locked": "Complete previous level first"
+    }
+}

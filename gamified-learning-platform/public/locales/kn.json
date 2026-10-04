@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "ಗೇಮಿಫೈಡ್ ಲರ್ನಿಂಗ್ ಪ್ಲಾಟ್ಫಾರ್ಮ್ಗೆ ಸುಸ್ವಾಗತ",
+        "login": "ಲಾಗಿನ್ ಮಾಡಿ",
+        "signup": "ಸೈನ್ ಅಪ್ ಮಾಡಿ",
+        "logout": "ಲಾಗೌಟ್",
+        "profile": "ಪ್ರೊಫೈಲ್",
+        "home": "ಮುಖಪುಟ",
+        "play": "ಆಡಿ",
+        "leaderboard": "ಲೀಡರ್ಬೋರ್ಡ್",
+        "settings": "ಸೆಟ್ಟಿಂಗ್ಗಳು"
+    },
+    "game": {
+        "match_title": "ಜೋಡಿಗಳನ್ನು ಹೊಂದಿಸಿ",
+        "memory_title": "ಮೆಮೊರಿ ಗೇಮ್",
+        "score": "ಸ್ಕೋರ್",
+        "time": "ಸಮಯ",
+        "hints": "ಸುಳಿವುಗಳು",
+        "perfect": "ಪರಿಪೂರ್ಣ ಸ್ಕೋರ್!",
+        "next_level": "ಮುಂದಿನ ಹಂತ",
+        "game_complete": "ಆಟ ಪೂರ್ಣಗೊಂಡಿತು!",
+        "xp_earned": "XP ಗಳಿಸಲಾಗಿದೆ",
+        "matches": "ಹೊಂದಾಣಿಕೆಗಳು",
+        "terms": "ಪದಗಳು",
+        "definitions": "ವ್ಯಾಖ್ಯಾನಗಳು"
+    },
+    "progress": {
+        "streak": "ದಿನಗಳ ಸರಣಿ",
+        "xp": "XP ಪಾಯಿಂಟ್ಗಳು",
+        "level": "ಮಟ್ಟ",
+        "badges": "ಪಡೆದ ಬ್ಯಾಡ್ಜ್ಗಳು",
+        "leaderboard": "ಲೀಡರ್ಬೋರ್ಡ್",
+        "total_points": "ಒಟ್ಟು ಪಾಯಿಂಟ್ಗಳು",
+        "completed_topics": "ಪೂರ್ಣಗೊಂಡ ವಿಷಯಗಳು",
+        "recent_activity": "ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ",
+        "your_rank": "ನಿಮ್ಮ ಶ್ರೇಯಾಂಕ"
+    },
+    "subjects": {
+        "select_degree": "ನಿಮ್ಮ ಪದವಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+        "select_year": "ವರ್ಷ ಆಯ್ಕೆಮಾಡಿ",
+        "select_semester": "ಸೆಮಿಸ್ಟರ್ ಆಯ್ಕೆಮಾಡಿ",
+        "select_branch": "ಶಾಖೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+        "select_subject": "ವಿಷಯ ಆಯ್ಕೆಮಾಡಿ",
+        "select_topic": "ಆಡಲು ವಿಷಯ ಆಯ್ಕೆಮಾಡಿ"
+    },
+    "badges": {
+        "first_victory": "ಮೊದಲ ವಿಜಯ",
+        "first_victory_desc": "ನಿಮ್ಮ ಮೊದಲ ವಿಷಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ",
+        "seven_day_warrior": "7 ದಿನಗಳ ಯೋಧ",
+        "seven_day_warrior_desc": "7 ದಿನಗಳ ಸರಣಿಯನ್ನು ಕಾಪಾಡಿಕೊಳ್ಳಿ",
+        "perfect_player": "ಪರಿಪೂರ್ಣ ಆಟಗಾರ",
+        "perfect_player_desc": "3 ಪರಿಪೂರ್ಣ ಸ್ಕೋರ್ಗಳನ್ನು ಪಡೆಯಿರಿ",
+        "speed_demon": "ಸ್ಪೀಡ್ ಡೆಮನ್",
+        "speed_demon_desc": "30 ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಆಟವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"
+    },
+    "messages": {
+        "login_success": "ಲಾಗಿನ್ ಯಶಸ್ವಿಯಾಗಿದೆ! ಮರಳಿ ಸ್ವಾಗತ!",
+        "signup_success": "ಖಾತೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ! ಸ್ವಾಗತ!",
+        "logout_success": "ಯಶಸ್ವಿಯಾಗಿ ಲಾಗೌಟ್ ಮಾಡಲಾಗಿದೆ",
+        "game_submit_success": "ಆಟ ಪೂರ್ಣಗೊಂಡಿತು! ನೀವು {xp} XP ಗಳಿಸಿದ್ದೀರಿ!",
+        "already_completed": "ವಿಷಯ ಈಗಾಗಲೇ ಪೂರ್ಣಗೊಂಡಿದೆ",
+        "topic_locked": "ಮೊದಲು ಹಿಂದಿನ ಹಂತವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "ગેમિફાઇડ લર્નિંગ પ્લેટફોર્મમાં આપનું સ્વાગત છે",
+        "login": "લોગિન કરો",
+        "signup": "સાઇન અપ કરો",
+        "logout": "લોગઆઉટ",
+        "profile": "પ્રોફાઇલ",
+        "home": "હોમ",
+        "play": "રમો",
+        "leaderboard": "લીડરબોર્ડ",
+        "settings": "સેટિંગ્સ"
+    },
+    "game": {
+        "match_title": "જોડીઓ મેચ કરો",
+        "memory_title": "મેમરી ગેમ",
+        "score": "સ્કોર",
+        "time": "સમય",
+        "hints": "સંકેતો",
+        "perfect": "પરફેક્ટ સ્કોર!",
+        "next_level": "આગલો સ્તર",
+        "game_complete": "રમત પૂર્ણ!",
+        "xp_earned": "XP મેળવ્યા",
+        "matches": "મેચો",
+        "terms": "શબ્દો",
+        "definitions": "વ્યાખ્યાઓ"
+    },
+    "progress": {
+        "streak": "દિવસોનો સતત ક્રમ",
+        "xp": "XP પોઇન્ટ્સ",
+        "level": "સ્તર",
+        "badges": "મેળવેલ બેજ",
+        "leaderboard": "લીડરબોર્ડ",
+        "total_points": "કુલ પોઇન્ટ્સ",
+        "completed_topics": "પૂર્ણ થયેલ વિષયો",
+        "recent_activity": "તાજેતરની પ્રવૃત્તિ",
+        "your_rank": "તમારો રેન્ક"
+    },
+    "subjects": {
+        "select_degree": "તમારી ડિગ્રી પસંદ કરો",
+        "select_year": "વર્ષ પસંદ કરો",
+        "select_semester": "સેમેસ્ટર પસંદ કરો",
+        "select_branch": "બ્રાંચ પસંદ કરો",
+        "select_subject": "વિષય પસંદ કરો",
+        "select_topic": "રમવા માટે ટોપિક પસંદ કરો"
+    },
+    "badges": {
+        "first_victory": "પ્રથમ વિજય",
+        "first_victory_desc": "તમારો પ્રથમ ટોપિક પૂર્ણ કરો",
+        "seven_day_warrior": "7 દિવસનો યોદ્ધા",
+        "seven_day_warrior_desc": "7 દિવસનો સતત ક્રમ જાળવો",
+        "perfect_player": "પરફેક્ટ ખેલાડી",
+        "perfect_player_desc": "3 પરફેક્ટ સ્કોર મેળવો",
+        "speed_demon": "સ્પીડ ડેમન",
+        "speed_demon_desc": "30 સેકન્ડમાં રમત પૂર્ણ કરો"
+    },
+    "messages": {
+        "login_success": "લોગિન સફળ! પાછા આપનું સ્વાગત છે!",
+        "signup_success": "ખાતું સફળતાપૂર્વક બનાવવામાં આવ્યું! સ્વાગત છે!",
+        "logout_success": "સફળતાપૂર્વક લોગઆઉટ કર્યું",
+        "game_submit_success": "રમત પૂર્ણ! તમે {xp} XP મેળવ્યા!",
+        "already_completed": "ટોપિક પહેલેથી પૂર્ણ થઈ ગયો છે",
+        "topic_locked": "પહેલા પાછલો સ્તર પૂર્ણ કરો"
+    }
+}

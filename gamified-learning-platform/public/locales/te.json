@@ -1,0 +1,64 @@
+{
+    "common": {
+        "welcome": "గేమిఫైడ్ లెర్నింగ్ ప్లాట్ఫారమ్కు స్వాగతం",
+        "login": "లాగిన్ చేయండి",
+        "signup": "సైన్ అప్ చేయండి",
+        "logout": "లాగౌట్",
+        "profile": "ప్రొఫైల్",
+        "home": "హోమ్",
+        "play": "ఆడండి",
+        "leaderboard": "లీడర్బోర్డ్",
+        "settings": "సెట్టింగ్స్"
+    },
+    "game": {
+        "match_title": "జతలను సరిపోల్చండి",
+        "memory_title": "మెమరీ గేమ్",
+        "score": "స్కోరు",
+        "time": "సమయం",
+        "hints": "సూచనలు",
+        "perfect": "పరిపూర్ణ స్కోరు!",
+        "next_level": "తదుపరి స్థాయి",
+        "game_complete": "గేమ్ పూర్తయింది!",
+        "xp_earned": "XP సంపాదించారు",
+        "matches": "సరిపోలికలు",
+        "terms": "పదాలు",
+        "definitions": "నిర్వచనాలు"
+    },
+    "progress": {
+        "streak": "రోజుల క్రమం",
+        "xp": "XP పాయింట్లు",
+        "level": "స్థాయి",
+        "badges": "పొందిన బ్యాడ్జీలు",
+        "leaderboard": "లీడర్బోర్డ్",
+        "total_points": "మొత్తం పాయింట్లు",
+        "completed_topics": "పూర్తి చేసిన టాపిక్లు",
+        "recent_activity": "ఇటీవలి కార్యాచరణ",
+        "your_rank": "మీ ర్యాంక్"
+    },
+    "subjects": {
+        "select_degree": "మీ డిగ్రీని ఎంచుకోండి",
+        "select_year": "సంవత్సరం ఎంచుకోండి",
+        "select_semester": "సెమిస్టర్ ఎంచుకోండి",
+        "select_branch": "బ్రాంచ్ ఎంచుకోండి",
+        "select_subject": "సబ్జెక్ట్ ఎంచుకోండి",
+        "select_topic": "ఆడటానికి టాపిక్ ఎంచుకోండి"
+    },
+    "badges": {
+        "first_victory": "మొదటి విజయం",
+        "first_victory_desc": "మీ మొదటి టాపిక్ పూర్తి చేయండి",
+        "seven_day_warrior": "7 రోజుల యోధుడు",
+        "seven_day_warrior_desc": "7 రోజుల క్రమాన్ని కొనసాగించండి",
+        "perfect_player": "పరిపూర్ణ ఆటగాడు",
+        "perfect_player_desc": "3 పరిపూర్ణ స్కోర్లు పొందండి",
+        "speed_demon": "స్పీడ్ డెమన్",
+        "speed_demon_desc": "30 సెకన్లలో గేమ్ పూర్తి చేయండి"
+    },
+    "messages": {
+        "login_success": "లాగిన్ విజయవంతమైంది! తిరిగి స్వాగతం!",
+        "signup_success": "ఖాతా విజయవంతంగా సృష్టించబడింది! స్వాగతం!",
+        "logout_success": "విజయవంతంగా లాగౌట్ చేయబడింది",
+        "game_submit_success": "గేమ్ పూర్తయింది! మీరు {xp} XP సంపాదించారు!",
+        "already_completed": "టాపిక్ ఇప్పటికే పూర్తయింది",
+        "topic_locked": "ముందుగా మునుపటి స్థాయిని పూర్తి చేయండి"
+    }
+}

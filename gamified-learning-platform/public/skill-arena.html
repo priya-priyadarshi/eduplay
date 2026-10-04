@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Challenge Arena | EduPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Header */
+        .game-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+        .game-header h1 { font-size: 2rem; margin-bottom: 0.3rem; }
+        .game-header p { opacity: 0.9; font-size: 0.9rem; }
+        
+        /* Level Selector */
+        .level-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .level-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .level-card:hover { transform: translateY(-5px); }
+        .level-card.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f0ff, white);
+        }
+        .level-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .level-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .level-name { font-weight: bold; font-size: 1.1rem; }
+        .level-desc { font-size: 0.7rem; color: #666; margin-top: 0.2rem; }
+        .level-status {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .status-locked { background: #ff4757; color: white; }
+        .status-unlocked { background: #4CAF50; color: white; }
+        .status-completed { background: #FFD700; color: #333; }
+        
+        /* Game Stats */
+        .stats-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: #667eea; }
+        .stat-label { font-size: 0.7rem; color: #666; }
+        
+        /* Timer */
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+        }
+        .timer-value { font-size: 2rem; font-weight: bold; color: white; }
+        
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .question-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .question-text { font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.4; }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .option-btn:hover { border-color: #667eea; background: #f0f0ff; transform: scale(1.02); }
+        
+        /* Result Screen */
+        .result-card {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .final-score { font-size: 3rem; font-weight: bold; color: #667eea; margin: 1rem 0; }
+        .next-level-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        .restart-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .feedback-popup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            animation: fadeOut 1s ease;
+            z-index: 1000;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateX(-50%) scale(1); }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+        }
+        
+        @media (max-width: 768px) {
+            .level-selector { flex-direction: column; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🏆 Skill Challenge Arena</h1>
+            <p>Test your Aptitude | Reasoning | Communication Skills</p>
+        </div>
+
+        <!-- Level Selector -->
+        <div class="level-selector" id="levelSelector">
+            <div class="level-card" id="level1Card" onclick="selectLevel(1)">
+                <div class="level-icon">🧩</div>
+                <div class="level-name">Aptitude Challenge</div>
+                <div class="level-desc">Math Speed | 10 Questions | 30 sec</div>
+                <span class="level-status status-unlocked" id="level1Status">🔓 Unlocked</span>
+            </div>
+            <div class="level-card locked" id="level2Card" onclick="selectLevel(2)">
+                <div class="level-icon">🔍</div>
+                <div class="level-name">Reasoning Challenge</div>
+                <div class="level-desc">Logic Puzzles | 10 Questions | 30 sec</div>
+                <span class="level-status status-locked" id="level2Status">🔒 Locked</span>
+            </div>
+            <div class="level-card locked" id="level3Card" onclick="selectLevel(3)">
+                <div class="level-icon">💬</div>
+                <div class="level-name">Communication Challenge</div>
+                <div class="level-desc">Grammar & Vocabulary | 10 Questions | 30 sec</div>
+                <span class="level-status status-locked" id="level3Status">🔒 Locked</span>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" style="display: none;">
+            <div class="stats-bar">
+                <div class="stat-item"><div class="stat-value" id="currentScore">0</div><div class="stat-label">🎯 Score</div></div>
+                <div class="stat-item"><div class="stat-value" id="questionsDone">0</div><div class="stat-label">📝 Questions</div></div>
+                <div class="stat-item"><div class="timer-circle"><div class="timer-value" id="timerDisplay">30</div></div><div class="stat-label">⏱️ Time Left</div></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-number" id="qNum">Question 1</div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options-grid" id="optionsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="result-card">
+            <div style="font-size: 4rem;" id="startIcon">🧩</div>
+            <h2 id="startTitle">Aptitude Challenge</h2>
+            <p id="startDesc">Test your math speed and accuracy!</p>
+            <p>• 10 questions</p>
+            <p>• 30 seconds time limit</p>
+            <p>• +10 for correct | -5 for wrong</p>
+            <button class="next-level-btn" onclick="startGame()">🚀 Start Challenge →</button>
+            <div style="margin-top: 1rem;"><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="result-card" style="display: none;">
+            <div style="font-size: 4rem;">🏆</div>
+            <h2 id="resultTitle">Challenge Complete!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <p id="resultMessage"></p>
+            <button class="next-level-btn" id="nextLevelBtn" onclick="goToNextLevel()">🎯 Next Level →</button>
+            <button class="restart-btn" onclick="restartCurrentLevel()">🔄 Try Again</button>
+            <div><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== LEVEL 1: APTITUDE (Math Speed) ====================
+        const aptitudeQuestions = [
+            { q: "What is 15 + 27?", options: ["42", "40", "41", "43"], correct: 0 },
+            { q: "What is 8 × 7?", options: ["56", "48", "64", "54"], correct: 0 },
+            { q: "What is 100 ÷ 4?", options: ["25", "20", "30", "40"], correct: 0 },
+            { q: "What is 144 ÷ 12?", options: ["12", "10", "14", "16"], correct: 0 },
+            { q: "What is 25% of 400?", options: ["100", "50", "75", "125"], correct: 0 },
+            { q: "What is 7 + 8 × 3?", options: ["31", "45", "23", "38"], correct: 0 },
+            { q: "What is the square root of 121?", options: ["11", "12", "10", "13"], correct: 0 },
+            { q: "What is 9 × 9?", options: ["81", "72", "63", "99"], correct: 0 },
+            { q: "What is 50% of 200?", options: ["100", "50", "150", "200"], correct: 0 },
+            { q: "What is 3² + 4²?", options: ["25", "16", "9", "49"], correct: 0 }
+        ];
+
+        // ==================== LEVEL 2: REASONING (Logic Puzzles) ====================
+        const reasoningQuestions = [
+            { q: "Complete the series: 2, 4, 8, 16, ?", options: ["32", "24", "30", "28"], correct: 0 },
+            { q: "Which is different? Apple, Mango, Orange, Carrot", options: ["Carrot", "Apple", "Mango", "Orange"], correct: 0 },
+            { q: "Complete: 1, 1, 2, 3, 5, 8, ?", options: ["13", "11", "10", "21"], correct: 0 },
+            { q: "If today is Monday, what day is after 10 days?", options: ["Thursday", "Wednesday", "Friday", "Tuesday"], correct: 0 },
+            { q: "Find the next: A, C, F, J, ?", options: ["O", "M", "N", "P"], correct: 0 },
+            { q: "Which number is odd one out? 12, 24, 36, 45, 48", options: ["45", "12", "24", "48"], correct: 0 },
+            { q: "If 2 = 6, 3 = 12, 4 = 20, then 5 = ?", options: ["30", "25", "35", "40"], correct: 0 },
+            { q: "If RED is coded as 27, then BLUE is coded as?", options: ["40", "35", "45", "30"], correct: 0 },
+            { q: "Find the missing: 3, 6, 9, 12, ?", options: ["15", "14", "13", "16"], correct: 0 },
+            { q: "Which is different? Dog, Cat, Lion, Rose", options: ["Rose", "Dog", "Cat", "Lion"], correct: 0 }
+        ];
+
+        // ==================== LEVEL 3: COMMUNICATION (Grammar & Vocabulary) ====================
+        const communicationQuestions = [
+            { q: "Choose the correct spelling:", options: ["Accommodate", "Acommodate", "Accommodate", "Acomodate"], correct: 0 },
+            { q: "What is the synonym of 'Happy'?", options: ["Joyful", "Sad", "Angry", "Tired"], correct: 0 },
+            { q: "Fill in the blank: She ___ to school every day.", options: ["goes", "go", "going", "went"], correct: 0 },
+            { q: "What is the antonym of 'Dark'?", options: ["Light", "Black", "Night", "Shadow"], correct: 0 },
+            { q: "Choose the correct sentence:", options: ["I have a apple", "I have an apple", "I have apple", "I have the apple"], correct: 1 },
+            { q: "What is the plural of 'Child'?", options: ["Children", "Childs", "Childes", "Childern"], correct: 0 },
+            { q: "What is the opposite of 'Love'?", options: ["Hate", "Like", "Care", "Affection"], correct: 0 },
+            { q: "Fill in: He is ___ best student in class.", options: ["the", "a", "an", "none"], correct: 0 },
+            { q: "What is the synonym of 'Fast'?", options: ["Quick", "Slow", "Lazy", "Dull"], correct: 0 },
+            { q: "Choose the correct spelling:", options: ["Beautiful", "Beautifull", "Bautiful", "Beautifal"], correct: 0 }
+        ];
+
+        // Game Variables
+        let currentLevel = 1;
+        let levelCompleted = [false, false, false];
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let currentScore = 0;
+        let timeLeft = 30;
+        let timerInterval = null;
+        let gameActive = false;
+        let questionsAnswered = 0;
+
+        function selectLevel(level) {
+            if(level === 1 || levelCompleted[level-2]) {
+                currentLevel = level;
+                updateLevelUI();
+                updateStartScreen();
+            } else {
+                alert(`🔒 Complete Level ${level-1} first to unlock this level!`);
+            }
+        }
+
+        function updateLevelUI() {
+            // Update active class
+            document.querySelectorAll('.level-card').forEach((card, idx) => {
+                card.classList.remove('active');
+                if(idx + 1 === currentLevel) card.classList.add('active');
+            });
+            
+            // Update status
+            for(let i = 1; i <= 3; i++) {
+                let statusSpan = document.getElementById(`level${i}Status`);
+                let card = document.getElementById(`level${i}Card`);
+                if(levelCompleted[i-1]) {
+                    statusSpan.textContent = '✅ Completed';
+                    statusSpan.className = 'level-status status-completed';
+                } else if(i === 1 || levelCompleted[i-2]) {
+                    statusSpan.textContent = '🔓 Unlocked';
+                    statusSpan.className = 'level-status status-unlocked';
+                    card.classList.remove('locked');
+                } else {
+                    statusSpan.textContent = '🔒 Locked';
+                    statusSpan.className = 'level-status status-locked';
+                    card.classList.add('locked');
+                }
+            }
+        }
+
+        function updateStartScreen() {
+            const icons = ['🧩', '🔍', '💬'];
+            const titles = ['Aptitude Challenge', 'Reasoning Challenge', 'Communication Challenge'];
+            const descs = ['Test your math speed and accuracy!', 'Solve logic puzzles!', 'Test your grammar and vocabulary!'];
+            
+            document.getElementById('startIcon').textContent = icons[currentLevel - 1];
+            document.getElementById('startTitle').textContent = titles[currentLevel - 1];
+            document.getElementById('startDesc').textContent = descs[currentLevel - 1];
+        }
+
+        function loadQuestions() {
+            if(currentLevel === 1) currentQuestions = [...aptitudeQuestions];
+            else if(currentLevel === 2) currentQuestions = [...reasoningQuestions];
+            else currentQuestions = [...communicationQuestions];
+            
+            // Shuffle questions
+            for(let i = currentQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [currentQuestions[i], currentQuestions[j]] = [currentQuestions[j], currentQuestions[i]];
+            }
+            currentIndex = 0;
+        }
+
+        function shuffleOptions(question) {
+            const options = [...question.options];
+            const correctAnswer = options[question.correct];
+            for(let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            return { ...question, options: options, correct: options.indexOf(correctAnswer) };
+        }
+
+        function displayQuestion() {
+            if(!gameActive) return;
+            if(currentIndex >= currentQuestions.length) { endGame(); return; }
+            
+            const q = shuffleOptions(currentQuestions[currentIndex]);
+            document.getElementById('qNum').textContent = `Question ${currentIndex + 1}/${currentQuestions.length}`;
+            document.getElementById('questionText').textContent = q.q;
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<strong>${letters[idx]}.</strong> ${opt}`;
+                btn.onclick = () => checkAnswer(idx, q);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx, q) {
+            if(!gameActive) return;
+            
+            const isCorrect = (selectedIdx === q.correct);
+            if(isCorrect) {
+                currentScore += 10;
+                showFeedback(true);
+            } else {
+                currentScore -= 5;
+                showFeedback(false);
+            }
+            
+            questionsAnswered++;
+            currentIndex++;
+            updateUI();
+            
+            if(currentIndex < currentQuestions.length) {
+                displayQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function showFeedback(isCorrect) {
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback-popup';
+            feedback.innerHTML = isCorrect ? '✅ +10 Points!' : '❌ -5 Points';
+            feedback.style.background = isCorrect ? '#4CAF50' : '#ff4757';
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 800);
+        }
+
+        function startTimer() {
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(!gameActive) return;
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                } else {
+                    timeLeft--;
+                    document.getElementById('timerDisplay').textContent = timeLeft;
+                    if(timeLeft <= 5) {
+                        document.getElementById('timerDisplay').style.color = '#ff4757';
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateUI() {
+            document.getElementById('currentScore').textContent = currentScore;
+            document.getElementById('questionsDone').textContent = questionsAnswered;
+        }
+
+        function endGame() {
+            gameActive = false;
+            if(timerInterval) clearInterval(timerInterval);
+            
+            savePointsToProfile(currentScore);
+            
+            document.getElementById('finalScore').textContent = currentScore;
+            document.getElementById('resultMessage').innerHTML = `You scored ${currentScore} points in ${questionsAnswered} questions!`;
+            
+            // Check if passed (score > 0)
+            if(currentScore > 0) {
+                levelCompleted[currentLevel - 1] = true;
+                saveLevelProgress();
+                document.getElementById('resultTitle').innerHTML = '🎉 Level Complete! 🎉';
+                if(currentLevel < 3) {
+                    document.getElementById('nextLevelBtn').style.display = 'inline-block';
+                } else {
+                    document.getElementById('nextLevelBtn').style.display = 'none';
+                    document.getElementById('resultMessage').innerHTML += '<br><br>🏆 CONGRATULATIONS! You completed all 3 levels! 🏆';
+                }
+            } else {
+                document.getElementById('resultTitle').innerHTML = '😢 Try Again!';
+                document.getElementById('nextLevelBtn').style.display = 'none';
+            }
+            
+            updateLevelUI();
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+        }
+
+        function savePointsToProfile(points) {
+            let currentUser = localStorage.getItem('currentUser');
+            if(currentUser) {
+                currentUser = JSON.parse(currentUser);
+                currentUser.points = (currentUser.points || 0) + points;
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                currentUser.level = Math.floor(currentUser.points / 500) + 1;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                let users = localStorage.getItem('registeredUsers');
+                if(users) {
+                    users = JSON.parse(users);
+                    const idx = users.findIndex(u => u.email === currentUser.email);
+                    if(idx !== -1) {
+                        users[idx].points = currentUser.points;
+                        users[idx].gamesPlayed = currentUser.gamesPlayed;
+                        users[idx].level = currentUser.level;
+                        localStorage.setItem('registeredUsers', JSON.stringify(users));
+                    }
+                }
+            }
+        }
+
+        function saveLevelProgress() {
+            localStorage.setItem('skillArenaLevels', JSON.stringify(levelCompleted));
+        }
+
+        function loadLevelProgress() {
+            const saved = localStorage.getItem('skillArenaLevels');
+            if(saved) {
+                levelCompleted = JSON.parse(saved);
+                updateLevelUI();
+            }
+        }
+
+        function startGame() {
+            // Check login
+            let currentUser = localStorage.getItem('currentUser');
+            if(!currentUser) {
+                alert('⚠️ Please login first!');
+                window.location.href = '/';
+                return;
+            }
+            
+            gameActive = true;
+            currentScore = 0;
+            timeLeft = 30;
+            questionsAnswered = 0;
+            loadQuestions();
+            updateUI();
+            document.getElementById('timerDisplay').textContent = timeLeft;
+            document.getElementById('timerDisplay').style.color = 'white';
+            
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            
+            startTimer();
+            displayQuestion();
+        }
+
+        function goToNextLevel() {
+            if(currentLevel < 3) {
+                currentLevel++;
+                updateLevelUI();
+                updateStartScreen();
+                document.getElementById('startScreen').style.display = 'block';
+                document.getElementById('resultScreen').style.display = 'none';
+            }
+        }
+
+        function restartCurrentLevel() {
+            levelCompleted[currentLevel - 1] = false;
+            saveLevelProgress();
+            updateLevelUI();
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('resultScreen').style.display = 'none';
+        }
+
+        // Initialize
+        loadLevelProgress();
+        updateLevelUI();
+    </script>
+</body>
+</html>

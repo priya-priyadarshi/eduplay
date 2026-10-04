@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director Dashboard | EduPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        .navbar { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: bold; color: #667eea; }
+        .nav-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.3s; cursor: pointer; }
+        .nav-links a:hover, .nav-links a.active { color: #667eea; }
+        .logout-btn { background: #ff4757; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card .value { font-size: 2rem; font-weight: bold; color: #667eea; }
+        .stat-card .label { color: #666; font-size: 0.9rem; margin-top: 0.3rem; }
+        
+        /* Director Panel Sections */
+        .section { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .section h2 { margin-bottom: 1rem; color: #333; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: 600; }
+        
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; margin-top: 0.5rem; font-weight: 500; transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .btn-danger { background: #ff4757; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+        .btn-danger:hover { background: #ff3344; transform: translateY(-2px); }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; }
+        .form-group input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 2rem; border-radius: 20px; max-width: 500px; width: 90%; }
+        .close { float: right; font-size: 1.5rem; cursor: pointer; transition: all 0.3s; }
+        .close:hover { color: #ff4757; }
+        
+        .director-badge { background: #f44336; color: white; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.7rem; margin-left: 0.5rem; }
+        
+        @media (max-width: 768px) { .nav-links { display: none; } .stats-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span>🎓🎮📚</span>
+                <span>EduPlay</span>
+                <span class="director-badge">⭐ DIRECTOR MODE</span>
+            </div>
+            <div class="nav-links">
+                <a onclick="window.location.href='/'">🏠 Home</a>
+                <a onclick="window.location.href='/play'">🎯 Play</a>
+                <a onclick="window.location.href='/leaderboard'">🏆 Leaderboard</a>
+                <a href="#" class="active">👔 Director Panel</a>
+                <a onclick="window.location.href='/profile'">👤 Profile</a>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card"><div class="value" id="totalStudents">0</div><div class="label">📚 Total Students</div></div>
+            <div class="stat-card"><div class="value" id="totalTeachers">0</div><div class="label">👨‍🏫 Total Teachers</div></div>
+            <div class="stat-card"><div class="value" id="totalXP">0</div><div class="label">⭐ College XP</div></div>
+            <div class="stat-card"><div class="value" id="avgXP">0</div><div class="label">📊 Average XP/Student</div></div>
+        </div>
+
+        <!-- DIRECTOR PANEL - Teachers Section -->
+        <div class="section">
+            <h2>👨‍🏫 Teachers List</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody id="teachersList"></tbody>
+                </table>
+            </div>
+            <button class="btn-primary" onclick="showAddTeacherModal()" style="width: auto; padding: 0.5rem 1rem;">➕ Add New Teacher</button>
+        </div>
+
+        <!-- DIRECTOR PANEL - Students Section -->
+        <div class="section">
+            <h2>👨‍🎓 Students List</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead><tr><th>Name</th><th>Email</th><th>Points</th><th>Level</th><th>Action</th></tr></thead>
+                    <tbody id="studentsList"></tbody>
+                </table>
+            </div>
+            <button class="btn-primary" onclick="showAddStudentModal()" style="width: auto; padding: 0.5rem 1rem;">➕ Add New Student</button>
+        </div>
+    </div>
+
+    <!-- Add Teacher Modal -->
+    <div id="addTeacherModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddTeacherModal()">&times;</span>
+            <h2>➕ Add New Teacher</h2>
+            <div class="form-group"><label>👤 Full Name</label><input type="text" id="teacherName" placeholder="e.g., Prof. Sharma"></div>
+            <div class="form-group"><label>📧 Email Address</label><input type="email" id="teacherEmail" placeholder="teacher@college.edu"></div>
+            <div class="form-group"><label>🔒 Password</label><input type="password" id="teacherPassword" placeholder="Minimum 6 characters"></div>
+            <button class="btn-primary" onclick="addTeacher()">Add Teacher</button>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="addStudentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddStudentModal()">&times;</span>
+            <h2>➕ Add New Student</h2>
+            <div class="form-group"><label>👤 Full Name</label><input type="text" id="studentName" placeholder="e.g., Rahul Kumar"></div>
+            <div class="form-group"><label>📧 Email Address</label><input type="email" id="studentEmail" placeholder="student@college.edu"></div>
+            <div class="form-group"><label>🔒 Password</label><input type="password" id="studentPassword" placeholder="Minimum 6 characters"></div>
+            <button class="btn-primary" onclick="addStudent()">Add Student</button>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token');
+        let user = null;
+
+        async function checkAuth() {
+            if (!token) { window.location.href = '/'; return; }
+            try {
+                const res = await fetch('/api/auth/profile', { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                if (data.success) {
+                    user = data.user;
+                    if (user.role !== 'director') {
+                        alert('Director access only!');
+                        window.location.href = '/';
+                    }
+                } else { window.location.href = '/'; }
+            } catch(err) { window.location.href = '/'; }
+        }
+
+        async function loadCollegeStats() {
+            try {
+                const res = await fetch('/api/auth/college-stats', { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('totalStudents').textContent = data.stats.totalStudents;
+                    document.getElementById('totalTeachers').textContent = data.stats.totalTeachers;
+                    document.getElementById('totalXP').textContent = data.stats.totalCollegeXP;
+                    document.getElementById('avgXP').textContent = data.stats.averageStudentXP;
+                    
+                    if (data.stats.students) {
+                        document.getElementById('studentsList').innerHTML = data.stats.students.map(s => `
+                            <tr>
+                                <td>${s.name}</td>
+                                <td>${s.email}</td>
+                                <td>⭐ ${s.total_points}</td>
+                                <td>🎯 ${s.level}</td>
+                                <td><button class="btn-danger" onclick="deleteUser('${s._id}', 'student')">🗑️ Delete</button></td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            } catch(err) { console.error(err); }
+        }
+
+        async function loadTeachers() {
+            try {
+                const res = await fetch('/api/auth/college-stats', { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                if (data.success && data.stats.teachers && data.stats.teachers.length > 0) {
+                    document.getElementById('teachersList').innerHTML = data.stats.teachers.map(t => `
+                        <tr>
+                            <td>${t.name}</td>
+                            <td>${t.email}</td>
+                            <td><span style="color:#4CAF50;">✅ Active</span></td>
+                            <td><button class="btn-danger" onclick="deleteUser('${t._id}', 'teacher')">🗑️ Delete</button></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    document.getElementById('teachersList').innerHTML = '<tr><td colspan="4" style="text-align:center;">No teachers found. Add your first teacher!</td></tr>';
+                }
+            } catch(err) { 
+                console.error(err);
+                document.getElementById('teachersList').innerHTML = '<tr><td colspan="4" style="text-align:center;">No teachers found. Add your first teacher!</td></tr>';
+            }
+        }
+
+        async function addTeacher() {
+            const name = document.getElementById('teacherName').value;
+            const email = document.getElementById('teacherEmail').value;
+            const password = document.getElementById('teacherPassword').value;
+            
+            if (!name || !email || !password) { alert('Please fill all fields'); return; }
+            if (password.length < 6) { alert('Password must be at least 6 characters'); return; }
+            
+            try {
+                const res = await fetch('/api/auth/add-teacher', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ Teacher added successfully!');
+                    closeAddTeacherModal();
+                    document.getElementById('teacherName').value = '';
+                    document.getElementById('teacherEmail').value = '';
+                    document.getElementById('teacherPassword').value = '';
+                    loadTeachers();
+                    loadCollegeStats();
+                } else { alert(data.error || 'Failed to add teacher'); }
+            } catch(err) { alert('Error adding teacher'); }
+        }
+
+        async function addStudent() {
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const password = document.getElementById('studentPassword').value;
+            
+            if (!name || !email || !password) { alert('Please fill all fields'); return; }
+            if (password.length < 6) { alert('Password must be at least 6 characters'); return; }
+            
+            try {
+                const res = await fetch('/api/auth/add-student', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ Student added successfully!');
+                    closeAddStudentModal();
+                    document.getElementById('studentName').value = '';
+                    document.getElementById('studentEmail').value = '';
+                    document.getElementById('studentPassword').value = '';
+                    loadCollegeStats();
+                } else { alert(data.error || 'Failed to add student'); }
+            } catch(err) { alert('Error adding student'); }
+        }
+
+        async function deleteUser(id, role) {
+            if(confirm(`⚠️ Are you sure you want to delete this ${role}?\n\nThis action cannot be undone!`)) {
+                try {
+                    const res = await fetch(`/api/director/${role}/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        alert(`✅ ${role.charAt(0).toUpperCase() + role.slice(1)} deleted successfully!`);
+                        if (role === 'teacher') loadTeachers();
+                        loadCollegeStats();
+                    } else { alert(`❌ Error: ${data.error || 'Delete failed'}`); }
+                } catch(err) { alert('❌ Error deleting user'); }
+            }
+        }
+
+        function showAddTeacherModal() { document.getElementById('addTeacherModal').style.display = 'flex'; }
+        function closeAddTeacherModal() { document.getElementById('addTeacherModal').style.display = 'none'; }
+        function showAddStudentModal() { document.getElementById('addStudentModal').style.display = 'flex'; }
+        function closeAddStudentModal() { document.getElementById('addStudentModal').style.display = 'none'; }
+
+        function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
+
+        async function init() {
+            await checkAuth();
+            await loadCollegeStats();
+            await loadTeachers();
+        }
+        
+        init();
+    </script>
+</body>
+</html>

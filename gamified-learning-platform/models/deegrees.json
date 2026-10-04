@@ -1,0 +1,74 @@
+[
+  {
+    "name": "BBA",
+    "duration_years": 3,
+    "display_order": 5,
+    "icon": "📈",
+    "branches": [
+      {
+        "name": "Business Administration",
+        "code": "BBA"
+      }
+    ]
+  },
+  {
+    "name": "B.Pharmacy",
+    "duration_years": 4,
+    "display_order": 6,
+    "icon": "💊",
+    "branches": [
+      {
+        "name": "Pharmacy",
+        "code": "BPH"
+      }
+    ]
+  },
+  {
+    "name": "LLB",
+    "duration_years": 3,
+    "display_order": 7,
+    "icon": "⚖️",
+    "branches": [
+      {
+        "name": "Law",
+        "code": "LLB"
+      }
+    ]
+  },
+  {
+    "name": "MA Economics",
+    "duration_years": 2,
+    "display_order": 8,
+    "icon": "📉",
+    "branches": [
+      {
+        "name": "Economics",
+        "code": "MAE"
+      }
+    ]
+  },
+  {
+    "name": "MCA",
+    "duration_years": 2,
+    "display_order": 9,
+    "icon": "🖥️",
+    "branches": [
+      {
+        "name": "Computer Applications",
+        "code": "MCA"
+      }
+    ]
+  },
+  {
+    "name": "Diploma Engineering",
+    "duration_years": 3,
+    "display_order": 10,
+    "icon": "🔧",
+    "branches": [
+      {
+        "name": "Engineering",
+        "code": "DE"
+      }
+    ]
+  }
+]

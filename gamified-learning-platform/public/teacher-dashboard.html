@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard | Gamified Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Students Table */
+        .students-section {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .students-section h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .students-table th,
+        .students-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .students-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .students-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .view-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Content Management */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .content-section h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .students-table {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <span>Gamified Learning</span>
+            </div>
+            <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/play">Play</a>
+    <a href="#" class="active">Teacher Dashboard</a>
+    <a href="/director-dashboard.html" id="directorLink" style="display:none;">👔 Director Panel</a>
+    <a href="/profile">Profile</a>
+</div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Students</h3>
+                <div class="value" id="totalStudents">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Average Points</h3>
+                <div class="value" id="avgPoints">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Students</h3>
+                <div class="value" id="activeStudents">0</div>
+            </div>
+        </div>
+
+        <!-- Students List -->
+        <div class="students-section">
+            <h2>📚 Your Students</h2>
+            <div style="overflow-x: auto;">
+                <table class="students-table">
+                    <thead>
+                        <tr><th>Name</th><th>Email</th><th>Points</th><th>Level</th><th>Streak</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="studentsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Subject -->
+        <div class="content-section">
+            <h2>➕ Add New Subject</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Degree</label>
+                    <select id="degreeSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label>Semester Index</label>
+                    <input type="number" id="semesterIndex" placeholder="0 for Semester 1">
+                </div>
+                <div class="form-group">
+                    <label>Branch Index</label>
+                    <input type="number" id="branchIndex" placeholder="0 for first branch">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" id="subjectName" placeholder="e.g., Cloud Computing">
+                </div>
+                <div class="form-group">
+                    <label>Subject Code</label>
+                    <input type="text" id="subjectCode" placeholder="e.g., CC101">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addSubject()">Add Subject</button>
+        </div>
+
+        <!-- Add Topic -->
+        <div class="content-section">
+            <h2>📝 Add New Topic</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Subject ID</label>
+                    <input type="text" id="topicSubjectId" placeholder="Subject ID from API">
+                </div>
+                <div class="form-group">
+                    <label>Topic Name</label>
+                    <input type="text" id="topicName" placeholder="e.g., Arrays in C">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>XP Reward</label>
+                    <input type="number" id="xpReward" placeholder="50" value="50">
+                </div>
+                <div class="form-group">
+                    <label>Game Type</label>
+                    <select id="gameType">
+                        <option value="match">Match Game</option>
+                        <option value="memory">Memory Game</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addTopic()">Add Topic</button>
+        </div>
+    </div>
+
+    <!-- Student Progress Modal -->
+    <div id="progressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Student Progress</h3>
+                <span class="close" onclick="closeProgressModal()">&times;</span>
+            </div>
+            <div id="progressContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token');
+        let user = null;
+
+        // Check authentication
+        async function checkAuth() {
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+            try {
+                const res = await fetch('/api/auth/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+    user = data.user;
+    if (user.role === 'director') {
+        document.getElementById('directorLink').style.display = 'inline-block';
+    }
+    if (user.role !== 'teacher' && user.role !== 'director') {
+        window.location.href = '/';
+    }
+}
+                else {
+                    window.location.href = '/';
+                }
+            } catch (err) {
+                window.location.href = '/';
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                const res = await fetch('/api/teacher/classes', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('totalStudents').textContent = data.stats.totalStudents;
+                    document.getElementById('avgPoints').textContent = data.stats.averagePoints;
+                    document.getElementById('activeStudents').textContent = data.stats.activeStudents;
+                    
+                    const tbody = document.getElementById('studentsList');
+                    tbody.innerHTML = data.students.map(s => `
+                        <tr>
+                            <td>${s.name}</td>
+                            <td>${s.email}</td>
+                            <td>${s.total_points}</td>
+                            <td>${s.level}</td>
+                            <td>${s.current_streak} days</td>
+                            <td><button class="view-btn" onclick="viewStudentProgress('${s._id}')">View</button></td>
+                        </tr>
+                    `).join('');
+                    
+                    // Populate degree dropdown
+                    const degreeSelect = document.getElementById('degreeSelect');
+                    if (degreeSelect && data.degrees) {
+                        degreeSelect.innerHTML = data.degrees.map(d => `<option value="${d._id}">${d.name}</option>`).join('');
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Failed to load dashboard', 'error');
+            }
+        }
+
+        // View student progress
+        async function viewStudentProgress(studentId) {
+            try {
+                const res = await fetch(`/api/teacher/student-progress/${studentId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('progressContent').innerHTML = `
+                        <h4>${data.student.name}</h4>
+                        <p>Email: ${data.student.email}</p>
+                        <p>Total Points: ${data.student.total_points}</p>
+                        <p>Level: ${data.student.level}</p>
+                        <p>Current Streak: ${data.student.current_streak} days</p>
+                        <p>Longest Streak: ${data.student.longest_streak} days</p>
+                        <hr>
+                        <h4>Recent Activity</h4>
+                        ${data.progress.length > 0 ? data.progress.map(p => `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid #eee;">
+                                <p>Topic: ${p.topic_id}</p>
+                                <p>Score: ${p.score || 0} | XP: ${p.xp_earned || 0}</p>
+                                <p>Completed: ${p.completed_at ? new Date(p.completed_at).toLocaleDateString() : 'N/A'}</p>
+                            </div>
+                        `).join('') : '<p>No activity yet</p>'}
+                    `;
+                    document.getElementById('progressModal').style.display = 'flex';
+                }
+            } catch (err) {
+                showNotification('Failed to load student progress', 'error');
+            }
+        }
+
+        function closeProgressModal() {
+            document.getElementById('progressModal').style.display = 'none';
+        }
+
+        // Add subject
+        async function addSubject() {
+            const degreeId = document.getElementById('degreeSelect').value;
+            const semesterIndex = parseInt(document.getElementById('semesterIndex').value);
+            const branchIndex = parseInt(document.getElementById('branchIndex').value);
+            const subjectName = document.getElementById('subjectName').value;
+            const subjectCode = document.getElementById('subjectCode').value;
+            
+            if (!degreeId || isNaN(semesterIndex) || isNaN(branchIndex) || !subjectName || !subjectCode) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/teacher/add-subject', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ degreeId, semesterIndex, branchIndex, subjectName, subjectCode })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showNotification('Subject added successfully!', 'success');
+                    document.getElementById('subjectName').value = '';
+                    document.getElementById('subjectCode').value = '';
+                    loadDashboard();
+                } else {
+                    showNotification(data.error || 'Failed to add subject', 'error');
+                }
+            } catch (err) {
+                showNotification('Error adding subject', 'error');
+            }
+        }
+
+        // Add topic
+        async function addTopic() {
+            const subjectId = document.getElementById('topicSubjectId').value;
+            const topicName = document.getElementById('topicName').value;
+            const xpReward = parseInt(document.getElementById('xpReward').value);
+            const gameType = document.getElementById('gameType').value;
+            
+            if (!subjectId || !topicName) {
+                showNotification('Please fill subject ID and topic name', 'error');
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/teacher/add-topic', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ subjectId, topicName, xpReward, gameType, timeLimit: 60 })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showNotification('Topic added successfully!', 'success');
+                    document.getElementById('topicSubjectId').value = '';
+                    document.getElementById('topicName').value = '';
+                    loadDashboard();
+                } else {
+                    showNotification(data.error || 'Failed to add topic', 'error');
+                }
+            } catch (err) {
+                showNotification('Error adding topic', 'error');
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+                color: white;
+                border-radius: 8px;
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Initialize
+        checkAuth().then(() => {
+            loadDashboard();
+        });
+    </script>
+</body>
+</html>

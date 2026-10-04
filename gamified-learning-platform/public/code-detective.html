@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Code Detective | EduPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        .game-header {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .game-header h1 { color: #667eea; margin-bottom: 0.3rem; font-size: 1.8rem; }
+        .game-header p { color: #666; font-size: 0.9rem; }
+        
+        .stats-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: #667eea; }
+        .stat-label { font-size: 0.7rem; color: #666; }
+        
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .timer-value { font-size: 2rem; font-weight: bold; color: white; }
+        
+        /* Code Editor Style */
+        .code-container {
+            background: #1e1e1e;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .code-header {
+            background: #2d2d2d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-bottom: 1px solid #444;
+        }
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+        }
+        .code-dot:nth-child(2) { background: #ffbd2e; }
+        .code-dot:nth-child(3) { background: #27c93f; }
+        .code-title {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        .code-content {
+            padding: 1.5rem;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-keyword { color: #569cd6; }
+        .code-function { color: #dcdcaa; }
+        .code-string { color: #ce9178; }
+        .code-comment { color: #6a9955; }
+        .code-number { color: #b5cea8; }
+        
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .question-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+            transform: scale(1.02);
+        }
+        
+        .start-screen, .result-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .start-btn, .restart-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .start-btn:hover, .restart-btn:hover { transform: scale(1.05); }
+        .final-score { font-size: 3rem; font-weight: bold; color: #667eea; margin: 1rem 0; }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .feedback-popup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            animation: fadeOut 1s ease;
+            z-index: 1000;
+            font-weight: bold;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateX(-50%) scale(1); }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+        }
+        
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .code-content { font-size: 11px; padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🔍 Code Detective</h1>
+            <p>Identify the Programming Language | Concept | Output</p>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" style="display: none;">
+            <div class="stats-bar">
+                <div class="stat-item"><div class="stat-value" id="currentScore">0</div><div class="stat-label">🎯 Score</div></div>
+                <div class="stat-item"><div class="stat-value" id="questionsDone">0</div><div class="stat-label">📝 Questions</div></div>
+                <div class="stat-item"><div class="timer-circle"><div class="timer-value" id="timerDisplay">30</div></div><div class="stat-label">⏱️ Time Left</div></div>
+            </div>
+
+            <!-- Code Snippet Display -->
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dot"></div>
+                    <div class="code-dot"></div>
+                    <div class="code-dot"></div>
+                    <div class="code-title" id="codeTitle">code.py</div>
+                </div>
+                <div class="code-content" id="codeContent"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-number" id="qNum">Question 1/10</div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options-grid" id="optionsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="start-screen">
+            <div style="font-size: 4rem;">🔍</div>
+            <h2>Code Detective Challenge</h2>
+            <p>Identify programming languages, concepts, and outputs!</p>
+            <p>• 10 code snippets</p>
+            <p>• 30 seconds time limit</p>
+            <p>• +10 for correct | -5 for wrong</p>
+            <button class="start-btn" onclick="startGame()">🔍 Start Detective Mode →</button>
+            <div style="margin-top: 1rem;"><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="result-screen" style="display: none;">
+            <div style="font-size: 4rem;">🕵️</div>
+            <h2>Case Closed!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <p id="resultMessage"></p>
+            <button class="restart-btn" onclick="restartGame()">🔍 Play Again</button>
+            <div><a href="/student-dashboard.html" class="back-btn">← Back to Dashboard</a></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CODE DETECTIVE QUESTIONS ====================
+        const codeQuestions = [
+            // Language Identification
+            { code: 'print("Hello World")', title: 'code.py', q: "Which programming language is this?", options: ["Python", "Java", "C++", "JavaScript"], correct: 0, hint: "Uses print() without semicolon" },
+            { code: 'System.out.println("Hello");', title: 'Main.java', q: "Which language uses System.out.println?", options: ["Java", "C++", "Python", "C#"], correct: 0, hint: "Object-oriented, runs on JVM" },
+            { code: '#include <iostream>\nusing namespace std;\nint main() {\n    cout << "Hello";\n    return 0;\n}', title: 'main.cpp', q: "Which language is this?", options: ["C++", "C", "Java", "Python"], correct: 0, hint: "Uses cout and iostream" },
+            { code: 'console.log("Hello World");', title: 'script.js', q: "Which language uses console.log()?", options: ["JavaScript", "Python", "Java", "Ruby"], correct: 0, hint: "Used for web development" },
+            { code: '<!DOCTYPE html>\n<html>\n<head>\n    <title>Page</title>\n</head>\n<body>\n    <h1>Hello</h1>\n</body>\n</html>', title: 'index.html', q: "What is this code?", options: ["HTML", "XML", "CSS", "JavaScript"], correct: 0, hint: "Web page structure" },
+            { code: 'body {\n    background-color: blue;\n    color: white;\n}', title: 'style.css', q: "What language is this?", options: ["CSS", "HTML", "SCSS", "Less"], correct: 0, hint: "Used for styling web pages" },
+            { code: 'SELECT * FROM users WHERE age > 18;', title: 'query.sql', q: "What language is this?", options: ["SQL", "Python", "Java", "R"], correct: 0, hint: "Database query language" },
+            
+            // Output Questions
+            { code: 'for i in range(3):\n    print(i)', title: 'loop.py', q: "What will be the output?", options: ["0 1 2", "1 2 3", "0 1 2 3", "Error"], correct: 0, hint: "range(3) gives 0,1,2" },
+            { code: 'int x = 5;\nint y = 2;\ncout << x / y;', title: 'divide.cpp', q: "What is the output in C++?", options: ["2", "2.5", "2.0", "Error"], correct: 0, hint: "Integer division" },
+            { code: 'console.log(5 + "5");', title: 'script.js', q: "What is the output in JavaScript?", options: ["55", "10", "5+5", "Error"], correct: 0, hint: "String concatenation" },
+            { code: 'print(5 // 2)', title: 'python.py', q: "What is the output in Python?", options: ["2", "2.5", "2.0", "Error"], correct: 0, hint: "Floor division" },
+            
+            // Concept Questions
+            { code: 'class Car {\n    String brand;\n    void start() {}\n}', title: 'Car.java', q: "What OOP concept is shown?", options: ["Class", "Object", "Inheritance", "Polymorphism"], correct: 0, hint: "Blueprint for objects" },
+            { code: 'int arr[] = {1,2,3,4,5};\nint x = arr[2];', title: 'array.c', q: "What is the value of x?", options: ["3", "2", "4", "5"], correct: 0, hint: "Array index starts at 0" },
+            { code: 'int a = 5;\nint *ptr = &a;', title: 'pointer.c', q: "What is 'ptr' storing?", options: ["Address of a", "Value of a", "Null", "Error"], correct: 0, hint: "& gives address" },
+            { code: 'if (x > 0) {\n    print("Positive");\n} else {\n    print("Negative");\n}', title: 'condition.py', q: "What control structure is this?", options: ["Conditional", "Loop", "Function", "Class"], correct: 0, hint: "if-else statement" },
+            { code: 'def add(a, b):\n    return a + b', title: 'function.py', q: "What is 'add' in this code?", options: ["Function", "Variable", "Class", "Module"], correct: 0, hint: "Reusable code block" },
+            { code: 'for(int i=0; i<5; i++) {\n    printf("%d", i);\n}', title: 'loop.c', q: "How many times will this loop run?", options: ["5", "4", "6", "Infinite"], correct: 0, hint: "i=0 to i=4" },
+            
+            // Error Identification
+            { code: 'int x = "hello";', title: 'error.java', q: "What type of error is this?", options: ["Type Mismatch", "Syntax Error", "Runtime Error", "Logical Error"], correct: 0, hint: "String to int assignment" },
+            { code: 'print("Hello)', title: 'error.py', q: "What is wrong with this code?", options: ["Missing closing quote", "Missing semicolon", "Wrong function", "Indentation error"], correct: 0, hint: "String not closed" },
+            
+            // JavaScript Specific
+            { code: 'function greet() {\n    return "Hi";\n}\ngreet();', title: 'function.js', q: "What is this called?", options: ["Function call", "Function declaration", "Function expression", "Arrow function"], correct: 0, hint: "Executing the function" },
+            { code: 'const arr = [1,2,3];\narr.push(4);', title: 'array.js', q: "What will arr become?", options: ["[1,2,3,4]", "[4,1,2,3]", "[1,2,3]", "Error"], correct: 0, hint: "Adds element to end" },
+            
+            // Python Specific
+            { code: 'my_list = [1,2,3]\nmy_list.append(4)', title: 'list.py', q: "What method adds element to list?", options: ["append()", "add()", "insert()", "extend()"], correct: 0, hint: "Adds at end" },
+            { code: 'len("Python")', title: 'string.py', q: "What is the output?", options: ["6", "5", "7", "Error"], correct: 0, hint: "P-y-t-h-o-n has 6 letters" },
+            
+            // HTML/CSS Specific
+            { code: '<div class="container">\n    <p>Text</p>\n</div>', title: 'html.html', q: "What is 'div' called?", options: ["HTML Tag", "CSS Class", "JavaScript Function", "Attribute"], correct: 0, hint: "Defines a division" },
+            { code: 'margin: 10px;', title: 'style.css', q: "What does margin do?", options: ["Space outside element", "Space inside element", "Border around element", "Text spacing"], correct: 0, hint: "Creates outer spacing" }
+        ];
+
+        // Game Variables
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let currentScore = 0;
+        let timeLeft = 30;
+        let timerInterval = null;
+        let gameActive = false;
+        let questionsAnswered = 0;
+
+        function shuffleArray(arr) {
+            for(let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function loadQuestions() {
+            let shuffled = shuffleArray([...codeQuestions]);
+            currentQuestions = shuffled.slice(0, 15);
+            currentIndex = 0;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function highlightCode(code) {
+            // Simple syntax highlighting
+            let highlighted = escapeHtml(code);
+            highlighted = highlighted.replace(/\/\/.*/g, '<span style="color:#6a9955">$&</span>');
+            highlighted = highlighted.replace(/print|def|class|if|else|for|while|return/g, '<span style="color:#569cd6">$&</span>');
+            highlighted = highlighted.replace(/".*?"/g, '<span style="color:#ce9178">$&</span>');
+            highlighted = highlighted.replace(/\d+/g, '<span style="color:#b5cea8">$&</span>');
+            return highlighted;
+        }
+
+        function displayQuestion() {
+            if(!gameActive) return;
+            if(currentIndex >= currentQuestions.length) { endGame(); return; }
+            
+            const q = currentQuestions[currentIndex];
+            document.getElementById('codeTitle').textContent = q.title;
+            document.getElementById('codeContent').innerHTML = highlightCode(q.code);
+            document.getElementById('qNum').textContent = `Question ${currentIndex + 1}/${currentQuestions.length}`;
+            document.getElementById('questionText').textContent = q.q;
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            // Shuffle options
+            let shuffledOptions = [...q.options];
+            let correctAnswer = shuffledOptions[q.correct];
+            for(let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+            
+            shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<strong>${letters[idx]}.</strong> ${opt}`;
+                btn.onclick = () => checkAnswer(idx, newCorrectIndex, q);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx, correctIdx, q) {
+            if(!gameActive) return;
+            
+            const isCorrect = (selectedIdx === correctIdx);
+            if(isCorrect) {
+                currentScore += 10;
+                showFeedback(true);
+            } else {
+                currentScore -= 5;
+                showFeedback(false);
+            }
+            
+            questionsAnswered++;
+            currentIndex++;
+            updateUI();
+            
+            if(currentIndex < currentQuestions.length) {
+                displayQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function showFeedback(isCorrect) {
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback-popup';
+            feedback.innerHTML = isCorrect ? '✅ +10 Points! Correct!' : '❌ -5 Points! Wrong!';
+            feedback.style.background = isCorrect ? '#4CAF50' : '#ff4757';
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 800);
+        }
+
+        function startTimer() {
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(!gameActive) return;
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                } else {
+                    timeLeft--;
+                    document.getElementById('timerDisplay').textContent = timeLeft;
+                    if(timeLeft <= 5) {
+                        document.getElementById('timerDisplay').style.color = '#ff4757';
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateUI() {
+            document.getElementById('currentScore').textContent = currentScore;
+            document.getElementById('questionsDone').textContent = questionsAnswered;
+        }
+
+        function endGame() {
+            gameActive = false;
+            if(timerInterval) clearInterval(timerInterval);
+            
+            savePointsToProfile(currentScore);
+            
+            document.getElementById('finalScore').textContent = currentScore;
+            let message = `You solved ${questionsAnswered}/${currentQuestions.length} questions!`;
+            if(currentScore > 0) {
+                message += `\nGreat detective work! 🕵️`;
+            }
+            document.getElementById('resultMessage').innerHTML = message;
+            
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+        }
+
+        function savePointsToProfile(points) {
+            let currentUser = localStorage.getItem('currentUser');
+            if(currentUser) {
+                currentUser = JSON.parse(currentUser);
+                currentUser.points = (currentUser.points || 0) + points;
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                currentUser.level = Math.floor(currentUser.points / 500) + 1;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                let users = localStorage.getItem('registeredUsers');
+                if(users) {
+                    users = JSON.parse(users);
+                    const idx = users.findIndex(u => u.email === currentUser.email);
+                    if(idx !== -1) {
+                        users[idx].points = currentUser.points;
+                        users[idx].gamesPlayed = currentUser.gamesPlayed;
+                        users[idx].level = currentUser.level;
+                        localStorage.setItem('registeredUsers', JSON.stringify(users));
+                    }
+                }
+            }
+        }
+
+        function startGame() {
+            let currentUser = localStorage.getItem('currentUser');
+            if(!currentUser) {
+                alert('⚠️ Please login as Student to play!');
+                window.location.href = '/';
+                return;
+            }
+            currentUser = JSON.parse(currentUser);
+            if(currentUser.role !== 'student') {
+                alert('🔒 Only Students can play Code Detective!');
+                window.location.href = '/';
+                return;
+            }
+            
+            gameActive = true;
+            currentScore = 0;
+            timeLeft = 30;
+            questionsAnswered = 0;
+            loadQuestions();
+            updateUI();
+            document.getElementById('timerDisplay').textContent = timeLeft;
+            document.getElementById('timerDisplay').style.color = 'white';
+            
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            
+            startTimer();
+            displayQuestion();
+        }
+
+        function restartGame() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
